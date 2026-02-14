@@ -22,12 +22,30 @@
 
       <section class="summary-section">
         <h2>인원별 근무 요약</h2>
+
+        <form id="importForm" class="import-form">
+          <h2>사진으로 자동 채우기 (베타)</h2>
+          <label>
+            대상 직원
+            <select name="targetStaffId" id="targetStaffId"></select>
+          </label>
+          <label>
+            스케줄 사진
+            <input name="scheduleImage" id="scheduleImage" type="file" accept="image/*" required />
+          </label>
+          <button type="submit">사진 분석 후 반영</button>
+          <p id="importStatus" class="import-status">※ 사진 내 텍스트(예: 1월, 풍 10)를 OCR로 읽어 자동 반영합니다.</p>
+        </form>
         <div id="summaryCards" class="summary-grid"></div>
       </section>
 
       <section class="calendar-section card">
         <div class="calendar-head">
           <h2>월간 캘린더 근무표</h2>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+      const importForm = document.getElementById("importForm");
+      const targetStaffSelect = document.getElementById("targetStaffId");
+      const importStatus = document.getElementById("importStatus");
           <p>주말은 색상으로 강조되고, 각 칸에는 근무/휴무 상태가 표시됩니다.</p>
         </div>
         <div class="calendar-wrap">
@@ -136,3 +154,80 @@
     </script>
   </body>
 </html>
+      const renderTargetStaffOptions = () => {
+        targetStaffSelect.innerHTML = "";
+        appState.staff.forEach((member) => {
+          const option = document.createElement("option");
+          option.value = member.id;
+          option.textContent = member.name;
+          targetStaffSelect.appendChild(option);
+        });
+      };
+
+      const extractMonthFromText = (text) => {
+        const monthMatch = text.match(/(\d{1,2})\s*월/);
+        if (!monthMatch) return null;
+        const monthNumber = Number(monthMatch[1]);
+        if (monthNumber < 1 || monthNumber > 12) return null;
+        return monthNumber - 1;
+      };
+
+      const extractOffDaysFromText = (text) => {
+        const results = new Set();
+        const patterns = [
+          /(\d{1,2})\s*일?\s*풍/g,
+          /풍\s*(\d{1,2})\s*일?/g,
+          /휴무\s*(\d{1,2})\s*일?/g,
+          /(\d{1,2})\s*일?\s*휴무/g,
+        ];
+
+        patterns.forEach((pattern) => {
+          for (const match of text.matchAll(pattern)) {
+            const day = Number(match[1]);
+            if (day >= 1 && day <= 31) results.add(day);
+          }
+        });
+
+        return [...results].sort((a, b) => a - b);
+      };
+
+      const applyImportedOffDays = (staffId, offDays) => {
+        offDays.forEach((day) => {
+          const dateObj = new Date(appState.viewYear, appState.viewMonth, day);
+          const dateStr = toISODate(dateObj);
+          const key = getShiftKey(staffId, dateStr);
+          appState.shifts[key] = false;
+        });
+      };
+
+        renderTargetStaffOptions();
+      importForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const file = document.getElementById("scheduleImage").files[0];
+        const staffId = targetStaffSelect.value;
+        if (!file || !staffId) return;
+
+        importStatus.textContent = "사진 OCR 분석 중...";
+
+        try {
+          const result = await Tesseract.recognize(file, "kor+eng", {
+            logger: () => {},
+          });
+
+          const text = result.data.text.replace(/\s+/g, " ").trim();
+          const detectedMonth = extractMonthFromText(text);
+          if (detectedMonth !== null) {
+            appState.viewMonth = detectedMonth;
+          }
+
+          const offDays = extractOffDaysFromText(text);
+          applyImportedOffDays(staffId, offDays);
+
+          importStatus.textContent = `OCR 완료: 휴무 ${offDays.length}일 반영 (${offDays.join(", ") || "없음"})`;
+          renderAll();
+        } catch (error) {
+          importStatus.textContent = "OCR 처리 실패: 사진을 더 선명하게 찍어 다시 시도해 주세요.";
+        }
+      });
+

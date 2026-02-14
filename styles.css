@@ -77,7 +77,37 @@ h1 {
   background: var(--red);
 }
 
-h2 {
+  grid-template-columns: 1fr 1fr 1fr;
+.import-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  align-items: end;
+}
+
+.import-form h2 {
+  margin: 0;
+}
+
+.import-form button {
+  justify-self: start;
+  background: #dff3e9;
+  color: #17643d;
+}
+
+.import-status {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #5f6b7d;
+}
+
+select {
+  border: 1px solid #ccd6e5;
+  border-radius: 8px;
+  padding: 8px;
+  background: #fff;
+}
+
   margin: 0 0 12px;
   font-size: 1.2rem;
 }

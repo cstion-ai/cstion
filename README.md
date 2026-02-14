@@ -13,6 +13,7 @@ python -m http.server 4173 --bind 0.0.0.0
 
 - http://localhost:4173/index.html
 
+- 스케줄 사진 OCR 분석으로 휴무일 자동 반영(베타)
 ## 포함 내용
 - 인원별 근무/휴무 요약 카드
 - 월간 캘린더형 근무표
