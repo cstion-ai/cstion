@@ -3,91 +3,136 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>블랑로쉐 | 시그니처 메뉴 안내</title>
-    <link rel="preconnect" href="https://images.unsplash.com" />
+    <title>우도 블랑로쉐 근무 캘린더</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="hero">
-      <nav class="nav">
-        <h1>BLANC ROCHE</h1>
-        <ul>
-          <li><a href="#about">매장소개</a></li>
-          <li><a href="#menu">메뉴/가격</a></li>
-          <li><a href="#gallery">사진</a></li>
-        </ul>
-      </nav>
-      <div class="hero-content">
-        <p class="tag">French Dessert & Brunch</p>
-        <h2>블랑로쉐</h2>
-        <p>
-          따뜻한 브런치와 디저트를 한 자리에서 즐길 수 있는 감성 공간.
-          메뉴와 가격 정보를 빠르게 확인할 수 있도록 정리했습니다.
-        </p>
-        <a class="cta" href="#menu">메뉴 보기</a>
-      </div>
-    </header>
-
-    <main>
-      <section id="about" class="section card">
-        <h3>매장 소개</h3>
-        <p>
-          블랑로쉐는 프렌치 무드의 브런치와 수제 디저트를 중심으로 운영되는 카페입니다.
-          시즌별 재료를 활용한 메뉴가 준비되어 있으며, 아래 메뉴/가격은 방문 전 참고용으로 구성했습니다.
-        </p>
-        <p class="notice">
-          ※ 참고: 현재 환경에서 네이버 플레이스 원본 페이지 접근이 제한되어, 실제 방문 전 최신 가격을 매장 채널에서 한 번 더 확인해 주세요.
-        </p>
-      </section>
-
-      <section id="menu" class="section">
-        <h3>대표 메뉴 & 가격</h3>
-        <div class="menu-grid">
-          <article class="menu-item">
-            <h4>에그인헬 브런치 플레이트</h4>
-            <p>토마토 소스와 반숙 계란, 샐러드가 함께 나오는 인기 브런치.</p>
-            <span>₩16,000</span>
-          </article>
-          <article class="menu-item">
-            <h4>크로크무슈 세트</h4>
-            <p>바삭한 식감의 크로크무슈와 수프/샐러드 구성.</p>
-            <span>₩14,500</span>
-          </article>
-          <article class="menu-item">
-            <h4>바질 토마토 파니니</h4>
-            <p>신선한 바질과 토마토, 치즈가 어우러진 파니니.</p>
-            <span>₩13,000</span>
-          </article>
-          <article class="menu-item">
-            <h4>블랑 시그니처 프렌치토스트</h4>
-            <p>부드러운 브리오슈와 계절 과일, 크림 토핑.</p>
-            <span>₩15,000</span>
-          </article>
-          <article class="menu-item">
-            <h4>아메리카노</h4>
-            <p>밸런스가 좋은 블렌드 원두의 기본 커피.</p>
-            <span>₩4,500</span>
-          </article>
-          <article class="menu-item">
-            <h4>땅콩 라떼</h4>
-            <p>고소한 땅콩 풍미와 부드러운 우유의 조화.</p>
-            <span>₩5,800</span>
-          </article>
+    <main class="page">
+      <header class="topbar card">
+        <div>
+          <p class="eyebrow">UDO BLANC ROCHE</p>
+          <h1>2025년 12월 근무표</h1>
+          <p class="sub">사진처럼 한눈에 보는 요약 + 캘린더형 근무표</p>
         </div>
+        <div class="legend">
+          <span><i class="dot work"></i>근무</span>
+          <span><i class="dot off"></i>휴무</span>
+        </div>
+      </header>
+
+      <section class="summary-section">
+        <h2>인원별 근무 요약</h2>
+        <div id="summaryCards" class="summary-grid"></div>
       </section>
 
-      <section id="gallery" class="section">
-        <h3>매장 분위기 사진</h3>
-        <div class="gallery-grid">
-          <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=80" alt="블랑로쉐 실내 분위기" />
-          <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1000&q=80" alt="브런치 메뉴" />
-          <img src="https://images.unsplash.com/photo-1481833761820-0509d3217039?auto=format&fit=crop&w=1000&q=80" alt="디저트와 커피" />
+      <section class="calendar-section card">
+        <div class="calendar-head">
+          <h2>월간 캘린더 근무표</h2>
+          <p>주말은 색상으로 강조되고, 각 칸에는 근무/휴무 상태가 표시됩니다.</p>
+        </div>
+        <div class="calendar-wrap">
+          <table class="calendar" aria-label="2025년 12월 우도 블랑로쉐 근무 캘린더">
+            <thead>
+              <tr>
+                <th>일</th>
+                <th>월</th>
+                <th>화</th>
+                <th>수</th>
+                <th>목</th>
+                <th>금</th>
+                <th>토</th>
+              </tr>
+            </thead>
+            <tbody id="calendarBody"></tbody>
+          </table>
         </div>
       </section>
     </main>
 
-    <footer>
-      <p>© 2026 블랑로쉐 안내 페이지</p>
-    </footer>
+    <script>
+      const year = 2025;
+      const month = 11; // 0-indexed (12월)
+
+      const staff = [
+        { name: "김진철", color: "#4a90e2" },
+        { name: "김지영", color: "#2cb67d" },
+        { name: "원원", color: "#e38b2c" },
+        { name: "총총", color: "#c84cb2" },
+      ];
+
+      const schedule = {
+        "김진철": [1, 4, 5, 6, 7, 8, 12, 13, 16, 17, 18, 19, 20, 22, 23, 24, 26, 29, 30],
+        "김지영": [2, 4, 8, 9, 10, 11, 12, 13, 15, 19, 20, 21, 22, 23, 26, 27],
+        "원원": [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 15, 16, 17, 18, 21, 24, 25, 26, 27, 28, 29, 30, 31],
+        "총총": [1, 2, 4, 5, 6, 7, 9, 10, 11, 12, 14, 15, 16, 17, 18, 22, 23, 24, 25, 26, 27, 28, 30, 31],
+      };
+
+      const summaryCards = document.getElementById("summaryCards");
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      staff.forEach((person) => {
+        const workDays = schedule[person.name].length;
+        const offDays = daysInMonth - workDays;
+
+        const card = document.createElement("article");
+        card.className = "summary-card card";
+        card.innerHTML = `
+          <div class="card-top" style="border-top-color: ${person.color};">
+            <h3>${person.name}</h3>
+          </div>
+          <dl>
+            <div><dt>근무</dt><dd>${workDays}</dd></div>
+            <div><dt>휴무</dt><dd class="off-num">${offDays}</dd></div>
+          </dl>
+        `;
+        summaryCards.appendChild(card);
+      });
+
+      const calendarBody = document.getElementById("calendarBody");
+      const firstDay = new Date(year, month, 1).getDay();
+
+      let currentDate = 1;
+      for (let week = 0; week < 6; week++) {
+        const tr = document.createElement("tr");
+
+        for (let day = 0; day < 7; day++) {
+          const td = document.createElement("td");
+
+          if ((week === 0 && day < firstDay) || currentDate > daysInMonth) {
+            td.className = "empty";
+            tr.appendChild(td);
+            continue;
+          }
+
+          if (day === 0) td.classList.add("sun");
+          if (day === 6) td.classList.add("sat");
+
+          const workers = staff.filter((person) =>
+            schedule[person.name].includes(currentDate),
+          );
+
+          td.innerHTML = `
+            <div class="date">${currentDate}</div>
+            <ul class="shift-list">
+              ${staff
+                .map((person) => {
+                  const isWorking = workers.some((w) => w.name === person.name);
+                  const badge = isWorking ? "근무" : "휴무";
+                  const cls = isWorking ? "on" : "off";
+                  return `<li><span class="name">${person.name}</span><span class="badge ${cls}">${badge}</span></li>`;
+                })
+                .join("")}
+            </ul>
+          `;
+
+          tr.appendChild(td);
+          currentDate++;
+        }
+
+        calendarBody.appendChild(tr);
+
+        if (currentDate > daysInMonth) break;
+      }
+    </script>
   </body>
 </html>
