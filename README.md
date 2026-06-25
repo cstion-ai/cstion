@@ -1,6 +1,6 @@
 # Travel AI Automation Platform
 
-여행 예약 데이터를 카카오톡, 위챗, Google Sheet, Booking/CRM 시스템과 연결해 자동 분석·관리하는 플랫폼 설계 및 초기 코드입니다.
+여행 예약 운영 데이터를 카카오톡, 위챗, Google Sheet, Booking/CRM 시스템과 연결해 자동 분석·관리하는 플랫폼 설계 및 초기 코드입니다. 여행 업무와 무관한 매장 소개, 메뉴, 가격 안내 콘텐츠는 포함하지 않습니다.
 
 ## 핵심 목표
 
