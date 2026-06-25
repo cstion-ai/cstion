@@ -2,14 +2,14 @@
 
 ## 1. Atmosphere & Identity
 
-A calm operations cockpit for travel teams that need to trust parsed customer messages quickly. The signature is route-context clarity: a real destination image anchors the scenario, while compact operational surfaces show exactly how Kakao messages become CRM customers and booking leads.
+A calm operations cockpit for travel teams that need to trust parsed customer messages quickly. The signature is catalog-context clarity: a real travel image anchors the scenario, while compact operational surfaces show exactly how selected products become CRM customers and booking leads.
 
 ## 2. Color
 
 ### Palette
 
 | Role | Token | Light | Dark | Usage |
-| --- | --- | --- | --- |
+| --- | --- | --- | --- | --- |
 | Surface/primary | --surface-primary | #f7faf8 | #101715 | Page background |
 | Surface/secondary | --surface-secondary | #eef5f0 | #16211e | Destination and flow bands |
 | Surface/elevated | --surface-elevated | #ffffff | #1f2b27 | Cards, panels |
@@ -28,7 +28,7 @@ A calm operations cockpit for travel teams that need to trust parsed customer me
 ### Rules
 
 - Destination imagery uses a dark overlay, never decorative gradients alone.
-- Accent is reserved for CTAs, test badges, and the active Yangzhou scenario.
+- Accent is reserved for CTAs, test badges, active catalog rows, and destructive catalog actions.
 - New colors must be added here before use.
 
 ## 3. Typography
@@ -92,12 +92,12 @@ All spacing derives from a base of 4px.
 - States: hover lifts via border color only.
 - Accessibility: text remains visible without color dependency.
 
-### Test Scenario Panel
+### Catalog Scenario Panel
 
-- Structure: destination copy, message sample, expected outputs.
-- Variants: Yangzhou MVP.
+- Structure: product list, selected product, message sample, expected outputs, and compact add form.
+- Variants: selected product, empty catalog, custom product.
 - Spacing: `--space-6`.
-- Accessibility: sample text uses semantic headings and code blocks.
+- Accessibility: sample text uses semantic headings and code blocks. Product controls are native buttons with clear labels and focus states.
 
 ## 6. Motion & Interaction
 

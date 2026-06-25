@@ -25,6 +25,11 @@ export async function createCustomerFromReservation(
     channelCustomerId: reservation.channelCustomerId,
     ...(reservation.phone ? { phone: reservation.phone } : {}),
     ...(reservation.email ? { email: reservation.email } : {}),
-    tags: ["travel-lead", reservation.destination, reservation.channel]
+    tags: [
+      "travel-lead",
+      reservation.destination,
+      reservation.channel,
+      ...(reservation.productId ? [reservation.productId] : [])
+    ]
   });
 }

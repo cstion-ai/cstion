@@ -12,10 +12,11 @@ describe("createCustomerFromReservation", () => {
       channel: "kakao",
       channelCustomerId: "kakao-user-a",
       customerName: "여행고객",
-      destination: "양저우",
+      destination: "제주",
       startDate: "2026-10-03",
       travelers: 2,
-      productName: "양저우 투어",
+      productId: "jeju-private-tour",
+      productName: "제주 프라이빗 투어",
       confidence: 0.86
     };
     const secondReservation: ReservationIntent = {
@@ -31,5 +32,6 @@ describe("createCustomerFromReservation", () => {
     assert.equal(firstCustomer.id, "kakao:kakao-user-a");
     assert.equal(secondCustomer.id, "kakao:kakao-user-b");
     assert.notEqual(firstCustomer.id, secondCustomer.id);
+    assert.deepEqual(firstCustomer.tags, ["travel-lead", "제주", "kakao", "jeju-private-tour"]);
   });
 });

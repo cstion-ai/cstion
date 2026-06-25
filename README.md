@@ -30,20 +30,27 @@ npm run typecheck
 npm run dev
 ```
 
-`npm run dev`는 양저우투어 상담 메시지 샘플을 실행합니다.
+`npm run dev`는 기본 투어·상품 카탈로그의 첫 상품 상담 메시지 샘플을 실행합니다.
 
 테스트 입력:
 
 ```text
-이수진입니다. 2026년 10월 3일 양저우투어 2명 상담 원합니다.
+이수진입니다. 2026년 10월 3일 제주 프라이빗 투어 2명 상담 원합니다.
 ```
 
 확인해야 할 출력:
 
-- `reservation.destination`은 `양저우`
-- `reservation.productName`은 `양저우 투어`
-- `customer.id`는 전화번호가 없을 때도 `kakao:yangzhou-test-user`
+- `reservation.destination`은 `제주`
+- `reservation.productId`는 `jeju-private-tour`
+- `reservation.productName`은 `제주 프라이빗 투어`
+- `customer.id`는 전화번호가 없을 때도 `kakao:catalog-test-user`
 - `booking.id`는 `lead_<UUID>` 형식
+
+상품 운영 규칙:
+
+- 기본 카탈로그는 `src/catalog/tour-catalog.ts`의 `DEFAULT_TOUR_PRODUCTS`에서 관리합니다.
+- `parseKakaoReservation(message, products)`에 전달한 카탈로그가 예약 분석 기준입니다.
+- 카탈로그에서 삭제된 상품은 별칭이 메시지에 남아 있어도 `미분류`로 처리됩니다.
 
 ## 설계 문서
 

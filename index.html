@@ -6,9 +6,11 @@
     <title>Travel AI Automation Platform</title>
     <meta
       name="description"
-      content="카카오톡 양저우투어 문의를 CRM 고객과 Booking 리드로 연결하는 여행 예약 자동화 MVP"
+      content="카카오톡 투어·상품 문의를 CRM 고객과 Booking 리드로 연결하는 여행 예약 자동화 MVP"
     />
+    <link rel="icon" href="data:," />
     <link rel="stylesheet" href="styles.css" />
+    <script defer src="app.js"></script>
   </head>
   <body>
     <header class="hero">
@@ -18,15 +20,15 @@
           <li><a href="#modules">모듈</a></li>
           <li><a href="#flow">데이터 흐름</a></li>
           <li><a href="#mvp">MVP</a></li>
-          <li><a href="#yangzhou">양저우 테스트</a></li>
+          <li><a href="#catalog">상품 운영</a></li>
         </ul>
       </nav>
       <div class="hero-content">
         <p class="tag">Kakao · WeChat · CRM · Booking · Google Sheets</p>
-        <h2>양저우투어 문의를 바로 <span class="nowrap">예약 리드로</span></h2>
-        <p>카카오 상담 메시지에서 고객, 일정, 인원, 목적지를 추출해 CRM과 Booking으로 연결합니다.</p>
+        <h2>상품 카탈로그로 바로 <span class="nowrap">예약 리드를</span></h2>
+        <p>운영 중인 투어·상품을 기준으로 카카오 상담 메시지에서 고객, 일정, 인원, 목적지를 추출합니다.</p>
         <div class="cta-row">
-          <a class="cta" href="#yangzhou">테스트 보기</a>
+          <a class="cta" href="#catalog">상품 운영</a>
           <a class="cta secondary" href="#mvp">MVP 범위</a>
         </div>
       </div>
@@ -58,35 +60,70 @@
 
       <section id="mvp" class="section mvp">
         <h3>가장 먼저 구현할 <span class="nowrap">핵심 모듈</span></h3>
-        <p><strong>카카오톡 예약 분석 및 CRM 자동 생성</strong>을 MVP로 구현합니다. 초기 코드는 <code>src/kakao/reservation-parser.ts</code>, <code>src/crm/customer-service.ts</code>, <code>src/booking/reservation-service.ts</code>, <code>src/pipelines/kakao-to-crm.ts</code>에 배치했습니다.</p>
+        <p><strong>카카오톡 예약 분석 및 CRM 자동 생성</strong>을 MVP로 구현합니다. 초기 코드는 <code>src/catalog/tour-catalog.ts</code>, <code>src/kakao/reservation-parser.ts</code>, <code>src/crm/customer-service.ts</code>, <code>src/booking/reservation-service.ts</code>, <code>src/pipelines/kakao-to-crm.ts</code>에 배치했습니다.</p>
       </section>
 
-      <section id="yangzhou" class="section yangzhou">
-        <div class="test-copy">
-          <p class="test-label">Yangzhou Tour Test</p>
-          <h3>양저우투어 예약 문의 검증</h3>
-          <p>테스트 메시지는 전화번호가 없어도 카카오 userId를 CRM 식별자로 보존하고, Booking 리드는 UUID 기반 ID로 생성합니다.</p>
+      <section id="catalog" class="section catalog">
+        <div class="catalog-copy">
+          <p class="test-label">Catalog Console</p>
+          <h3>투어·상품 운영 콘솔</h3>
+          <p id="catalogStatus">기본 상품 3개가 예약 분석 기준으로 연결되어 있습니다.</p>
         </div>
-        <div class="test-grid">
-          <article>
-            <h4>입력 메시지</h4>
-            <code>이수진입니다. 2026년 10월 3일 양저우투어 2명 상담 원합니다.</code>
-          </article>
-          <article>
-            <h4>예상 결과</h4>
-            <ul>
-              <li>destination: 양저우</li>
-              <li>productName: 양저우 투어</li>
-              <li>customerId: kakao:yangzhou-test-user</li>
-              <li>bookingId: lead_UUID</li>
-            </ul>
-          </article>
+        <div class="catalog-layout">
+          <section class="catalog-panel" aria-labelledby="catalogProductsTitle">
+            <div class="panel-title-row">
+              <h4 id="catalogProductsTitle">상품 목록</h4>
+              <button type="button" id="resetCatalog" class="text-button">기본값</button>
+            </div>
+            <div id="productList" class="product-list" aria-live="polite"></div>
+          </section>
+
+          <section class="catalog-panel selected-panel" aria-labelledby="selectedProductTitle">
+            <p class="panel-kicker">선택 상품</p>
+            <h4 id="selectedProductTitle">제주 프라이빗 투어</h4>
+            <dl class="product-details">
+              <div><dt>상품 ID</dt><dd id="selectedProductId">jeju-private-tour</dd></div>
+              <div><dt>목적지</dt><dd id="selectedDestination">제주</dd></div>
+              <div><dt>별칭</dt><dd id="selectedAliases">제주, 제주투어, 제주 프라이빗, jeju, jeju private tour</dd></div>
+            </dl>
+            <div class="scenario-output">
+              <h5>입력 메시지</h5>
+              <code id="sampleMessage">이수진입니다. 2026년 10월 3일 제주 프라이빗 투어 2명 상담 원합니다.</code>
+            </div>
+            <div class="scenario-output">
+              <h5>예상 결과</h5>
+              <ul>
+                <li id="expectedDestination">destination: 제주</li>
+                <li id="expectedProductId">productId: jeju-private-tour</li>
+                <li id="expectedProductName">productName: 제주 프라이빗 투어</li>
+                <li>customerId: kakao:catalog-test-user</li>
+                <li>bookingId: lead_UUID</li>
+              </ul>
+            </div>
+          </section>
+
+          <form id="productForm" class="catalog-panel product-form">
+            <h4>상품 추가</h4>
+            <label>
+              상품명
+              <input id="productNameInput" name="productName" type="text" required autocomplete="off" />
+            </label>
+            <label>
+              목적지
+              <input id="destinationInput" name="destination" type="text" required autocomplete="off" />
+            </label>
+            <label>
+              별칭
+              <input id="aliasesInput" name="aliases" type="text" required autocomplete="off" />
+            </label>
+            <button type="submit" class="cta form-submit">추가</button>
+          </form>
         </div>
       </section>
     </main>
 
     <footer>
-      <p>© 2026 Travel AI Automation Platform · Photo: Slender West Lake by Leopold1993, CC BY-SA 4.0</p>
+      <p>© 2026 Travel AI Automation Platform · Photo: Unsplash</p>
     </footer>
   </body>
 </html>

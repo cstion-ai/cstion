@@ -10,6 +10,7 @@ export type BookingRecord = {
   endDate?: string;
   travelers: number;
   status: "lead" | "quoted" | "confirmed" | "cancelled";
+  productId?: string;
   productName?: string;
   memo?: string;
 };
@@ -23,6 +24,7 @@ export function createBookingLead(customer: CrmCustomer, reservation: Reservatio
     travelers: reservation.travelers,
     status: "lead",
     ...(reservation.endDate ? { endDate: reservation.endDate } : {}),
+    ...(reservation.productId ? { productId: reservation.productId } : {}),
     ...(reservation.productName ? { productName: reservation.productName } : {}),
     ...(reservation.memo ? { memo: reservation.memo } : {})
   };

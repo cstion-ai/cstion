@@ -12,6 +12,7 @@ export const ReservationIntentSchema = z.object({
   startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   endDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
   travelers: z.number().int().positive().default(1),
+  productId: z.string().optional(),
   productName: z.string().optional(),
   memo: z.string().optional(),
   confidence: z.number().min(0).max(1)

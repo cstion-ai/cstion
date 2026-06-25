@@ -40,7 +40,7 @@ body {
   padding: var(--space-6) clamp(var(--space-5), 5vw, var(--space-16)) var(--space-16);
   background:
     linear-gradient(90deg, var(--hero-overlay-strong), var(--hero-overlay-soft)),
-    url("https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Slender_west_lake_of_yangzhou.jpg/960px-Slender_west_lake_of_yangzhou.jpg") center / cover;
+    url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80") center / cover;
 }
 
 .nav { display: flex; justify-content: space-between; align-items: center; gap: var(--space-6); }
@@ -85,7 +85,7 @@ h3 { margin: 0 0 var(--space-5); font-size: clamp(1.8rem, 3vw, 2.4rem); letter-s
 
 .flow-list { margin: 0; padding-left: var(--space-6); }
 .flow-list li { margin: var(--space-2) 0; }
-.mvp code, .yangzhou code {
+.mvp code, .catalog code {
   padding: 2px 6px;
   border-radius: 6px;
   background: var(--surface-secondary);
@@ -93,11 +93,7 @@ h3 { margin: 0 0 var(--space-5); font-size: clamp(1.8rem, 3vw, 2.4rem); letter-s
   font-family: SFMono-Regular, Consolas, "Liberation Mono", monospace;
 }
 
-.yangzhou {
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  gap: var(--space-8);
-  align-items: start;
+.catalog {
   padding: var(--space-8);
   background: var(--surface-secondary);
   border-radius: 8px;
@@ -110,17 +106,192 @@ h3 { margin: 0 0 var(--space-5); font-size: clamp(1.8rem, 3vw, 2.4rem); letter-s
   font-weight: 800;
 }
 
-.test-copy p { color: var(--text-secondary); }
-.test-grid { display: grid; gap: var(--space-4); }
-.test-grid article {
+.catalog-copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-width: 760px;
+  margin-bottom: var(--space-6);
+}
+.catalog-copy h3 { margin-bottom: 0; }
+.catalog-copy p { margin: 0; color: var(--text-secondary); }
+
+.catalog-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.8fr) minmax(320px, 1fr) minmax(260px, 0.8fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.catalog-panel {
   padding: var(--space-5);
   border: 1px solid var(--border-default);
   border-radius: 8px;
   background: var(--surface-elevated);
+  box-shadow: var(--shadow-subtle);
 }
-.test-grid h4 { margin: 0 0 var(--space-3); color: var(--status-success); }
-.test-grid ul { margin: 0; padding-left: var(--space-5); }
-.test-grid li { margin: var(--space-2) 0; }
+
+.panel-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.catalog-panel h4, .scenario-output h5 {
+  margin: 0 0 var(--space-3);
+  color: var(--status-success);
+}
+
+.panel-kicker {
+  margin: 0 0 var(--space-2);
+  color: var(--accent-primary);
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
+.product-list {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.product-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: var(--space-3);
+  align-items: center;
+  min-height: 72px;
+  padding: var(--space-3);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+}
+
+.product-row.is-active {
+  border-color: var(--accent-primary);
+  background: var(--surface-secondary);
+}
+
+.product-row strong {
+  display: block;
+  line-height: 1.35;
+  word-break: keep-all;
+}
+
+.product-row span {
+  display: block;
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+}
+
+.text-button, .row-button, .delete-button {
+  min-height: 38px;
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.text-button, .row-button { padding: 0 var(--space-3); }
+.delete-button {
+  width: 38px;
+  padding: 0;
+  color: var(--accent-primary);
+}
+
+.row-button:hover, .row-button:focus-visible, .text-button:hover, .text-button:focus-visible {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.delete-button:hover, .delete-button:focus-visible {
+  color: var(--hero-text);
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+}
+
+.row-button:disabled {
+  color: var(--status-success);
+  cursor: default;
+}
+
+.product-details {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-5);
+}
+
+.product-details div {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  gap: var(--space-3);
+}
+
+.product-details dt {
+  color: var(--text-secondary);
+  font-weight: 800;
+}
+
+.product-details dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.scenario-output {
+  margin-top: var(--space-4);
+}
+
+.scenario-output code {
+  display: block;
+  width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.scenario-output ul {
+  margin: 0;
+  padding-left: var(--space-5);
+}
+
+.scenario-output li {
+  margin: var(--space-2) 0;
+}
+
+.product-form {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.product-form label {
+  display: grid;
+  gap: var(--space-2);
+  color: var(--text-secondary);
+  font-weight: 800;
+}
+
+.product-form input {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  padding: 0 var(--space-3);
+  color: var(--text-primary);
+  background: var(--surface-primary);
+  font: inherit;
+}
+
+.product-form input:focus-visible {
+  outline: 3px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.form-submit {
+  width: 100%;
+  border: 0;
+  cursor: pointer;
+  text-align: center;
+}
 
 footer { text-align: center; padding: var(--space-8); color: var(--text-secondary); }
 
@@ -128,5 +299,13 @@ footer { text-align: center; padding: var(--space-8); color: var(--text-secondar
   .nav { flex-direction: column; align-items: flex-start; }
   .nav ul { flex-wrap: wrap; }
   .hero-content { margin-top: 10vh; }
-  .yangzhou { grid-template-columns: 1fr; padding: var(--space-5); }
+  .catalog { padding: var(--space-5); }
+  .catalog-layout { grid-template-columns: 1fr; }
+  .product-row { grid-template-columns: minmax(0, 1fr) auto; }
+  .delete-button { grid-column: 2; }
+}
+
+@media (min-width: 681px) and (max-width: 1080px) {
+  .catalog-layout { grid-template-columns: 1fr 1fr; }
+  .product-form { grid-column: 1 / -1; }
 }
