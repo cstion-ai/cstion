@@ -1,17 +1,17 @@
 export type PlatformConfig = {
-  kakaoRestApiKey?: string;
-  kakaoWebhookSecret?: string;
-  crmBaseUrl: string;
-  crmApiKey?: string;
-  googleSheetId?: string;
+  readonly kakaoRestApiKey?: string;
+  readonly kakaoWebhookSecret?: string;
+  readonly crmBaseUrl: string;
+  readonly crmApiKey?: string;
+  readonly googleSheetId?: string;
 };
 
 export function loadConfig(env = process.env): PlatformConfig {
   return {
-    kakaoRestApiKey: env.KAKAO_REST_API_KEY,
-    kakaoWebhookSecret: env.KAKAO_WEBHOOK_SECRET,
-    crmBaseUrl: env.CRM_BASE_URL ?? "http://localhost:3000",
-    crmApiKey: env.CRM_API_KEY,
-    googleSheetId: env.GOOGLE_SHEET_ID
+    crmBaseUrl: env["CRM_BASE_URL"] ?? "http://localhost:3000",
+    ...(env["KAKAO_REST_API_KEY"] ? { kakaoRestApiKey: env["KAKAO_REST_API_KEY"] } : {}),
+    ...(env["KAKAO_WEBHOOK_SECRET"] ? { kakaoWebhookSecret: env["KAKAO_WEBHOOK_SECRET"] } : {}),
+    ...(env["CRM_API_KEY"] ? { crmApiKey: env["CRM_API_KEY"] } : {}),
+    ...(env["GOOGLE_SHEET_ID"] ? { googleSheetId: env["GOOGLE_SHEET_ID"] } : {})
   };
 }

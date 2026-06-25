@@ -30,8 +30,10 @@
 
 MVP는 `카카오톡 메시지 → 예약 의도 분석 → CRM 고객 생성 → Booking 리드 생성 → Google Sheet 동기화` 순서로 구현합니다. 이 경로가 가장 빈번한 예약 문의를 자동화하고 운영자 수작업을 즉시 줄일 수 있습니다.
 
+초기 검증 시나리오는 `양저우투어` 문의입니다. 카카오 메시지에 전화번호나 이메일이 없어도 Kakao `userId`를 `channelCustomerId`로 보존해 CRM 고객을 안정적으로 식별하고, Booking 리드는 UUID 기반 `lead_<UUID>` 형식으로 생성합니다.
+
 ## 4. 핵심 데이터 모델
 
-- `ReservationIntent`: 채널, 고객명, 연락처, 목적지, 출발일, 종료일, 인원, 상품명, 원문 메모, 분석 신뢰도.
-- `CrmCustomer`: 고객 ID, 이름, 연락처, 유입 채널, 태그.
-- `BookingRecord`: 예약/리드 ID, 고객 ID, 여행지, 일정, 인원, 상태, 메모.
+- `ReservationIntent`: 채널, 채널 고객 ID, 고객명, 연락처, 목적지, 출발일, 종료일, 인원, 상품명, 원문 메모, 분석 신뢰도.
+- `CrmCustomer`: 고객 ID, 이름, 연락처, 유입 채널, 채널 고객 ID, 태그.
+- `BookingRecord`: 예약/리드 ID, 고객 ID, 여행지, 일정, 인원, 상태, 상품명, 메모.

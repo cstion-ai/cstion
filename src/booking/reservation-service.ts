@@ -1,4 +1,6 @@
-import { CrmCustomer, ReservationIntent } from "../shared/schemas.js";
+import { randomUUID } from "node:crypto";
+
+import type { CrmCustomer, ReservationIntent } from "../shared/schemas.js";
 
 export type BookingRecord = {
   id: string;
@@ -8,18 +10,20 @@ export type BookingRecord = {
   endDate?: string;
   travelers: number;
   status: "lead" | "quoted" | "confirmed" | "cancelled";
+  productName?: string;
   memo?: string;
 };
 
 export function createBookingLead(customer: CrmCustomer, reservation: ReservationIntent): BookingRecord {
   return {
-    id: `lead_${Date.now()}`,
+    id: `lead_${randomUUID()}`,
     customerId: customer.id,
     destination: reservation.destination,
     startDate: reservation.startDate,
-    endDate: reservation.endDate,
     travelers: reservation.travelers,
-    status: reservation.confidence >= 0.7 ? "lead" : "quoted",
-    memo: reservation.memo
+    status: "lead",
+    ...(reservation.endDate ? { endDate: reservation.endDate } : {}),
+    ...(reservation.productName ? { productName: reservation.productName } : {}),
+    ...(reservation.memo ? { memo: reservation.memo } : {})
   };
 }

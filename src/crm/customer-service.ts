@@ -1,4 +1,4 @@
-import { CrmCustomer, ReservationIntent } from "../shared/schemas.js";
+import type { CrmCustomer, ReservationIntent } from "../shared/schemas.js";
 
 export type CustomerRepository = {
   upsert(customer: Omit<CrmCustomer, "id">): Promise<CrmCustomer>;
@@ -8,7 +8,7 @@ export class InMemoryCustomerRepository implements CustomerRepository {
   private readonly customers = new Map<string, CrmCustomer>();
 
   async upsert(customer: Omit<CrmCustomer, "id">): Promise<CrmCustomer> {
-    const key = customer.phone ?? customer.email ?? `${customer.sourceChannel}:${customer.name}`;
+    const key = customer.phone ?? customer.email ?? `${customer.sourceChannel}:${customer.channelCustomerId}`;
     const saved: CrmCustomer = { ...customer, id: key };
     this.customers.set(key, saved);
     return saved;
@@ -21,9 +21,10 @@ export async function createCustomerFromReservation(
 ): Promise<CrmCustomer> {
   return repository.upsert({
     name: reservation.customerName,
-    phone: reservation.phone,
-    email: reservation.email,
     sourceChannel: reservation.channel,
+    channelCustomerId: reservation.channelCustomerId,
+    ...(reservation.phone ? { phone: reservation.phone } : {}),
+    ...(reservation.email ? { email: reservation.email } : {}),
     tags: ["travel-lead", reservation.destination, reservation.channel]
   });
 }

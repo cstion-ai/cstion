@@ -4,6 +4,7 @@ export const ChannelSchema = z.enum(["kakao", "wechat", "google-sheet", "booking
 
 export const ReservationIntentSchema = z.object({
   channel: ChannelSchema,
+  channelCustomerId: z.string().min(1),
   customerName: z.string().min(1),
   phone: z.string().optional(),
   email: z.string().email().optional(),
@@ -16,15 +17,16 @@ export const ReservationIntentSchema = z.object({
   confidence: z.number().min(0).max(1)
 });
 
-export type ReservationIntent = z.infer<typeof ReservationIntentSchema>;
+export type ReservationIntent = Readonly<z.infer<typeof ReservationIntentSchema>>;
 
 export const CrmCustomerSchema = z.object({
-  id: z.string(),
-  name: z.string(),
+  id: z.string().min(1),
+  name: z.string().min(1),
   phone: z.string().optional(),
   email: z.string().optional(),
   sourceChannel: ChannelSchema,
+  channelCustomerId: z.string().min(1),
   tags: z.array(z.string()).default([])
 });
 
-export type CrmCustomer = z.infer<typeof CrmCustomerSchema>;
+export type CrmCustomer = Readonly<z.infer<typeof CrmCustomerSchema>>;

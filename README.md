@@ -25,9 +25,25 @@
 
 ```bash
 npm install
+npm test
 npm run typecheck
 npm run dev
 ```
+
+`npm run dev`는 양저우투어 상담 메시지 샘플을 실행합니다.
+
+테스트 입력:
+
+```text
+이수진입니다. 2026년 10월 3일 양저우투어 2명 상담 원합니다.
+```
+
+확인해야 할 출력:
+
+- `reservation.destination`은 `양저우`
+- `reservation.productName`은 `양저우 투어`
+- `customer.id`는 전화번호가 없을 때도 `kakao:yangzhou-test-user`
+- `booking.id`는 `lead_<UUID>` 형식
 
 ## 설계 문서
 

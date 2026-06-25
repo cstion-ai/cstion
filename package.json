@@ -4,9 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "typecheck": "tsc --noEmit",
-    "build": "tsc",
-    "dev": "tsx src/pipelines/kakao-to-crm.ts"
+    "typecheck": "tsc --noEmit -p tsconfig.test.json",
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/pipelines/kakao-to-crm.ts",
+    "test": "tsx --test \"tests/**/*.test.ts\""
   },
   "dependencies": {
     "zod": "^3.25.67"
