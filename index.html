@@ -3,91 +3,100 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>블랑로쉐 | 시그니처 메뉴 안내</title>
-    <link rel="preconnect" href="https://images.unsplash.com" />
+    <title>Travel AI Automation Platform</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <header class="hero">
       <nav class="nav">
-        <h1>BLANC ROCHE</h1>
+        <h1>Travel AI Automation</h1>
         <ul>
-          <li><a href="#about">매장소개</a></li>
-          <li><a href="#menu">메뉴/가격</a></li>
-          <li><a href="#gallery">사진</a></li>
+          <li><a href="#modules">모듈</a></li>
+          <li><a href="#flow">데이터 흐름</a></li>
+          <li><a href="#mvp">MVP</a></li>
+          <li><a href="#kakao-login">카카오 로그인</a></li>
+          <li><a href="#cloud">클라우드</a></li>
+          <li><a href="#api">API</a></li>
         </ul>
       </nav>
       <div class="hero-content">
-        <p class="tag">French Dessert & Brunch</p>
-        <h2>블랑로쉐</h2>
-        <p>
-          따뜻한 브런치와 디저트를 한 자리에서 즐길 수 있는 감성 공간.
-          메뉴와 가격 정보를 빠르게 확인할 수 있도록 정리했습니다.
-        </p>
-        <a class="cta" href="#menu">메뉴 보기</a>
+        <p class="tag">Kakao · WeChat · CRM · Booking · Google Sheets</p>
+        <h2>여행 예약 데이터를 자동 분석하고 관리하는 AI 운영 플랫폼</h2>
+        <p>상담 메시지에서 예약 의도를 추출하고 CRM 고객 생성, Booking 리드 생성, 운영 시트 동기화까지 하나의 파이프라인으로 연결합니다.</p>
+        <div class="hero-actions">
+          <a class="cta" href="#mvp">우선 구현 범위 보기</a>
+          <a class="cta secondary" href="#kakao-login">카카오 로그인 설계</a>
+        </div>
       </div>
     </header>
 
     <main>
-      <section id="about" class="section card">
-        <h3>매장 소개</h3>
-        <p>
-          블랑로쉐는 프렌치 무드의 브런치와 수제 디저트를 중심으로 운영되는 카페입니다.
-          시즌별 재료를 활용한 메뉴가 준비되어 있으며, 아래 메뉴/가격은 방문 전 참고용으로 구성했습니다.
-        </p>
-        <p class="notice">
-          ※ 참고: 현재 환경에서 네이버 플레이스 원본 페이지 접근이 제한되어, 실제 방문 전 최신 가격을 매장 채널에서 한 번 더 확인해 주세요.
-        </p>
-      </section>
-
-      <section id="menu" class="section">
-        <h3>대표 메뉴 & 가격</h3>
-        <div class="menu-grid">
-          <article class="menu-item">
-            <h4>에그인헬 브런치 플레이트</h4>
-            <p>토마토 소스와 반숙 계란, 샐러드가 함께 나오는 인기 브런치.</p>
-            <span>₩16,000</span>
-          </article>
-          <article class="menu-item">
-            <h4>크로크무슈 세트</h4>
-            <p>바삭한 식감의 크로크무슈와 수프/샐러드 구성.</p>
-            <span>₩14,500</span>
-          </article>
-          <article class="menu-item">
-            <h4>바질 토마토 파니니</h4>
-            <p>신선한 바질과 토마토, 치즈가 어우러진 파니니.</p>
-            <span>₩13,000</span>
-          </article>
-          <article class="menu-item">
-            <h4>블랑 시그니처 프렌치토스트</h4>
-            <p>부드러운 브리오슈와 계절 과일, 크림 토핑.</p>
-            <span>₩15,000</span>
-          </article>
-          <article class="menu-item">
-            <h4>아메리카노</h4>
-            <p>밸런스가 좋은 블렌드 원두의 기본 커피.</p>
-            <span>₩4,500</span>
-          </article>
-          <article class="menu-item">
-            <h4>땅콩 라떼</h4>
-            <p>고소한 땅콩 풍미와 부드러운 우유의 조화.</p>
-            <span>₩5,800</span>
-          </article>
+      <section id="modules" class="section">
+        <h3>모듈별 기술 스택</h3>
+        <div class="module-grid">
+          <article><h4>/kakao</h4><p>카카오톡 채널 웹훅, 메시지 정규화, 예약 의도 분석.</p><span>Node.js · Kakao API · Zod</span></article>
+          <article><h4>/crm</h4><p>고객 단일 프로필, 태그, 상담 이력, 리드 상태 관리.</p><span>Fastify/NestJS · PostgreSQL · Prisma</span></article>
+          <article><h4>/booking</h4><p>예약 리드, 확정 예약, 취소/결제 상태 관리.</p><span>PostgreSQL · REST/GraphQL</span></article>
+          <article><h4>/google-sheet</h4><p>견적표, 정산표, 운영 시트 양방향 동기화.</p><span>Google Sheets API · Job Queue</span></article>
+          <article><h4>/wechat</h4><p>중국 고객 상담 메시지와 미니프로그램 예약 연동.</p><span>WeChat Official Account API</span></article>
+          <article><h4>/codex-agent</h4><p>누락 필드 질문, 상담 요약, 후속 업무 자동 생성.</p><span>LLM Orchestration · Audit Log</span></article>
+          <article><h4>/cloud</h4><p>Cloud Run/ECS 배포, Secret Manager, 관측성 운영 기준.</p><span>Managed DB · Redis · Monitoring</span></article>
+          <article><h4>/api</h4><p>헬스 체크, 카카오 로그인, 웹훅 수신 엔드포인트.</p><span>Node HTTP · JSON API · Tests</span></article>
         </div>
       </section>
 
-      <section id="gallery" class="section">
-        <h3>매장 분위기 사진</h3>
-        <div class="gallery-grid">
-          <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=80" alt="블랑로쉐 실내 분위기" />
-          <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1000&q=80" alt="브런치 메뉴" />
-          <img src="https://images.unsplash.com/photo-1481833761820-0509d3217039?auto=format&fit=crop&w=1000&q=80" alt="디저트와 커피" />
+      <section id="flow" class="section card">
+        <h3>데이터 흐름</h3>
+        <ol class="flow-list">
+          <li>카카오/위챗 메시지를 채널 웹훅으로 수집합니다.</li>
+          <li>채널별 payload를 공통 메시지 모델로 정규화합니다.</li>
+          <li>규칙 기반 파서와 AI 분석으로 목적지, 날짜, 인원, 연락처를 추출합니다.</li>
+          <li>CRM 고객을 생성/갱신하고 Booking 리드를 생성합니다.</li>
+          <li>Google Sheet와 Codex Agent가 운영 후속 업무를 처리합니다.</li>
+        </ol>
+      </section>
+
+      <section id="mvp" class="section mvp">
+        <h3>가장 먼저 구현할 핵심 모듈</h3>
+        <p><strong>카카오톡 예약 분석 및 CRM 자동 생성</strong>을 MVP로 구현합니다. 초기 코드는 <code>src/kakao/reservation-parser.ts</code>, <code>src/kakao/oauth.ts</code>, <code>src/crm/customer-service.ts</code>, <code>src/booking/reservation-service.ts</code>, <code>src/pipelines/kakao-to-crm.ts</code>에 배치했습니다.</p>
+      </section>
+
+      <section id="api" class="section card">
+        <h3>MVP API 엔드포인트</h3>
+        <div class="endpoint-list">
+          <code>GET /health</code><span>클라우드 로드밸런서와 배포 상태를 확인합니다.</span>
+          <code>GET /auth/kakao/login</code><span>카카오 OAuth 인가 URL을 생성합니다.</span>
+          <code>GET /auth/kakao/callback</code><span>카카오 인가 코드를 토큰으로 교환합니다.</span>
+          <code>POST /webhooks/kakao</code><span>상담 메시지를 CRM 고객과 Booking 리드로 변환합니다.</span>
         </div>
+      </section>
+
+      <section id="cloud" class="section cloud-section">
+        <p class="eyebrow">Cloud Deployment</p>
+        <h3>클라우드 운영 보완</h3>
+        <div class="cloud-grid">
+          <article><strong>서버리스 컨테이너</strong><span>Cloud Run 또는 ECS/Fargate에 Node.js API와 worker를 배포합니다.</span></article>
+          <article><strong>관리형 데이터 계층</strong><span>Managed PostgreSQL과 Managed Redis로 CRM/Booking 데이터와 큐를 운영합니다.</span></article>
+          <article><strong>Secret Manager</strong><span>카카오, 위챗, Google, CRM API 키를 런타임 Secret으로 주입합니다.</span></article>
+          <article><strong>모니터링</strong><span>웹훅 실패율, 토큰 교환 실패, 큐 적체량, 분석 신뢰도를 추적합니다.</span></article>
+        </div>
+      </section>
+
+      <section id="kakao-login" class="section login-section">
+        <div>
+          <p class="eyebrow">Kakao OAuth</p>
+          <h3>카카오톡 접속 시 로그인 방법</h3>
+          <p>카카오톡 채널 또는 웹뷰에서 예약을 시작하면 카카오 OAuth 2.0 인가 코드 흐름으로 사용자를 확인하고, CRM 고객 프로필과 연결합니다.</p>
+        </div>
+        <ol class="login-steps">
+          <li><strong>REST API 키 설정</strong><span>Kakao Developers에서 앱을 만들고 Redirect URI를 등록합니다.</span></li>
+          <li><strong>인가 URL 생성</strong><span><code>buildKakaoLoginUrl()</code>로 <code>client_id</code>, <code>redirect_uri</code>, <code>state</code>를 포함한 로그인 URL을 만듭니다.</span></li>
+          <li><strong>인가 코드 수신</strong><span>카카오가 <code>/auth/kakao/callback?code=...&state=...</code>로 사용자를 돌려보냅니다.</span></li>
+          <li><strong>토큰 교환 및 CRM 연결</strong><span><code>exchangeKakaoAuthorizationCode()</code>로 토큰을 받고 고객 프로필을 생성/갱신합니다.</span></li>
+        </ol>
       </section>
     </main>
 
-    <footer>
-      <p>© 2026 블랑로쉐 안내 페이지</p>
-    </footer>
+    <footer><p>© 2026 Travel AI Automation Platform</p></footer>
   </body>
 </html>

@@ -1,0 +1,38 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: travel-ai-automation
+  annotations:
+    run.googleapis.com/ingress: all
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "1"
+        autoscaling.knative.dev/maxScale: "10"
+    spec:
+      containers:
+        - image: REGION-docker.pkg.dev/PROJECT_ID/travel-ai/app:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: CRM_BASE_URL
+              value: https://crm.internal.example.com
+            - name: KAKAO_REST_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: kakao-rest-api-key
+                  key: latest
+            - name: KAKAO_REDIRECT_URI
+              value: https://travel.example.com/auth/kakao/callback
+            - name: KAKAO_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: kakao-client-secret
+                  key: latest
+          resources:
+            limits:
+              cpu: "1"
+              memory: 512Mi
