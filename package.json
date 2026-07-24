@@ -12,10 +12,12 @@
     "test": "tsx --test test/*.test.ts"
   },
   "dependencies": {
+    "pg": "^8.22.0",
     "zod": "^3.25.67"
   },
   "devDependencies": {
     "@types/node": "^24.0.3",
+    "@types/pg": "^8.20.0",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   }

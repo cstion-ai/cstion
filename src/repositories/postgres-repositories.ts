@@ -1,9 +1,22 @@
-import { BookingRecord } from "../booking/reservation-service.js";
-import { CrmCustomer, CustomerIdentity } from "../shared/schemas.js";
-import { BookingRepository, CustomerRepository, CustomerUpsertInput, IdempotencyDecision, IdempotencyRepository } from "./interfaces.js";
+import type { BookingRecord } from "../booking/reservation-service.js";
+import type { CrmCustomer, CustomerIdentity } from "../shared/schemas.js";
+import type {
+  BookingRepository,
+  CustomerRepository,
+  CustomerUpsertInput,
+  IdempotencyDecision,
+  IdempotencyRepository
+} from "./interfaces.js";
 
 export type SqlClient = {
-  query<T = unknown>(sql: string, values?: readonly unknown[]): Promise<{ rows: T[]; rowCount: number | null }>;
+  query<T extends Record<string, unknown>>(
+    sql: string,
+    values?: readonly unknown[]
+  ): Promise<{ readonly rows: T[]; readonly rowCount: number | null }>;
+};
+
+export type SqlTransactionRunner = {
+  transaction<T>(work: (client: SqlClient) => Promise<T>): Promise<T>;
 };
 
 export class PostgresIdempotencyRepository implements IdempotencyRepository {
@@ -40,51 +53,75 @@ export class PostgresIdempotencyRepository implements IdempotencyRepository {
 }
 
 export class PostgresCustomerRepository implements CustomerRepository {
-  constructor(private readonly client: SqlClient) {}
+  constructor(private readonly transactions: SqlTransactionRunner) {}
 
   async upsertByIdentities(input: CustomerUpsertInput): Promise<CrmCustomer> {
-    const existing = await this.findByIdentities(input.identities);
-    const customerId = existing?.id ?? (await this.insertCustomer(input));
-
-    await this.client.query(`UPDATE customers SET name = $2, tags = $3, updated_at = now() WHERE id = $1`, [
-      customerId,
-      input.name,
-      input.tags
-    ]);
-
-    for (const identity of input.identities) {
-      await this.client.query(
-        `INSERT INTO customer_identities (customer_id, identity_type, provider, identity_value)
-         VALUES ($1, $2, $3, $4)
-         ON CONFLICT (identity_type, provider, identity_value) DO NOTHING`,
-        [customerId, identity.type, identity.provider ?? null, identity.value]
+    return this.transactions.transaction(async (client) => {
+      const orderedIdentities = [...input.identities].sort((left, right) =>
+        identityLockKey(left).localeCompare(identityLockKey(right))
       );
-    }
 
-    return { id: customerId, name: input.name, sourceChannel: input.sourceChannel, identities: input.identities, tags: input.tags };
+      for (const identity of orderedIdentities) {
+        await client.query(
+          `SELECT pg_advisory_xact_lock(hashtextextended($1, 0))`,
+          [identityLockKey(identity)]
+        );
+      }
+
+      const existing = await this.findByIdentities(client, orderedIdentities);
+      const customerId = existing?.id ?? (await this.insertCustomer(client, input));
+
+      await client.query(`UPDATE customers SET name = $2, tags = $3, updated_at = now() WHERE id = $1`, [
+        customerId,
+        input.name,
+        input.tags
+      ]);
+
+      for (const identity of orderedIdentities) {
+        await client.query(
+          `INSERT INTO customer_identities (customer_id, identity_type, provider, identity_value)
+           VALUES ($1, $2, $3, $4)
+           ON CONFLICT (identity_type, provider, identity_value) DO NOTHING`,
+          [customerId, identity.type, identity.provider ?? "", identity.value]
+        );
+      }
+
+      return {
+        id: customerId,
+        name: input.name,
+        sourceChannel: input.sourceChannel,
+        identities: input.identities,
+        tags: input.tags
+      };
+    });
   }
 
-  private async findByIdentities(identities: CustomerIdentity[]): Promise<{ id: string } | undefined> {
+  private async findByIdentities(
+    client: SqlClient,
+    identities: readonly CustomerIdentity[]
+  ): Promise<{ readonly id: string } | undefined> {
     for (const identity of identities) {
-      const result = await this.client.query<{ id: string }>(
+      const result = await client.query<{ id: string }>(
         `SELECT c.id
          FROM customers c
          JOIN customer_identities ci ON ci.customer_id = c.id
-         WHERE ci.identity_type = $1 AND ci.provider IS NOT DISTINCT FROM $2 AND ci.identity_value = $3
+         WHERE ci.identity_type = $1 AND ci.provider = $2 AND ci.identity_value = $3
          LIMIT 1`,
-        [identity.type, identity.provider ?? null, identity.value]
+        [identity.type, identity.provider ?? "", identity.value]
       );
       if (result.rows[0]) return result.rows[0];
     }
     return undefined;
   }
 
-  private async insertCustomer(input: CustomerUpsertInput): Promise<string> {
-    const result = await this.client.query<{ id: string }>(
+  private async insertCustomer(client: SqlClient, input: CustomerUpsertInput): Promise<string> {
+    const result = await client.query<{ id: string }>(
       `INSERT INTO customers (name, source_channel, tags) VALUES ($1, $2, $3) RETURNING id`,
       [input.name, input.sourceChannel, input.tags]
     );
-    return result.rows[0].id;
+    const customer = result.rows[0];
+    if (!customer) throw new PostgresInvariantError("Customer insert returned no id");
+    return customer.id;
   }
 }
 
@@ -109,4 +146,12 @@ export class PostgresBookingRepository implements BookingRepository {
 function splitKey(key: string): [string, string] {
   const separator = key.indexOf(":");
   return [key.slice(0, separator), key.slice(separator + 1)];
+}
+
+function identityLockKey(identity: CustomerIdentity): string {
+  return `${identity.type}:${identity.provider ?? ""}:${identity.value}`;
+}
+
+class PostgresInvariantError extends Error {
+  readonly name = "PostgresInvariantError";
 }

@@ -26,7 +26,10 @@
       "secrets": [
         { "name": "KAKAO_REST_API_KEY", "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:123456789012:secret:kakao-rest-api-key" },
         { "name": "KAKAO_CLIENT_SECRET", "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:123456789012:secret:kakao-client-secret" },
-        { "name": "CRM_API_KEY", "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:123456789012:secret:crm-api-key" }
+        { "name": "KAKAO_WEBHOOK_SECRET", "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:123456789012:secret:kakao-webhook-secret" },
+        { "name": "DATABASE_URL", "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:123456789012:secret:database-url" },
+        { "name": "CRM_API_KEY", "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:123456789012:secret:crm-api-key" },
+        { "name": "GOOGLE_SHEET_ID", "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:123456789012:secret:google-sheet-id" }
       ],
       "logConfiguration": {
         "logDriver": "awslogs",

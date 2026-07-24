@@ -35,7 +35,8 @@ npm run dev:server
 ## P0 안전장치
 
 - `ChannelMessage.providerEventId` 기준으로 이벤트 중복 처리를 차단합니다. 운영 구현은 PostgreSQL `UNIQUE (channel, provider_event_id)` 제약을 사용합니다.
-- 고객 내부 ID는 UUID로 유지하고 Kakao ID, 전화번호, 이메일은 별도 identity로 연결합니다.
+- 운영 서버는 `DATABASE_URL`로 PostgreSQL 저장소를 구성하며, 메모리 저장소는 개발·테스트에서만 사용합니다.
+- 고객 내부 ID는 UUID로 유지하고 Kakao ID, 전화번호, 이메일은 별도 identity로 연결합니다. 동시 upsert는 identity별 transaction advisory lock 후 기존 고객을 재조회합니다.
 - 날짜, 인원, 상품, 목적지가 없거나 실제 달력 날짜가 아니면 Booking lead를 만들지 않고 `needs_confirmation`을 반환합니다.
 - CRM/Google Sheets는 adapter interface와 fake adapter로만 연결해 실제 외부 API 호출을 막습니다.
 - 로그 출력 전 이메일, 전화번호, API key, token, secret, password를 마스킹합니다.
@@ -49,6 +50,10 @@ npm run dev:server
 - `GET /auth/kakao/login`: 카카오 OAuth 인가 URL 생성
 - `GET /auth/kakao/callback`: 카카오 인가 코드 토큰 교환
 - `POST /webhooks/kakao`: 카카오 메시지 payload를 예약 의도, CRM 고객, Booking 리드로 변환
+
+### Kakao webhook 인증
+
+`KAKAO_WEBHOOK_SECRET`가 설정된 서버는 요청 원문을 HMAC-SHA256으로 검증합니다. 호출자는 `x-kakao-signature: sha256=<hex digest>` 헤더를 보내야 합니다. 서명이 없거나 일치하지 않으면 `401`, JSON/schema가 잘못되면 `400`, 요청 본문이 256KB를 넘으면 `413`을 반환하며 pipeline은 실행하지 않습니다.
 
 ## 카카오 로그인 연동
 
@@ -68,7 +73,7 @@ MVP는 컨테이너 이미지로 빌드한 뒤 Cloud Run 또는 ECS/Fargate에 �
 다음 조건 중 하나라도 해당하면 병합/배포하지 않습니다.
 
 - GitHub Actions CI 또는 로컬 `npm ci`, `npm test`, `npm run typecheck`, `npm run build` 실패
-- PostgreSQL schema migration 미적용 또는 idempotency unique constraint 누락
+- PostgreSQL schema migration 미적용, `DATABASE_URL` 누락 또는 idempotency/identity unique constraint 누락
 - production secret 누락, `.env`/로그 내 secret 노출, redaction 테스트 실패
 - Kakao webhook/Redirect URI가 HTTPS로 설정되지 않음
 - CRM/Google Sheets 실제 adapter가 timeout, retry, error classification 없이 활성화됨

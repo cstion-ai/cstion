@@ -48,9 +48,9 @@ MVP는 `카카오톡 메시지 → 예약 의도 분석 → CRM 고객 생성 �
 
 ## 6. P0 안전장치
 
-- **Ingestion 경계**: 모든 채널 메시지는 `ChannelMessage.providerEventId`와 `providerUserId`를 포함해야 하며, 원본 payload는 내부 도메인 모델로 정규화한 뒤 처리합니다.
-- **Idempotency**: 운영 환경에서는 `channel_events`의 `UNIQUE (channel, provider_event_id)` 제약으로 중복 이벤트 처리를 차단합니다.
-- **Customer identity**: 내부 고객 ID는 UUID로 유지하고, Kakao/WeChat ID, phone, email은 `customer_identities`에서 별도 identity로 연결합니다.
+- **Ingestion 경계**: Kakao webhook은 256KB 제한을 적용하고 원문 HMAC-SHA256 서명을 확인한 뒤 Zod schema로 파싱합니다. 모든 채널 메시지는 `ChannelMessage.providerEventId`와 `providerUserId`를 포함해야 합니다.
+- **Idempotency**: 운영 서버는 `DATABASE_URL`로 PostgreSQL pipeline을 구성하고 `channel_events`의 `UNIQUE (channel, provider_event_id)` 제약으로 재시작·다중 인스턴스 환경에서도 중복 이벤트 처리를 차단합니다.
+- **Customer identity**: 내부 고객 ID는 UUID로 유지하고, Kakao/WeChat ID, phone, email은 `customer_identities`에서 별도 identity로 연결합니다. 동시 upsert는 정렬된 identity advisory lock을 transaction 범위로 획득한 후 기존 owner를 재조회합니다.
 - **Booking 생성 차단**: 날짜, 인원, 상품, 목적지 필수값이 누락되거나 달력상 불가능한 날짜면 `needs_confirmation`을 반환하고 예약 리드를 만들지 않습니다.
 - **외부 연동 격리**: CRM과 Google Sheets는 adapter interface 뒤에 두며 MVP에서는 fake adapter로만 검증합니다.
 - **민감정보 보호**: 로그는 redaction utility를 거쳐 이메일, 전화번호, API key, token, secret, password를 마스킹합니다.

@@ -32,6 +32,7 @@ services:
       NODE_ENV: development
       PORT: 8080
       CRM_BASE_URL: http://localhost:3000
+      DATABASE_URL: postgresql://${POSTGRES_USER:-travel_ai}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in your local .env file}@postgres:5432/${POSTGRES_DB:-travel_ai}
     ports:
       - "127.0.0.1:8080:8080"
     depends_on:

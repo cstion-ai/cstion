@@ -19,10 +19,12 @@ Users/Kakao/WeChat
 
 1. `npm run build`로 TypeScript를 컴파일합니다.
 2. 컨테이너 이미지를 빌드하고 Container Registry에 push합니다.
-3. `KAKAO_REST_API_KEY`, `KAKAO_REDIRECT_URI`, `KAKAO_CLIENT_SECRET`, `CRM_API_KEY`, `GOOGLE_SHEET_ID`를 Secret Manager에 저장합니다.
+3. `KAKAO_REST_API_KEY`, `KAKAO_REDIRECT_URI`, `KAKAO_CLIENT_SECRET`, `KAKAO_WEBHOOK_SECRET`, `CRM_API_KEY`, `GOOGLE_SHEET_ID`, `DATABASE_URL`을 Secret Manager에 저장합니다.
 4. Cloud Run 또는 ECS/Fargate 같은 서버리스 컨테이너 런타임에 배포합니다.
 5. 카카오 Redirect URI와 채널 웹훅 URL을 클라우드 HTTPS 엔드포인트로 갱신합니다.
 6. DB migration, queue worker, webhook health check, alert policy를 순서대로 활성화합니다.
+
+운영 컨테이너는 `DATABASE_URL`이 없으면 시작 단계에서 실패합니다. webhook 처리에 사용하는 idempotency, customer, booking 저장소는 모두 같은 관리형 PostgreSQL을 사용해야 하며, 메모리 저장소는 로컬 개발과 테스트에서만 허용합니다.
 
 ## 포함 파일
 

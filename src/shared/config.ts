@@ -10,25 +10,40 @@ const EnvSchema = z.object({
   KAKAO_CLIENT_SECRET: z.string().optional(),
   KAKAO_WEBHOOK_SECRET: z.string().optional(),
   GOOGLE_SHEET_ID: z.string().optional(),
-  POSTGRES_PASSWORD: z.string().optional()
+  DATABASE_URL: z.string().min(1).optional()
 }).superRefine((env, context) => {
   if (env.NODE_ENV !== "production") return;
-  for (const key of ["CRM_API_KEY", "KAKAO_REST_API_KEY", "KAKAO_REDIRECT_URI", "KAKAO_CLIENT_SECRET", "KAKAO_WEBHOOK_SECRET", "GOOGLE_SHEET_ID", "POSTGRES_PASSWORD"] as const) {
-    if (!env[key]) context.addIssue({ code: z.ZodIssueCode.custom, path: [key], message: `${key} is required in production` });
+  const requiredKeys = [
+    "CRM_API_KEY",
+    "KAKAO_REST_API_KEY",
+    "KAKAO_REDIRECT_URI",
+    "KAKAO_CLIENT_SECRET",
+    "KAKAO_WEBHOOK_SECRET",
+    "GOOGLE_SHEET_ID",
+    "DATABASE_URL"
+  ] as const;
+  for (const key of requiredKeys) {
+    if (!env[key]) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: [key],
+        message: `${key} is required in production`
+      });
+    }
   }
 });
 
 export type PlatformConfig = {
-  nodeEnv: "development" | "test" | "production";
-  port: number;
-  kakaoRestApiKey?: string;
-  kakaoRedirectUri?: string;
-  kakaoClientSecret?: string;
-  kakaoWebhookSecret?: string;
-  crmBaseUrl: string;
-  crmApiKey?: string;
-  googleSheetId?: string;
-  postgresPassword?: string;
+  readonly nodeEnv: "development" | "test" | "production";
+  readonly port: number;
+  readonly kakaoRestApiKey?: string;
+  readonly kakaoRedirectUri?: string;
+  readonly kakaoClientSecret?: string;
+  readonly kakaoWebhookSecret?: string;
+  readonly crmBaseUrl: string;
+  readonly crmApiKey?: string;
+  readonly googleSheetId?: string;
+  readonly databaseUrl?: string;
 };
 
 export function loadConfig(env = process.env): PlatformConfig {
@@ -43,6 +58,6 @@ export function loadConfig(env = process.env): PlatformConfig {
     crmBaseUrl: parsed.CRM_BASE_URL,
     crmApiKey: parsed.CRM_API_KEY,
     googleSheetId: parsed.GOOGLE_SHEET_ID,
-    postgresPassword: parsed.POSTGRES_PASSWORD
+    databaseUrl: parsed.DATABASE_URL
   };
 }

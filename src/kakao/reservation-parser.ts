@@ -1,16 +1,18 @@
-import { ChannelMessage, ChannelMessageSchema, ReservationDraft, ReservationDraftSchema } from "../shared/schemas.js";
+import type { z } from "zod";
+import {
+  ChannelMessageSchema,
+  ReservationDraftSchema,
+  type ChannelMessage,
+  type ReservationDraft
+} from "../shared/schemas.js";
 
 const DATE_PATTERN = /(20\d{2})[-./년\s]+(\d{1,2})[-./월\s]+(\d{1,2})/;
 const TRAVELERS_PATTERN = /(\d+)\s*(명|인|people|pax)/i;
 const PRODUCT_PATTERN = /(패키지|항공권|호텔|투어|렌터카|신혼여행|자유여행|골프여행)/;
 
-export type KakaoMessage = {
-  providerEventId: string;
-  providerUserId: string;
-  text: string;
-  receivedAt: string;
-  profile?: { nickname?: string; phone?: string; email?: string };
-};
+export const KakaoMessageSchema = ChannelMessageSchema.omit({ channel: true });
+
+export type KakaoMessage = z.infer<typeof KakaoMessageSchema>;
 
 export function toKakaoChannelMessage(message: KakaoMessage): ChannelMessage {
   return ChannelMessageSchema.parse({ channel: "kakao", ...message });

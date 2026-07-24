@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS customer_identities (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   customer_id UUID NOT NULL REFERENCES customers(id) ON DELETE CASCADE,
   identity_type TEXT NOT NULL,
-  provider TEXT,
+  provider TEXT NOT NULL DEFAULT '',
   identity_value TEXT NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   UNIQUE (identity_type, provider, identity_value)
