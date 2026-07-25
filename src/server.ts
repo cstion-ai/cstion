@@ -13,6 +13,6 @@ server.on("close", () => {
   void runtime.close();
 });
 
-server.listen(config.port, () => {
-  console.log(`Travel AI Automation API listening on http://localhost:${config.port}`);
+server.listen(config.port, config.host, () => {
+  console.log(`Travel AI Automation API listening on http://${config.host}:${config.port}`);
 });

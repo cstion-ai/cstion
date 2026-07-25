@@ -21,17 +21,14 @@ export function toKakaoChannelMessage(message: KakaoMessage): ChannelMessage {
 export function parseKakaoReservation(message: KakaoMessage | ChannelMessage): ReservationDraft {
   const channelMessage = "channel" in message ? ChannelMessageSchema.parse(message) : toKakaoChannelMessage(message);
   const text = channelMessage.text.trim();
-  const dateMatch = text.match(DATE_PATTERN);
-  const travelersMatch = text.match(TRAVELERS_PATTERN);
-  const productMatch = text.match(PRODUCT_PATTERN);
+  const startDate = extractStartDate(text);
+  const travelers = extractTravelers(text);
+  const productName = PRODUCT_PATTERN.exec(text)?.at(1);
   const issues: string[] = [];
 
-  const startDate = dateMatch
-    ? `${dateMatch[1]}-${dateMatch[2].padStart(2, "0")}-${dateMatch[3].padStart(2, "0")}`
-    : undefined;
   if (!startDate) issues.push("startDate");
-  if (!travelersMatch) issues.push("travelers");
-  if (!productMatch) issues.push("productName");
+  if (travelers === undefined) issues.push("travelers");
+  if (!productName) issues.push("productName");
 
   const destination = inferDestination(text);
   if (!destination) issues.push("destination");
@@ -45,12 +42,26 @@ export function parseKakaoReservation(message: KakaoMessage | ChannelMessage): R
     email: channelMessage.profile?.email,
     destination,
     startDate,
-    travelers: travelersMatch ? Number(travelersMatch[1]) : undefined,
-    productName: productMatch?.[1],
+    travelers,
+    productName,
     memo: text,
-    confidence: startDate && destination && travelersMatch && productMatch ? 0.86 : 0.42,
+    confidence: startDate && destination && travelers !== undefined && productName ? 0.86 : 0.42,
     issues
   });
+}
+
+function extractStartDate(text: string): string | undefined {
+  const match = DATE_PATTERN.exec(text);
+  const year = match?.at(1);
+  const month = match?.at(2);
+  const day = match?.at(3);
+  if (!year || !month || !day) return undefined;
+  return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+}
+
+function extractTravelers(text: string): number | undefined {
+  const value = TRAVELERS_PATTERN.exec(text)?.at(1);
+  return value === undefined ? undefined : Number(value);
 }
 
 function inferDestination(text: string): string | undefined {

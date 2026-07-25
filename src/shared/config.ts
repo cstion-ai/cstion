@@ -2,7 +2,8 @@ import { z } from "zod";
 
 const EnvSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
-  PORT: z.coerce.number().int().positive().default(8080),
+  HOST: z.string().min(1).optional(),
+  PORT: z.coerce.number().int().positive().max(65_535).default(8080),
   CRM_BASE_URL: z.string().url().default("http://localhost:3000"),
   CRM_API_KEY: z.string().optional(),
   KAKAO_REST_API_KEY: z.string().optional(),
@@ -13,7 +14,7 @@ const EnvSchema = z.object({
   DATABASE_URL: z.string().min(1).optional()
 }).superRefine((env, context) => {
   if (env.NODE_ENV !== "production") return;
-  const requiredKeys = [
+  const requiredKeys: readonly ProductionRequiredKey[] = [
     "CRM_API_KEY",
     "KAKAO_REST_API_KEY",
     "KAKAO_REDIRECT_URI",
@@ -21,7 +22,7 @@ const EnvSchema = z.object({
     "KAKAO_WEBHOOK_SECRET",
     "GOOGLE_SHEET_ID",
     "DATABASE_URL"
-  ] as const;
+  ];
   for (const key of requiredKeys) {
     if (!env[key]) {
       context.addIssue({
@@ -31,25 +32,48 @@ const EnvSchema = z.object({
       });
     }
   }
+  for (const externalUrl of [
+    { key: "CRM_BASE_URL", value: env.CRM_BASE_URL },
+    { key: "KAKAO_REDIRECT_URI", value: env.KAKAO_REDIRECT_URI }
+  ]) {
+    if (externalUrl.value && new URL(externalUrl.value).protocol !== "https:") {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: [externalUrl.key],
+        message: `${externalUrl.key} must use HTTPS in production`
+      });
+    }
+  }
 });
+
+type ProductionRequiredKey =
+  | "CRM_API_KEY"
+  | "KAKAO_REST_API_KEY"
+  | "KAKAO_REDIRECT_URI"
+  | "KAKAO_CLIENT_SECRET"
+  | "KAKAO_WEBHOOK_SECRET"
+  | "GOOGLE_SHEET_ID"
+  | "DATABASE_URL";
 
 export type PlatformConfig = {
   readonly nodeEnv: "development" | "test" | "production";
+  readonly host: string;
   readonly port: number;
-  readonly kakaoRestApiKey?: string;
-  readonly kakaoRedirectUri?: string;
-  readonly kakaoClientSecret?: string;
-  readonly kakaoWebhookSecret?: string;
+  readonly kakaoRestApiKey: string | undefined;
+  readonly kakaoRedirectUri: string | undefined;
+  readonly kakaoClientSecret: string | undefined;
+  readonly kakaoWebhookSecret: string | undefined;
   readonly crmBaseUrl: string;
-  readonly crmApiKey?: string;
-  readonly googleSheetId?: string;
-  readonly databaseUrl?: string;
+  readonly crmApiKey: string | undefined;
+  readonly googleSheetId: string | undefined;
+  readonly databaseUrl: string | undefined;
 };
 
 export function loadConfig(env = process.env): PlatformConfig {
   const parsed = EnvSchema.parse(env);
   return {
     nodeEnv: parsed.NODE_ENV,
+    host: parsed.HOST ?? (parsed.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1"),
     port: parsed.PORT,
     kakaoRestApiKey: parsed.KAKAO_REST_API_KEY,
     kakaoRedirectUri: parsed.KAKAO_REDIRECT_URI,

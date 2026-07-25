@@ -1,5 +1,28 @@
 import { z } from "zod";
 
+const KAKAO_TOKEN_EXCHANGE_TIMEOUT_MS = 5_000;
+
+export type KakaoOAuthFailureReason =
+  | "provider_response"
+  | "invalid_response"
+  | "network"
+  | "timeout";
+
+export class KakaoOAuthExchangeError extends Error {
+  readonly name = "KakaoOAuthExchangeError";
+
+  constructor(
+    readonly reason: KakaoOAuthFailureReason,
+    readonly statusCode: number | undefined = undefined
+  ) {
+    super(
+      statusCode === undefined
+        ? `Kakao token exchange failed: ${reason}`
+        : `Kakao token exchange failed with status ${statusCode}`
+    );
+  }
+}
+
 export const KakaoOAuthConfigSchema = z.object({
   clientId: z.string().min(1),
   redirectUri: z.string().url(),
@@ -29,7 +52,6 @@ export function buildKakaoLoginUrl(config: KakaoOAuthConfig, state: string): str
   url.searchParams.set("client_id", parsedConfig.clientId);
   url.searchParams.set("redirect_uri", parsedConfig.redirectUri);
   url.searchParams.set("state", state);
-  url.searchParams.set("scope", "profile_nickname,account_email,phone_number");
 
   return url.toString();
 }
@@ -50,15 +72,32 @@ export async function exchangeKakaoAuthorizationCode(
     body.set("client_secret", parsedConfig.clientSecret);
   }
 
-  const response = await fetch(parsedConfig.tokenUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded;charset=utf-8" },
-    body
-  });
-
-  if (!response.ok) {
-    throw new Error(`Kakao token exchange failed: ${response.status}`);
+  let response: Response;
+  try {
+    response = await fetch(parsedConfig.tokenUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded;charset=utf-8" },
+      body,
+      signal: AbortSignal.timeout(KAKAO_TOKEN_EXCHANGE_TIMEOUT_MS)
+    });
+  } catch (error: unknown) {
+    const reason = error instanceof DOMException && error.name === "TimeoutError"
+      ? "timeout"
+      : "network";
+    throw new KakaoOAuthExchangeError(reason);
   }
 
-  return KakaoTokenResponseSchema.parse(await response.json());
+  if (!response.ok) {
+    throw new KakaoOAuthExchangeError("provider_response", response.status);
+  }
+
+  try {
+    const payload: unknown = await response.json();
+    return KakaoTokenResponseSchema.parse(payload);
+  } catch (error: unknown) {
+    if (error instanceof SyntaxError || error instanceof z.ZodError) {
+      throw new KakaoOAuthExchangeError("invalid_response");
+    }
+    throw error;
+  }
 }

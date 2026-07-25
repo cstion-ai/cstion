@@ -7,6 +7,11 @@ import { KakaoMessageSchema, type KakaoMessage } from "../kakao/reservation-pars
 import type { PipelineResult } from "../pipelines/kakao-to-crm.js";
 import { safeLogPayload } from "../platform/redaction.js";
 import type { PlatformConfig } from "../shared/config.js";
+import {
+  clearOAuthStateCookie,
+  createOAuthStateCookie,
+  isValidOAuthState
+} from "./oauth-state.js";
 
 const MAX_WEBHOOK_BODY_BYTES = 256 * 1024;
 const SIGNATURE_PREFIX = "sha256=";
@@ -21,51 +26,73 @@ export type JsonResponse = Record<string, unknown> | readonly unknown[];
 export type AppServerDependencies = {
   readonly config: PlatformConfig;
   readonly handleKakaoWebhook: (message: KakaoMessage) => Promise<PipelineResult>;
+  readonly exchangeKakaoCode?: typeof exchangeKakaoAuthorizationCode;
 };
 
 export function createAppServer(dependencies: AppServerDependencies) {
+  const exchangeKakaoCode = dependencies.exchangeKakaoCode ?? exchangeKakaoAuthorizationCode;
+
   return createServer(async (request, response) => {
-    const url = new URL(request.url ?? "/", "http://localhost");
+    let requestPath = "[invalid request target]";
 
     try {
+      const url = new URL(request.url ?? "/", "http://localhost");
+      requestPath = url.pathname;
       if (request.method === "GET" && url.pathname === "/health") {
         sendJson(response, 200, { ok: true, service: "travel-ai-automation" });
         return;
       }
 
       if (request.method === "GET" && url.pathname === "/auth/kakao/login") {
+        response.setHeader("Cache-Control", "no-store");
         const config = dependencies.config;
         if (!config.kakaoRestApiKey || !config.kakaoRedirectUri) {
           sendJson(response, 500, { error: "Kakao OAuth config is missing" });
           return;
         }
 
+        const state = randomUUID();
+        response.setHeader(
+          "Set-Cookie",
+          createOAuthStateCookie(state, config.nodeEnv === "production")
+        );
         sendJson(response, 200, {
           redirectUrl: buildKakaoLoginUrl(
             {
               clientId: config.kakaoRestApiKey,
               redirectUri: config.kakaoRedirectUri,
-              clientSecret: config.kakaoClientSecret
+              ...(config.kakaoClientSecret ? { clientSecret: config.kakaoClientSecret } : {})
             },
-            randomUUID()
+            state
           )
         });
         return;
       }
 
       if (request.method === "GET" && url.pathname === "/auth/kakao/callback") {
+        response.setHeader("Cache-Control", "no-store");
         const code = url.searchParams.get("code");
+        const state = url.searchParams.get("state");
         const config = dependencies.config;
-        if (!code || !config.kakaoRestApiKey || !config.kakaoRedirectUri) {
-          sendJson(response, 400, { error: "Kakao authorization code or config is missing" });
+        response.setHeader(
+          "Set-Cookie",
+          clearOAuthStateCookie(config.nodeEnv === "production")
+        );
+        if (
+          !code
+          || !config.kakaoRestApiKey
+          || !config.kakaoRedirectUri
+          || !isValidOAuthState(state, request.headers.cookie)
+        ) {
+          sendJson(response, 400, { error: "Invalid Kakao OAuth callback" });
           return;
         }
 
-        const token = await exchangeKakaoAuthorizationCode(
+        const token = await exchangeKakaoCode(
           {
             clientId: config.kakaoRestApiKey,
             redirectUri: config.kakaoRedirectUri,
-            clientSecret: config.kakaoClientSecret
+            ...(config.kakaoClientSecret ? { clientSecret: config.kakaoClientSecret } : {})
           },
           code
         );
@@ -79,7 +106,7 @@ export function createAppServer(dependencies: AppServerDependencies) {
 
       if (request.method === "POST" && url.pathname === "/webhooks/kakao") {
         const body = await readBody(request);
-        if (!isValidWebhookSignature(request, body, dependencies.config.kakaoWebhookSecret)) {
+        if (!isValidWebhookSignature(request, body, dependencies.config)) {
           sendJson(response, 401, { error: "Invalid webhook signature" });
           return;
         }
@@ -97,12 +124,20 @@ export function createAppServer(dependencies: AppServerDependencies) {
         sendJson(response, 413, { error: "Request body too large" });
         return;
       }
+      if (
+        error instanceof TypeError
+        && "code" in error
+        && error.code === "ERR_INVALID_URL"
+      ) {
+        sendJson(response, 400, { error: "Invalid request target" });
+        return;
+      }
       if (error instanceof SyntaxError || error instanceof z.ZodError) {
         sendJson(response, 400, { error: "Invalid request payload" });
         return;
       }
 
-      console.error(safeLogPayload({ event: "request_failed", path: url.pathname, error }));
+      console.error(safeLogPayload({ event: "request_failed", path: requestPath, error }));
       sendJson(response, 500, { error: "Internal server error" });
     }
   });
@@ -132,9 +167,10 @@ export function sendJson(response: ServerResponse, statusCode: number, payload: 
 function isValidWebhookSignature(
   request: IncomingMessage,
   body: Buffer,
-  secret: string | undefined
+  config: PlatformConfig
 ): boolean {
-  if (!secret) return true;
+  const secret = config.kakaoWebhookSecret;
+  if (!secret) return config.nodeEnv === "development";
   const header = request.headers["x-kakao-signature"];
   if (!header || Array.isArray(header)) return false;
   const signature = header.startsWith(SIGNATURE_PREFIX) ? header.slice(SIGNATURE_PREFIX.length) : header;
