@@ -12,7 +12,7 @@ spec:
         autoscaling.knative.dev/maxScale: "10"
     spec:
       containers:
-        - image: REGION-docker.pkg.dev/PROJECT_ID/travel-ai/app:latest
+        - image: REGION-docker.pkg.dev/PROJECT_ID/travel-ai/app@sha256:REPLACE_WITH_REVIEWED_IMAGE_DIGEST
           ports:
             - containerPort: 8080
           env:

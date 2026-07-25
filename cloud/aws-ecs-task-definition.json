@@ -9,7 +9,7 @@
   "containerDefinitions": [
     {
       "name": "app",
-      "image": "123456789012.dkr.ecr.ap-northeast-2.amazonaws.com/travel-ai-automation:latest",
+      "image": "123456789012.dkr.ecr.ap-northeast-2.amazonaws.com/travel-ai-automation@sha256:REPLACE_WITH_REVIEWED_IMAGE_DIGEST",
       "essential": true,
       "portMappings": [
         {

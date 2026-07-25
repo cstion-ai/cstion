@@ -1,0 +1,67 @@
+name: Bug report
+description: Report a reproducible problem without sharing secrets or customer data.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting a problem.
+
+        Suspected vulnerability? Do not file a public issue. Email [cstion1@gmail.com](mailto:cstion1@gmail.com) and follow the [Security Policy](https://github.com/cstion-ai/cstion/blob/main/SECURITY.md).
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      description: Which release, tag, or commit shows the problem?
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Kakao webhook or OAuth
+        - Reservation parsing
+        - CRM customer identity
+        - Booking lead
+        - PostgreSQL migration
+        - Docker or cloud deployment
+        - Documentation
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Use synthetic values only. Do not paste credentials or real customer data.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Redacted evidence (optional)
+      description: Add only the smallest useful log excerpt or other detail. Remove credentials, tokens, personal data, and customer messages.
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy check
+      options:
+        - label: I removed credentials, tokens, personal data, and customer messages.
+          required: true
+        - label: This is not a suspected vulnerability or other confidential security report.
+          required: true
