@@ -4,8 +4,13 @@ CREATE TABLE IF NOT EXISTS channel_events (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   channel TEXT NOT NULL,
   provider_event_id TEXT NOT NULL,
-  status TEXT NOT NULL DEFAULT 'processing',
-  error_classification TEXT,
+  status TEXT NOT NULL DEFAULT 'processing'
+    CHECK (status IN ('processing', 'completed', 'failed')),
+  error_classification TEXT
+    CHECK (error_classification IN ('transient', 'permanent', 'rate_limited', 'timeout')),
+  processing_started_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  processing_token UUID NOT NULL DEFAULT gen_random_uuid(),
+  attempt_count INTEGER NOT NULL DEFAULT 1 CHECK (attempt_count > 0),
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   completed_at TIMESTAMPTZ,
   UNIQUE (channel, provider_event_id)

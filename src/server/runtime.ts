@@ -25,6 +25,12 @@ export function createAppRuntime(config: PlatformConfig): AppRuntime {
     };
   }
 
+  if (config.nodeEnv === "production") {
+    throw new RuntimeConfigurationError(
+      "Production CRM and Sheets adapters are not implemented"
+    );
+  }
+
   const database = new PostgresDatabase({ connectionString: config.databaseUrl });
   return {
     handleKakaoWebhook: createKakaoPipeline({

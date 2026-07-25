@@ -18,11 +18,14 @@ export class PostgresDatabase implements SqlClient, SqlTransactionRunner {
     this.pool = new Pool(poolConfig);
   }
 
-  async query<T extends Record<string, unknown>>(
+  async query(
     sql: string,
     values: readonly unknown[] = []
-  ): Promise<{ readonly rows: T[]; readonly rowCount: number | null }> {
-    const result = await this.pool.query<T>(sql, [...values]);
+  ): Promise<{
+    readonly rows: readonly Readonly<Record<string, unknown>>[];
+    readonly rowCount: number | null;
+  }> {
+    const result = await this.pool.query(sql, [...values]);
     return { rows: result.rows, rowCount: result.rowCount };
   }
 
@@ -49,11 +52,14 @@ export class PostgresDatabase implements SqlClient, SqlTransactionRunner {
 class PostgresTransactionClient implements SqlClient {
   constructor(private readonly client: PoolClient) {}
 
-  async query<T extends Record<string, unknown>>(
+  async query(
     sql: string,
     values: readonly unknown[] = []
-  ): Promise<{ readonly rows: T[]; readonly rowCount: number | null }> {
-    const result = await this.client.query<T>(sql, [...values]);
+  ): Promise<{
+    readonly rows: readonly Readonly<Record<string, unknown>>[];
+    readonly rowCount: number | null;
+  }> {
+    const result = await this.client.query(sql, [...values]);
     return { rows: result.rows, rowCount: result.rowCount };
   }
 }

@@ -2,6 +2,9 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { FakeCrmAdapter, FakeSheetsAdapter } from "../src/adapters/fakes.js";
 import { FakeBookingRepository, FakeCustomerRepository, FakePostgresIdempotencyRepository } from "../src/repositories/fakes.js";
+import {
+  CustomerIdentityConflictError
+} from "../src/repositories/interfaces.js";
 import { createKakaoPipeline } from "../src/pipelines/kakao-to-crm.js";
 import { defaultRetryPolicy } from "../src/platform/retry.js";
 import { safeLogPayload } from "../src/platform/redaction.js";
@@ -90,7 +93,31 @@ test("CRM 성공 후 Sheets 실패 재시도", async () => {
   assert.equal(result.status, "created");
   assert.equal(deps.crmAdapter.syncedCustomers.length, 1);
   assert.equal(sheets.attempts, 2);
-  assert.equal(sheets.contexts[0].idempotencyKey, "kakao:evt-retry-sheets");
+  assert.equal(sheets.contexts[0]?.idempotencyKey, "kakao:evt-retry-sheets");
+  assert.equal(sheets.appendedLeads.length, 1);
+});
+
+test("Sheets 최종 실패 후 동일 이벤트를 다시 받으면 예약 중복 없이 재처리", async () => {
+  const sheets = new FakeSheetsAdapter(3, "transient");
+  const deps = createDeps(sheets);
+  const pipeline = createKakaoPipeline(deps);
+  const message = {
+    providerEventId: "evt-resume-after-failure",
+    providerUserId: "kakao-user-resume",
+    text: "2026년 8월 12일 제주 패키지 2명 예약",
+    receivedAt: "2026-07-09T00:00:00.000Z"
+  };
+
+  await assert.rejects(pipeline(message), /Fake Sheets failure/);
+  assert.equal(
+    deps.idempotencyRepository.failureClassifications.get("kakao:evt-resume-after-failure"),
+    "transient"
+  );
+  const retried = await pipeline(message);
+
+  assert.equal(retried.status, "created");
+  assert.equal(await deps.bookingRepository.count(), 1);
+  assert.equal(sheets.attempts, 4);
   assert.equal(sheets.appendedLeads.length, 1);
 });
 
@@ -139,6 +166,35 @@ test("전화번호가 나중에 추가돼도 기존 고객 ID 유지", async () 
   assert.equal(first.customerId, second.customerId);
 });
 
+test("서로 다른 고객 소유의 identity를 합치지 않음", async () => {
+  const repository = new FakeCustomerRepository();
+  await repository.upsertByIdentities({
+    name: "고객 A",
+    sourceChannel: "kakao",
+    identities: [{ type: "channel", provider: "kakao", value: "customer-a" }],
+    tags: []
+  });
+  await repository.upsertByIdentities({
+    name: "고객 B",
+    sourceChannel: "kakao",
+    identities: [{ type: "phone", value: "+82-10-9999-0000" }],
+    tags: []
+  });
+
+  await assert.rejects(
+    repository.upsertByIdentities({
+      name: "충돌 고객",
+      sourceChannel: "kakao",
+      identities: [
+        { type: "channel", provider: "kakao", value: "customer-a" },
+        { type: "phone", value: "+82-10-9999-0000" }
+      ],
+      tags: []
+    }),
+    CustomerIdentityConflictError
+  );
+});
+
 test("로그 PII 마스킹", () => {
   const redacted = safeLogPayload({
     message: "예약자 test@example.com +82-10-1234-5678",
@@ -150,4 +206,16 @@ test("로그 PII 마스킹", () => {
   assert.match(redacted, /\[REDACTED_PHONE\]/);
   assert.doesNotMatch(redacted, /secret-key/);
   assert.doesNotMatch(redacted, /secret-token/);
+});
+
+test("Error 로그는 이름을 보존하고 메시지의 PII를 마스킹", () => {
+  const redacted = safeLogPayload({
+    error: new Error("test@example.com 고객 +82-10-1234-5678 처리 실패")
+  });
+
+  assert.match(redacted, /"name":"Error"/);
+  assert.match(redacted, /t\*\*\*@example.com/);
+  assert.match(redacted, /\[REDACTED_PHONE\]/);
+  assert.doesNotMatch(redacted, /test@example.com/);
+  assert.doesNotMatch(redacted, /1234-5678/);
 });

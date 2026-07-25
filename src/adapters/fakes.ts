@@ -1,7 +1,7 @@
-import { BookingRecord } from "../booking/reservation-service.js";
-import { ClassifiedError, ErrorClassification } from "../platform/retry.js";
-import { CrmCustomer } from "../shared/schemas.js";
-import { AdapterContext, CrmAdapter, SheetsAdapter } from "./interfaces.js";
+import type { BookingRecord } from "../booking/reservation-service.js";
+import { ClassifiedError, type ErrorClassification } from "../platform/retry.js";
+import type { CrmCustomer } from "../shared/schemas.js";
+import type { AdapterContext, CrmAdapter, SheetsAdapter } from "./interfaces.js";
 
 export class FakeCrmAdapter implements CrmAdapter {
   readonly syncedCustomers: CrmCustomer[] = [];

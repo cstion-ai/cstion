@@ -1,4 +1,5 @@
-import { CrmCustomer, ReservationDraft, ReservationIntent, ReservationIntentSchema } from "../shared/schemas.js";
+import { ReservationIntentSchema } from "../shared/schemas.js";
+import type { CrmCustomer, ReservationDraft, ReservationIntent } from "../shared/schemas.js";
 import { redactString } from "../platform/redaction.js";
 
 export type BookingRecord = {
@@ -33,11 +34,11 @@ export function createBookingLead(customer: CrmCustomer, reservation: Reservatio
     customerId: customer.id,
     destination: reservation.destination,
     startDate: reservation.startDate,
-    endDate: reservation.endDate,
     travelers: reservation.travelers,
     productName: reservation.productName,
     status: reservation.confidence >= 0.7 ? "lead" : "quoted",
-    memo: reservation.memo ? redactString(reservation.memo) : undefined
+    ...(reservation.endDate ? { endDate: reservation.endDate } : {}),
+    ...(reservation.memo ? { memo: redactString(reservation.memo) } : {})
   };
 }
 
@@ -55,9 +56,11 @@ export function findMissingFields(draft: ReservationDraft): string[] {
 export function isValidCalendarDate(value: string): boolean {
   const match = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
   if (!match) return false;
-  const year = Number(match[1]);
-  const month = Number(match[2]);
-  const day = Number(match[3]);
+  const [, yearText, monthText, dayText] = match;
+  if (!yearText || !monthText || !dayText) return false;
+  const year = Number(yearText);
+  const month = Number(monthText);
+  const day = Number(dayText);
   const date = new Date(Date.UTC(year, month - 1, day));
   return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
 }

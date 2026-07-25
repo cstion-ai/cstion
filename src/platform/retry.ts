@@ -28,8 +28,15 @@ export async function runWithRetry<T>(operation: () => Promise<T>, policy: Retry
     attempt += 1;
     try {
       return await withTimeout(operation(), policy.timeoutMs);
-    } catch (error) {
-      lastError = classify(error);
+    } catch (error: unknown) {
+      if (error instanceof ClassifiedError) {
+        lastError = error;
+      } else if (error instanceof Error) {
+        lastError = new ClassifiedError(error.message, "permanent");
+      } else {
+        lastError = new ClassifiedError("Unknown error", "permanent");
+      }
+
       if (!policy.shouldRetry(lastError, attempt)) throw lastError;
     }
   }
@@ -48,9 +55,4 @@ async function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T
   } finally {
     if (timeout) clearTimeout(timeout);
   }
-}
-
-function classify(error: unknown): ClassifiedError {
-  if (error instanceof ClassifiedError) return error;
-  return new ClassifiedError(error instanceof Error ? error.message : "Unknown error", "permanent");
 }

@@ -1,26 +1,38 @@
-import { CrmAdapter, SheetsAdapter } from "../adapters/interfaces.js";
 import { FakeCrmAdapter, FakeSheetsAdapter } from "../adapters/fakes.js";
+import type { CrmAdapter, SheetsAdapter } from "../adapters/interfaces.js";
 import { decideBookingLead } from "../booking/reservation-service.js";
 import { createCustomerFromReservation } from "../crm/customer-service.js";
-import { KakaoMessage, parseKakaoReservation, toKakaoChannelMessage } from "../kakao/reservation-parser.js";
-import { runWithRetry, RetryPolicy, defaultRetryPolicy } from "../platform/retry.js";
+import { parseKakaoReservation, toKakaoChannelMessage } from "../kakao/reservation-parser.js";
+import type { KakaoMessage } from "../kakao/reservation-parser.js";
 import { safeLogPayload } from "../platform/redaction.js";
+import { ClassifiedError, defaultRetryPolicy, runWithRetry } from "../platform/retry.js";
+import type { RetryPolicy } from "../platform/retry.js";
 import { FakeBookingRepository, FakeCustomerRepository, FakePostgresIdempotencyRepository } from "../repositories/fakes.js";
-import { BookingRepository, CustomerRepository, IdempotencyRepository } from "../repositories/interfaces.js";
+import type { BookingRepository, CustomerRepository, IdempotencyRepository } from "../repositories/interfaces.js";
 
 export type PipelineDependencies = {
-  idempotencyRepository: IdempotencyRepository;
-  customerRepository: CustomerRepository;
-  bookingRepository: BookingRepository;
-  crmAdapter: CrmAdapter;
-  sheetsAdapter: SheetsAdapter;
-  retryPolicy?: RetryPolicy;
+  readonly idempotencyRepository: IdempotencyRepository;
+  readonly customerRepository: CustomerRepository;
+  readonly bookingRepository: BookingRepository;
+  readonly crmAdapter: CrmAdapter;
+  readonly sheetsAdapter: SheetsAdapter;
+  readonly retryPolicy?: RetryPolicy;
 };
 
 export type PipelineResult =
-  | { status: "duplicate"; idempotencyKey: string }
-  | { status: "needs_confirmation"; idempotencyKey: string; missingFields: string[]; customerId: string }
-  | { status: "created"; idempotencyKey: string; customerId: string; bookingId: string };
+  | { readonly status: "duplicate"; readonly idempotencyKey: string }
+  | {
+      readonly status: "needs_confirmation";
+      readonly idempotencyKey: string;
+      readonly missingFields: string[];
+      readonly customerId: string;
+    }
+  | {
+      readonly status: "created";
+      readonly idempotencyKey: string;
+      readonly customerId: string;
+      readonly bookingId: string;
+    };
 
 export function createKakaoPipeline(dependencies: PipelineDependencies) {
   return async function handleKakaoMessage(message: KakaoMessage): Promise<PipelineResult> {
@@ -39,16 +51,23 @@ export function createKakaoPipeline(dependencies: PipelineDependencies) {
       await runWithRetry(() => dependencies.crmAdapter.syncCustomer(customer, context), retryPolicy);
 
       if (bookingDecision.status === "needs_confirmation") {
-        await dependencies.idempotencyRepository.complete(decision.key);
+        await dependencies.idempotencyRepository.complete(decision.key, decision.leaseToken);
         return { status: "needs_confirmation", idempotencyKey: decision.key, missingFields: bookingDecision.missingFields, customerId: customer.id };
       }
 
       const booking = await dependencies.bookingRepository.createLead(bookingDecision.booking);
       await runWithRetry(() => dependencies.sheetsAdapter.appendBookingLead(booking, context), retryPolicy);
-      await dependencies.idempotencyRepository.complete(decision.key);
+      await dependencies.idempotencyRepository.complete(decision.key, decision.leaseToken);
       return { status: "created", idempotencyKey: decision.key, customerId: customer.id, bookingId: booking.id };
     } catch (error) {
-      await dependencies.idempotencyRepository.fail(decision.key, error instanceof Error ? error.message : "unknown");
+      const classification = error instanceof ClassifiedError
+        ? error.classification
+        : "permanent";
+      await dependencies.idempotencyRepository.fail(
+        decision.key,
+        decision.leaseToken,
+        classification
+      );
       console.error(safeLogPayload({ event: "kakao_pipeline_failed", error }));
       throw error;
     }

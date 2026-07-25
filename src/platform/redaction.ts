@@ -4,10 +4,17 @@ const SECRET_KEYS = /(api[_-]?key|secret|token|authorization|password)/i;
 
 export function redactValue(value: unknown): unknown {
   if (typeof value === "string") return redactString(value);
+  if (value instanceof Error) {
+    return {
+      name: value.name,
+      message: redactString(value.message)
+    };
+  }
   if (Array.isArray(value)) return value.map(redactValue);
   if (value && typeof value === "object") {
+    const entries: readonly (readonly [string, unknown])[] = Object.entries(value);
     return Object.fromEntries(
-      Object.entries(value as Record<string, unknown>).map(([key, nestedValue]) => [
+      entries.map(([key, nestedValue]) => [
         key,
         SECRET_KEYS.test(key) ? "[REDACTED]" : redactValue(nestedValue)
       ])
@@ -25,6 +32,8 @@ export function safeLogPayload(payload: unknown): string {
 }
 
 function maskEmail(email: string): string {
-  const [name, domain] = email.split("@");
+  const separatorIndex = email.indexOf("@");
+  const name = email.slice(0, separatorIndex);
+  const domain = email.slice(separatorIndex + 1);
   return `${name.slice(0, 1)}***@${domain}`;
 }

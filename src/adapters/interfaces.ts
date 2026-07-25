@@ -1,6 +1,6 @@
-import { BookingRecord } from "../booking/reservation-service.js";
-import { CrmCustomer } from "../shared/schemas.js";
-import { RetryPolicy } from "../platform/retry.js";
+import type { BookingRecord } from "../booking/reservation-service.js";
+import type { RetryPolicy } from "../platform/retry.js";
+import type { CrmCustomer } from "../shared/schemas.js";
 
 export type AdapterContext = {
   idempotencyKey: string;

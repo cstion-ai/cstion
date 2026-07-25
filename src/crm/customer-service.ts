@@ -1,5 +1,5 @@
-import { CrmCustomer, CustomerIdentity, ReservationDraft } from "../shared/schemas.js";
-import { CustomerRepository } from "../repositories/interfaces.js";
+import type { CrmCustomer, CustomerIdentity, ReservationDraft } from "../shared/schemas.js";
+import type { CustomerRepository } from "../repositories/interfaces.js";
 
 export function buildCustomerIdentities(reservation: ReservationDraft): CustomerIdentity[] {
   const identities: CustomerIdentity[] = [
