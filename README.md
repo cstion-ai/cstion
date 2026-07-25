@@ -1,84 +1,123 @@
 # Travel AI Automation Platform
 
-여행 예약 데이터를 카카오톡, 위챗, Google Sheet, Booking/CRM 시스템과 연결해 자동 분석·관리하는 플랫폼 설계 및 초기 코드입니다.
+[![CI](https://github.com/cstion-ai/cstion/actions/workflows/ci.yml/badge.svg)](https://github.com/cstion-ai/cstion/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/cstion-ai/cstion/actions/workflows/codeql.yml/badge.svg)](https://github.com/cstion-ai/cstion/actions/workflows/codeql.yml)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 
-## 핵심 목표
+An Apache-2.0 TypeScript and PostgreSQL reference implementation for converting Kakao travel inquiries into CRM customer records and booking leads.
 
-- 상담 메시지에서 여행 예약 의도를 자동 추출합니다.
-- 고객 프로필을 CRM에 자동 생성하거나 갱신합니다.
-- 예약 리드를 Booking 모듈에 생성하고 운영 시트로 동기화합니다.
-- Codex Agent가 누락 정보 확인, 상담 요약, 후속 태스크 생성을 자동화합니다.
+> 한국어 요약: 카카오톡 여행 문의를 CRM 고객 기록과 예약 리드로 변환하는 TypeScript/PostgreSQL 예제입니다. 현재 파서는 규칙 기반이며, 실제 CRM·Google Sheets·WeChat 연동은 아직 구현되지 않았습니다.
 
-## 디렉토리 구조
+## Current status
 
-- `crm/`: 고객 프로필, 태그, 상담 이력, 리드 상태 관리
-- `kakao/`: 카카오톡 채널 메시지 수집, 예약 분석, 카카오 로그인 연동
-- `wechat/`: WeChat 메시지 수집 어댑터
-- `google-sheet/`: Google Sheets 운영 데이터 동기화
-- `booking/`: 예약 리드/확정/취소 상태 관리
-- `codex-agent/`: 자동 후속 업무와 운영 에이전트 워크플로우
-- `docker/`: 로컬 인프라(PostgreSQL, Redis) 구성
-- `cloud/`: Cloud Run/ECS 배포 예시, Secret Manager, 운영 체크리스트
-- `src/`: MVP 초기 TypeScript 코드
-- `docs/`: 아키텍처 및 데이터 흐름 문서
+The package is version 0.1.0 and is not production-ready. “Implemented” means the code and repository tests exist; it does not mean the capability has passed production or live-service validation.
 
-## MVP 실행
+| Capability | Status |
+| --- | --- |
+| Kakao message normalization and deterministic reservation parsing | Implemented and unit-tested |
+| HMAC-authenticated Kakao webhook with a 256 KiB limit | Implemented and tested |
+| PostgreSQL event, customer identity, and booking repositories | Implemented with unit tests and a PostgreSQL 16 CI integration suite |
+| Crash recovery with processing leases and token fencing | Implemented; restart and concurrency paths run against PostgreSQL 16 in CI |
+| Recorded database migration for existing installations | Implemented; a legacy-schema upgrade runs against PostgreSQL 16 in CI |
+| Kakao OAuth state and typed token-exchange errors | Implemented and unit-tested |
+| Real CRM and Google Sheets adapters | Not implemented; interfaces and fakes only |
+| Production deployment | Runtime startup is blocked while the adapters are fake |
+| WeChat adapter and optional model-assisted extraction | Not implemented |
+
+The current parser is deterministic and rule based. Documentation that mentions model-assisted extraction describes the roadmap, not an active runtime dependency.
+
+## Implemented safeguards
+
+- PostgreSQL channel events are unique by `channel` and `providerEventId`.
+- Failed events and processing leases older than five minutes may restart with a new token; the token is required to complete or fail the event.
+- Booking inserts use stable IDs and return the existing row on conflict.
+- PostgreSQL customer upserts acquire identity locks in deterministic order and abort if the supplied identities have multiple owners.
+- When `KAKAO_WEBHOOK_SECRET` is set, the webhook signature is verified before JSON parsing or pipeline work. Production configuration requires the secret.
+- The shared logging helper masks email addresses, phone numbers, and values stored under credential, token, secret, and password keys.
+- The migration runner records applied migrations and runs them in a transaction under an advisory lock.
+- Production configuration requires HTTPS endpoints and the documented secrets. The runtime refuses production startup while the CRM and Sheets adapters are fake.
+
+See the [threat model](docs/threat-model.md) for trust boundaries and remaining risks.
+
+## Quick start
+
+Requirements:
+
+- Node.js 22
 
 ```bash
-npm install
-npm run typecheck
-npm test
-npm run dev
+git clone https://github.com/cstion-ai/cstion.git
+cd cstion
+npm ci
+npm run check:all
 npm run dev:server
 ```
 
-## P0 안전장치
+The development server binds to `127.0.0.1` and uses in-memory repositories when `DATABASE_URL` is absent. Set `HOST` explicitly only when another network namespace, such as Docker, must reach it. The in-memory mode is for local exploration only.
 
-- `ChannelMessage.providerEventId` 기준으로 이벤트 중복 처리를 차단합니다. 운영 구현은 PostgreSQL `UNIQUE (channel, provider_event_id)` 제약을 사용합니다.
-- 운영 서버는 `DATABASE_URL`로 PostgreSQL 저장소를 구성하며, 메모리 저장소는 개발·테스트에서만 사용합니다.
-- 고객 내부 ID는 UUID로 유지하고 Kakao ID, 전화번호, 이메일은 별도 identity로 연결합니다. 동시 upsert는 identity별 transaction advisory lock 후 기존 고객을 재조회합니다.
-- 날짜, 인원, 상품, 목적지가 없거나 실제 달력 날짜가 아니면 Booking lead를 만들지 않고 `needs_confirmation`을 반환합니다.
-- CRM/Google Sheets는 adapter interface와 fake adapter로만 연결해 실제 외부 API 호출을 막습니다.
-- 로그 출력 전 이메일, 전화번호, API key, token, secret, password를 마스킹합니다.
-- production 환경에서는 필수 secret이 없으면 Zod 환경 검증 단계에서 즉시 실패합니다.
+To use PostgreSQL, copy `.env.example` to `.env`, replace the placeholder password, and start the development stack:
 
-## API 엔드포인트
+```bash
+docker compose --env-file .env -f docker/docker-compose.yml up --build
+```
 
-초기 API 서버는 `src/server.ts`에서 실행하며 다음 MVP 엔드포인트를 제공합니다.
+The Compose stack runs the recorded migration before starting the app. Never commit `.env` or real customer data.
 
-- `GET /health`: 배포/로드밸런서 상태 확인
-- `GET /auth/kakao/login`: 카카오 OAuth 인가 URL 생성
-- `GET /auth/kakao/callback`: 카카오 인가 코드 토큰 교환
-- `POST /webhooks/kakao`: 카카오 메시지 payload를 예약 의도, CRM 고객, Booking 리드로 변환
+## API surface
 
-### Kakao webhook 인증
+- `GET /health` — service health
+- `GET /auth/kakao/login` — Kakao authorization URL and protected state cookie
+- `GET /auth/kakao/callback` — state validation and authorization-code exchange
+- `POST /webhooks/kakao` — authenticated message-to-booking pipeline
 
-`KAKAO_WEBHOOK_SECRET`가 설정된 서버는 요청 원문을 HMAC-SHA256으로 검증합니다. 호출자는 `x-kakao-signature: sha256=<hex digest>` 헤더를 보내야 합니다. 서명이 없거나 일치하지 않으면 `401`, JSON/schema가 잘못되면 `400`, 요청 본문이 256KB를 넘으면 `413`을 반환하며 pipeline은 실행하지 않습니다.
+When `KAKAO_WEBHOOK_SECRET` is configured, webhook clients must send:
 
-## 카카오 로그인 연동
+```text
+x-kakao-signature: sha256=<HMAC-SHA256 of the raw request body>
+```
 
-`src/kakao/oauth.ts`는 카카오 OAuth 2.0 인가 URL 생성과 인가 코드 토큰 교환을 담당합니다. 운영 환경에서는 `KAKAO_REST_API_KEY`, `KAKAO_REDIRECT_URI`, `KAKAO_CLIENT_SECRET`를 Secret Manager 또는 환경 변수로 주입하고, 콜백에서 받은 프로필을 CRM 고객과 매칭합니다.
+Invalid signatures return `401`, invalid payloads return `400`, and bodies larger than 256 KiB return `413`.
 
+## Architecture
 
-## 테스트 보강
+```mermaid
+flowchart LR
+  K[Kakao webhook] --> A[Signature and schema boundary]
+  A --> I[PostgreSQL event lease]
+  I --> P[Reservation parser]
+  P --> C[Customer identity upsert]
+  C --> B[Booking lead]
+  B --> R[External adapter boundary]
+```
 
-`npm test`는 Node.js test runner와 `tsx`를 사용해 카카오 예약 파서, OAuth URL 생성, CRM/Booking 파이프라인을 검증합니다.
+The PostgreSQL-backed runtime stores webhook idempotency and customer identity state in PostgreSQL. Redis is included in the development stack but is not used for correctness.
 
-## 클라우드 배포 보완
+## Project documentation
 
-MVP는 컨테이너 이미지로 빌드한 뒤 Cloud Run 또는 ECS/Fargate에 배포하는 구조를 권장합니다. 운영 Secret은 `.env`에 직접 저장하지 않고 각 클라우드의 Secret Manager에 보관하며, 카카오 Redirect URI와 웹훅 URL은 배포된 HTTPS 엔드포인트로 등록합니다. 예시는 `cloud/README.md`, `cloud/gcp-cloud-run-service.yaml`, `cloud/aws-ecs-task-definition.json`에 정리했습니다.
+- [Architecture](docs/architecture.md)
+- [Data flow](docs/data-flow.md)
+- [Threat model](docs/threat-model.md)
+- [Roadmap](docs/roadmap.md)
+- [Maintainer guide](docs/maintainer-guide.md)
+- [PostgreSQL verification](docs/postgresql-verification.md)
+- [Cloud deployment guardrails](cloud/README.md)
+- [Docker development stack](docker/README.md)
+- [Changelog](CHANGELOG.md)
 
-## 배포 금지 조건
+## Contributing
 
-다음 조건 중 하나라도 해당하면 병합/배포하지 않습니다.
+Issues and focused pull requests are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md), follow the [Code of Conduct](CODE_OF_CONDUCT.md), and report vulnerabilities through the private process in [SECURITY.md](SECURITY.md).
 
-- GitHub Actions CI 또는 로컬 `npm ci`, `npm test`, `npm run typecheck`, `npm run build` 실패
-- PostgreSQL schema migration 미적용, `DATABASE_URL` 누락 또는 idempotency/identity unique constraint 누락
-- production secret 누락, `.env`/로그 내 secret 노출, redaction 테스트 실패
-- Kakao webhook/Redirect URI가 HTTPS로 설정되지 않음
-- CRM/Google Sheets 실제 adapter가 timeout, retry, error classification 없이 활성화됨
+The project uses a primary-maintainer model described in [GOVERNANCE.md](GOVERNANCE.md). Support expectations are in [SUPPORT.md](SUPPORT.md).
 
-## 설계 문서
+## Codex and OpenAI transparency
 
-- [전체 아키텍처](docs/architecture.md)
-- [데이터 흐름도](docs/data-flow.md)
+Codex has been used for code review and maintenance on this repository. Maintainers reproduce findings and require tests before accepting them; model output is not treated as evidence.
+
+If OpenAI API credits are awarded, they will be used for maintainer workflows and evaluations over synthetic or de-identified fixtures. Real customer messages, credentials, and access tokens must not be sent to models.
+
+The draft application and evidence checklist are maintained in [docs/codex-for-oss-application.md](docs/codex-for-oss-application.md).
+
+## License
+
+Licensed under the [Apache License 2.0](LICENSE).

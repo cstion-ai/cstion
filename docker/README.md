@@ -9,3 +9,4 @@
 - PostgreSQL 데이터는 `postgres_data` volume에 저장합니다.
 - PostgreSQL, Redis, app 모두 healthcheck를 포함합니다.
 - 초기 schema는 `src/repositories/postgres-schema.sql`을 mount해 idempotency unique constraint를 포함합니다.
+- `migrate` 서비스는 기존 volume에도 기록형 migration을 적용하며, 성공한 뒤에만 app 서비스가 시작됩니다.

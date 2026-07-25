@@ -1,3 +1,17 @@
-# wechat 모듈
+# WeChat module
 
-Travel AI Automation Platform의 모듈 책임 영역입니다. 상세한 전체 구조와 데이터 흐름은 `docs/architecture.md`, `docs/data-flow.md`를 기준으로 구현합니다.
+## Status
+
+Not implemented. The shared [`ChannelSchema`](../src/shared/schemas.ts) accepts
+`"wechat"`, but the repository has no WeChat adapter, webhook route,
+configuration, or tests. The executable channel pipeline is
+[Kakao-specific](../src/pipelines/kakao-to-crm.ts).
+
+## Planned scope
+
+The [architecture](../docs/architecture.md) and
+[data-flow document](../docs/data-flow.md) list WeChat support only as future
+work. They do not specify an adapter design or describe a working WeChat path.
+
+WeChat-specific authentication, request limits, payload validation, and test
+fixtures remain design and implementation work.

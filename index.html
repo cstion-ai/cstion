@@ -11,88 +11,88 @@
       <nav class="nav">
         <h1>Travel AI Automation</h1>
         <ul>
-          <li><a href="#modules">모듈</a></li>
-          <li><a href="#flow">데이터 흐름</a></li>
-          <li><a href="#mvp">MVP</a></li>
-          <li><a href="#kakao-login">카카오 로그인</a></li>
-          <li><a href="#cloud">클라우드</a></li>
+          <li><a href="#modules">구현 상태</a></li>
+          <li><a href="#flow">현재 흐름</a></li>
+          <li><a href="#mvp">안전 기준</a></li>
           <li><a href="#api">API</a></li>
+          <li><a href="#cloud">운영 전 과제</a></li>
+          <li><a href="#kakao-login">OAuth 경계</a></li>
         </ul>
       </nav>
       <div class="hero-content">
-        <p class="tag">Kakao · WeChat · CRM · Booking · Google Sheets</p>
-        <h2>여행 예약 데이터를 자동 분석하고 관리하는 AI 운영 플랫폼</h2>
-        <p>상담 메시지에서 예약 의도를 추출하고 CRM 고객 생성, Booking 리드 생성, 운영 시트 동기화까지 하나의 파이프라인으로 연결합니다.</p>
+        <p class="tag">Kakao · TypeScript · PostgreSQL · Apache-2.0</p>
+        <h2>카카오 여행 문의를 안전하게 <span class="nowrap">예약 리드로</span> 변환하는 오픈소스 예제</h2>
+        <p>서명된 웹훅을 검증하고 규칙 기반으로 예약 정보를 추출해 고객과 Booking 리드를 저장합니다. 실제 CRM·<span class="nowrap">Google Sheets</span>·WeChat·모델 연동은 아직 구현되지 않았습니다.</p>
         <div class="hero-actions">
-          <a class="cta" href="#mvp">우선 구현 범위 보기</a>
-          <a class="cta secondary" href="#kakao-login">카카오 로그인 설계</a>
+          <a class="cta" href="#mvp">현재 안전 기준 보기</a>
+          <a class="cta secondary" href="#modules">구현 상태 확인</a>
         </div>
       </div>
     </header>
 
     <main>
       <section id="modules" class="section">
-        <h3>모듈별 기술 스택</h3>
+        <h3>모듈별 구현 상태</h3>
         <div class="module-grid">
-          <article><h4>/kakao</h4><p>카카오톡 채널 웹훅, 메시지 정규화, 예약 의도 분석.</p><span>Node.js · Kakao API · Zod</span></article>
-          <article><h4>/crm</h4><p>고객 단일 프로필, 태그, 상담 이력, 리드 상태 관리.</p><span>Fastify/NestJS · PostgreSQL · Prisma</span></article>
-          <article><h4>/booking</h4><p>예약 리드, 확정 예약, 취소/결제 상태 관리.</p><span>PostgreSQL · REST/GraphQL</span></article>
-          <article><h4>/google-sheet</h4><p>견적표, 정산표, 운영 시트 양방향 동기화.</p><span>Google Sheets API · Job Queue</span></article>
-          <article><h4>/wechat</h4><p>중국 고객 상담 메시지와 미니프로그램 예약 연동.</p><span>WeChat Official Account API</span></article>
-          <article><h4>/codex-agent</h4><p>누락 필드 질문, 상담 요약, 후속 업무 자동 생성.</p><span>LLM Orchestration · Audit Log</span></article>
-          <article><h4>/cloud</h4><p>Cloud Run/ECS 배포, Secret Manager, 관측성 운영 기준.</p><span>Managed DB · Redis · Monitoring</span></article>
-          <article><h4>/api</h4><p>헬스 체크, 카카오 로그인, 웹훅 수신 엔드포인트.</p><span>Node HTTP · JSON API · Tests</span></article>
+          <article><h4>/kakao</h4><p>서명 검증, 본문 제한, 메시지 스키마 검증, 규칙 기반 예약 정보 추출.</p><span>구현됨 · 테스트됨</span></article>
+          <article><h4>/crm</h4><p>고객 식별자 생성과 PostgreSQL 소유권 충돌 방지. 외부 CRM 동기화는 fake입니다.</p><span>저장소 구현 · 외부 연동 미구현</span></article>
+          <article><h4>/booking</h4><p>멱등 예약 리드 저장. 확정 예약, 결제, 취소, 환불은 범위 밖입니다.</p><span>리드 구현 · 예약 실행 미구현</span></article>
+          <article><h4>/google-sheet</h4><p>어댑터 인터페이스와 테스트용 fake만 있으며 Google Sheets API 호출은 없습니다.</p><span>인터페이스만 구현</span></article>
+          <article><h4>/wechat</h4><p>공통 채널 스키마만 WeChat 값을 허용하며 웹훅, 어댑터, 테스트는 없습니다.</p><span>미구현</span></article>
+          <article><h4>/codex-agent</h4><p>Codex는 코드 검토와 유지보수에만 사용하며 런타임 모델 경로는 없습니다.</p><span>유지보수 용도</span></article>
+          <article><h4>/cloud</h4><p>Docker와 Cloud Run/ECS 예제가 있지만 실제 운영 환경 검증은 남아 있습니다.</p><span>예제 구성 · 운영 검증 전</span></article>
+          <article><h4>/api</h4><p>헬스 체크, 카카오 OAuth 경계, 서명된 웹훅 수신 엔드포인트.</p><span>Node HTTP · Zod · 테스트됨</span></article>
         </div>
       </section>
 
       <section id="flow" class="section card">
-        <h3>데이터 흐름</h3>
+        <h3>현재 구현된 데이터 흐름</h3>
         <ol class="flow-list">
-          <li>카카오/위챗 메시지를 채널 웹훅으로 수집합니다.</li>
-          <li>채널별 payload를 공통 메시지 모델로 정규화합니다.</li>
-          <li>규칙 기반 파서와 AI 분석으로 목적지, 날짜, 인원, 연락처를 추출합니다.</li>
-          <li>CRM 고객을 생성/갱신하고 Booking 리드를 생성합니다.</li>
-          <li>Google Sheet와 Codex Agent가 운영 후속 업무를 처리합니다.</li>
+          <li>카카오 웹훅의 HMAC 서명과 256 KiB 본문 제한을 확인합니다.</li>
+          <li>JSON과 Zod 스키마를 통과한 메시지만 파이프라인으로 전달합니다.</li>
+          <li>규칙 기반 파서가 목적지, 날짜, 인원, 상품명과 연락처를 추출합니다.</li>
+          <li>PostgreSQL이 이벤트 lease, 고객 식별자, Booking 리드를 저장합니다.</li>
+          <li>개발 환경에서는 fake 외부 어댑터를 사용하며, 운영 시작은 차단됩니다.</li>
         </ol>
       </section>
 
       <section id="mvp" class="section mvp">
-        <h3>가장 먼저 구현할 핵심 모듈</h3>
-        <p><strong>카카오톡 예약 분석 및 CRM 자동 생성</strong>을 MVP로 구현합니다. 초기 코드는 <code>src/kakao/reservation-parser.ts</code>, <code>src/kakao/oauth.ts</code>, <code>src/crm/customer-service.ts</code>, <code>src/booking/reservation-service.ts</code>, <code>src/pipelines/kakao-to-crm.ts</code>에 배치했습니다.</p>
+        <h3>현재 안전 기준</h3>
+        <p><strong>중복 처리, 고객 식별자 충돌, 민감정보 로그, 잘못된 OAuth 상태를 기본 실패 경로로 검증합니다.</strong> 필수 예약 정보가 없거나 날짜가 잘못되면 Booking 리드를 만들지 않고 <code>needs_confirmation</code>을 반환합니다.</p>
       </section>
 
       <section id="api" class="section card">
         <h3>MVP API 엔드포인트</h3>
         <div class="endpoint-list">
-          <code>GET /health</code><span>클라우드 로드밸런서와 배포 상태를 확인합니다.</span>
+          <code>GET /health</code><span>현재 프로세스의 서비스 상태를 확인합니다.</span>
           <code>GET /auth/kakao/login</code><span>카카오 OAuth 인가 URL을 생성합니다.</span>
           <code>GET /auth/kakao/callback</code><span>카카오 인가 코드를 토큰으로 교환합니다.</span>
-          <code>POST /webhooks/kakao</code><span>상담 메시지를 CRM 고객과 Booking 리드로 변환합니다.</span>
+          <code>POST /webhooks/kakao</code><span>상담 메시지를 내부 고객 기록과 Booking 리드로 변환합니다.</span>
         </div>
       </section>
 
       <section id="cloud" class="section cloud-section">
-        <p class="eyebrow">Cloud Deployment</p>
-        <h3>클라우드 운영 보완</h3>
+        <p class="eyebrow">Before Production</p>
+        <h3>운영 전 남은 검증</h3>
         <div class="cloud-grid">
-          <article><strong>서버리스 컨테이너</strong><span>Cloud Run 또는 ECS/Fargate에 Node.js API와 worker를 배포합니다.</span></article>
-          <article><strong>관리형 데이터 계층</strong><span>Managed PostgreSQL과 Managed Redis로 CRM/Booking 데이터와 큐를 운영합니다.</span></article>
-          <article><strong>Secret Manager</strong><span>카카오, 위챗, Google, CRM API 키를 런타임 Secret으로 주입합니다.</span></article>
-          <article><strong>모니터링</strong><span>웹훅 실패율, 토큰 교환 실패, 큐 적체량, 분석 신뢰도를 추적합니다.</span></article>
+          <article><strong>실제 PostgreSQL</strong><span>마이그레이션, 동시성, lease 인계를 실제 데이터베이스에서 검증해야 합니다.</span></article>
+          <article><strong>실제 외부 어댑터</strong><span>CRM과 Sheets 연동에 제한 시간, 취소, 재시도 분류, 하위 시스템 멱등성이 필요합니다.</span></article>
+          <article><strong>OAuth 상태 저장소</strong><span>현재 쿠키 기반 상태를 원자적 일회용 TTL 저장소로 교체해야 합니다.</span></article>
+          <article><strong>운영 경계</strong><span>엣지 rate limit, 비밀 저장·회전, 로그 보존, 백업·복구 절차를 검증해야 합니다.</span></article>
         </div>
       </section>
 
       <section id="kakao-login" class="section login-section">
         <div>
           <p class="eyebrow">Kakao OAuth</p>
-          <h3>카카오톡 접속 시 로그인 방법</h3>
-          <p>카카오톡 채널 또는 웹뷰에서 예약을 시작하면 카카오 OAuth 2.0 인가 코드 흐름으로 사용자를 확인하고, CRM 고객 프로필과 연결합니다.</p>
+          <h3>구현된 OAuth 경계</h3>
+          <p>인가 URL 생성, 상태 쿠키 검증, 인가 코드의 토큰 교환까지 구현했습니다. 카카오 사용자 프로필 조회와 CRM 고객 연결은 아직 구현되지 않았습니다.</p>
         </div>
         <ol class="login-steps">
           <li><strong>REST API 키 설정</strong><span>Kakao Developers에서 앱을 만들고 Redirect URI를 등록합니다.</span></li>
-          <li><strong>인가 URL 생성</strong><span><code>buildKakaoLoginUrl()</code>로 <code>client_id</code>, <code>redirect_uri</code>, <code>state</code>를 포함한 로그인 URL을 만듭니다.</span></li>
-          <li><strong>인가 코드 수신</strong><span>카카오가 <code>/auth/kakao/callback?code=...&state=...</code>로 사용자를 돌려보냅니다.</span></li>
-          <li><strong>토큰 교환 및 CRM 연결</strong><span><code>exchangeKakaoAuthorizationCode()</code>로 토큰을 받고 고객 프로필을 생성/갱신합니다.</span></li>
+          <li><strong>인가 URL 생성</strong><span>무작위 <code>state</code>를 HttpOnly, SameSite 쿠키에 저장하고 로그인 URL에 포함합니다.</span></li>
+          <li><strong>콜백 검증</strong><span><code>/auth/kakao/callback</code>에서 쿼리 상태와 쿠키를 timing-safe 방식으로 비교한 뒤 쿠키를 지웁니다.</span></li>
+          <li><strong>토큰 교환</strong><span>5초 제한과 응답 스키마 검증을 적용하고 토큰 값은 HTTP 응답에 노출하지 않습니다.</span></li>
         </ol>
       </section>
     </main>
