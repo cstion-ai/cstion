@@ -23,9 +23,9 @@ Automated review findings are advisory. Reproduce a finding before acting on it,
 
 ## Release readiness
 
-The project has no supported release line or publication workflow. Before proposing the first release:
+The project publishes reviewed GitHub releases from `main`. Before proposing a release:
 
-1. Document the versioning, tag, and publication target in a reviewed pull request.
+1. Update the package version and `CHANGELOG.md` in a reviewed pull request.
 2. Confirm the release commit is on `main`, its applicable GitHub Actions checks passed, and the worktree used for verification is clean.
 3. Run the repository checks:
 
@@ -37,6 +37,7 @@ The project has no supported release line or publication workflow. Before propos
 
 4. Review `CHANGELOG.md`; remove unsupported claims and distinguish unit-tested behavior from live integration or production validation.
 5. Prepare release notes that cover relevant migrations, security changes, known limitations, and rollback considerations.
+6. Create the release only after required checks pass on the merged commit, and verify that its tag resolves to that commit.
 
 Do not claim production readiness while the runtime blocks production startup for incomplete external adapters.
 
