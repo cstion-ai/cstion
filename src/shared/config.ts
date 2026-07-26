@@ -26,7 +26,7 @@ const EnvSchema = z.object({
   for (const key of requiredKeys) {
     if (!env[key]) {
       context.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         path: [key],
         message: `${key} is required in production`
       });
@@ -38,7 +38,7 @@ const EnvSchema = z.object({
   ]) {
     if (externalUrl.value && new URL(externalUrl.value).protocol !== "https:") {
       context.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         path: [externalUrl.key],
         message: `${externalUrl.key} must use HTTPS in production`
       });

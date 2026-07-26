@@ -10,7 +10,7 @@ An Apache-2.0 TypeScript and PostgreSQL reference implementation for converting 
 
 ## Current status
 
-The package is version 0.1.0 and is not production-ready. “Implemented” means the code and repository tests exist; it does not mean the capability has passed production or live-service validation.
+The package is version 0.1.1 and is not production-ready. “Implemented” means the code and repository tests exist; it does not mean the capability has passed production or live-service validation.
 
 | Capability | Status |
 | --- | --- |
@@ -36,6 +36,7 @@ The current parser is deterministic and rule based. Documentation that mentions 
 - Kakao OAuth stores only an HMAC-derived check in the HttpOnly state cookie; the random state value itself is not stored in the browser cookie.
 - The shared logging helper masks email addresses, phone numbers, and values stored under credential, token, secret, and password keys.
 - The migration runner records applied migrations and runs them in a transaction under an advisory lock.
+- CI enforces minimum coverage of 90% lines, 80% branches, and 85% functions across the unit and repository test suite.
 - Production configuration requires HTTPS endpoints and the documented secrets. The runtime refuses production startup while the CRM and Sheets adapters are fake.
 
 See the [threat model](docs/threat-model.md) for trust boundaries and remaining risks.
