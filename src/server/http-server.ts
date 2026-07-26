@@ -8,9 +8,10 @@ import type { PipelineResult } from "../pipelines/kakao-to-crm.js";
 import { safeLogPayload } from "../platform/redaction.js";
 import type { PlatformConfig } from "../shared/config.js";
 import {
-  clearOAuthStateCookie,
-  createOAuthStateCookie,
-  isValidOAuthState
+  clearConnectCookie,
+  createConnectCheck,
+  createConnectCookie,
+  hasValidConnectCheck
 } from "./oauth-state.js";
 
 const MAX_WEBHOOK_BODY_BYTES = 256 * 1024;
@@ -46,7 +47,7 @@ export function createAppServer(dependencies: AppServerDependencies) {
       if (request.method === "GET" && url.pathname === "/auth/kakao/login") {
         response.setHeader("Cache-Control", "no-store");
         const config = dependencies.config;
-        if (!config.kakaoRestApiKey || !config.kakaoRedirectUri) {
+        if (!config.kakaoRestApiKey || !config.kakaoRedirectUri || !config.kakaoWebhookSecret) {
           sendJson(response, 500, { error: "Kakao OAuth config is missing" });
           return;
         }
@@ -54,7 +55,10 @@ export function createAppServer(dependencies: AppServerDependencies) {
         const state = randomUUID();
         response.setHeader(
           "Set-Cookie",
-          createOAuthStateCookie(state, config.nodeEnv === "production")
+          createConnectCookie(
+            createConnectCheck(state, config.kakaoWebhookSecret),
+            config.nodeEnv === "production"
+          )
         );
         sendJson(response, 200, {
           redirectUrl: buildKakaoLoginUrl(
@@ -76,13 +80,14 @@ export function createAppServer(dependencies: AppServerDependencies) {
         const config = dependencies.config;
         response.setHeader(
           "Set-Cookie",
-          clearOAuthStateCookie(config.nodeEnv === "production")
+          clearConnectCookie(config.nodeEnv === "production")
         );
         if (
           !code
           || !config.kakaoRestApiKey
           || !config.kakaoRedirectUri
-          || !isValidOAuthState(state, request.headers.cookie)
+          || !config.kakaoWebhookSecret
+          || !hasValidConnectCheck(state, request.headers.cookie, config.kakaoWebhookSecret)
         ) {
           sendJson(response, 400, { error: "Invalid Kakao OAuth callback" });
           return;

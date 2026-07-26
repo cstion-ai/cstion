@@ -59,7 +59,7 @@
 - **Booking 생성 차단**: 날짜, 인원, 상품, 목적지 필수값이 누락되거나 달력상 불가능한 날짜면 `needs_confirmation`을 반환하고 예약 리드를 만들지 않습니다.
 - **외부 연동 격리**: CRM과 Google Sheets는 adapter interface 뒤에 두며 MVP에서는 fake adapter로만 검증합니다.
 - **민감정보 보호**: 현재 실패 경로는 redaction utility를 거쳐 이메일, 전화번호, credential·token·secret·password 키의 값을 마스킹합니다. 이름, provider ID, UUID, 임의 원문은 보장 범위가 아닙니다.
-- **OAuth 경계**: Kakao 로그인 `state`는 HttpOnly·SameSite 쿠키와 상수 시간으로 비교하고 콜백 응답에서 쿠키를 즉시 만료시킵니다. 토큰 교환 요청 제한시간은 5초입니다.
+- **OAuth 경계**: Kakao 로그인 `state` 원문은 쿠키에 저장하지 않고 서버 비밀키로 만든 HMAC 검증값만 HttpOnly·SameSite 쿠키에 저장합니다. 콜백에서는 상수 시간으로 비교하고 쿠키를 즉시 만료시킵니다. 토큰 교환 요청 제한시간은 5초입니다.
 - **Schema upgrade**: `npm run db:migrate:prod`가 advisory lock과 migration 기록 테이블을 사용해 기존 identity와 event 상태를 안전하게 갱신합니다. identity 소유자가 충돌하면 임의 병합하지 않고 중단합니다.
 - **Production fail-closed**: CRM과 Google Sheets 실제 adapter가 구현되기 전에는 production 런타임을 시작하지 않습니다.
 - **배포 금지 조건**: CI 실패, production secret 누락, PostgreSQL migration 미적용, webhook HTTPS 미설정, redaction 테스트 실패 시 배포하지 않습니다.

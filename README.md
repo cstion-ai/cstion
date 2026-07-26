@@ -19,7 +19,7 @@ The package is version 0.1.0 and is not production-ready. “Implemented” mean
 | PostgreSQL event, customer identity, and booking repositories | Implemented with unit tests and a PostgreSQL 16 CI integration suite |
 | Crash recovery with processing leases and token fencing | Implemented; restart and concurrency paths run against PostgreSQL 16 in CI |
 | Recorded database migration for existing installations | Implemented; a legacy-schema upgrade runs against PostgreSQL 16 in CI |
-| Kakao OAuth state and typed token-exchange errors | Implemented and unit-tested |
+| HMAC-protected Kakao OAuth state and typed token-exchange errors | Implemented and unit-tested |
 | Real CRM and Google Sheets adapters | Not implemented; interfaces and fakes only |
 | Production deployment | Runtime startup is blocked while the adapters are fake |
 | WeChat adapter and optional model-assisted extraction | Not implemented |
@@ -33,6 +33,7 @@ The current parser is deterministic and rule based. Documentation that mentions 
 - Booking inserts use stable IDs and return the existing row on conflict.
 - PostgreSQL customer upserts acquire identity locks in deterministic order and abort if the supplied identities have multiple owners.
 - When `KAKAO_WEBHOOK_SECRET` is set, the webhook signature is verified before JSON parsing or pipeline work. Production configuration requires the secret.
+- Kakao OAuth stores only an HMAC-derived check in the HttpOnly state cookie; the random state value itself is not stored in the browser cookie.
 - The shared logging helper masks email addresses, phone numbers, and values stored under credential, token, secret, and password keys.
 - The migration runner records applied migrations and runs them in a transaction under an advisory lock.
 - Production configuration requires HTTPS endpoints and the documented secrets. The runtime refuses production startup while the CRM and Sheets adapters are fake.

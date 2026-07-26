@@ -7,6 +7,7 @@ import { z } from "zod";
 import type { KakaoMessage } from "../src/kakao/reservation-parser.js";
 import type { PipelineResult } from "../src/pipelines/kakao-to-crm.js";
 import { createAppServer } from "../src/server/http-server.js";
+import { createConnectCheck, createConnectCookie } from "../src/server/oauth-state.js";
 import { loadConfig } from "../src/shared/config.js";
 
 const WEBHOOK_SECRET = "test-webhook-secret";
@@ -59,7 +60,7 @@ test("Given a malformed request target, when it reaches the app server, then it 
   assert.match(response, /^HTTP\/1\.1 400 /);
 });
 
-test("Given Kakao login, when OAuth starts, then a protected state cookie matches the redirect", async (context) => {
+test("Given Kakao login, when OAuth starts, then the state cookie omits the raw state", async (context) => {
   const { server, baseUrl } = await startServer();
   context.after(() => closeServer(server));
 
@@ -70,7 +71,8 @@ test("Given Kakao login, when OAuth starts, then a protected state cookie matche
 
   assert.equal(response.status, 200);
   assert.ok(state);
-  assert.match(cookie, new RegExp(`kakao_oauth_state=${state}`));
+  assert.doesNotMatch(cookie, new RegExp(state));
+  assert.match(cookie, /kakao_connect_check=/);
   assert.match(cookie, /HttpOnly/);
   assert.match(cookie, /SameSite=Lax/);
   assert.equal(response.headers.get("cache-control"), "no-store");
@@ -92,7 +94,9 @@ test("Given a mismatched OAuth state, when Kakao calls back, then token exchange
   context.after(() => closeServer(server));
 
   const response = await fetch(`${baseUrl}/auth/kakao/callback?code=code-1&state=wrong-state`, {
-    headers: { cookie: "kakao_oauth_state=expected-state" }
+    headers: {
+      cookie: createConnectCookie(createConnectCheck("expected-state", WEBHOOK_SECRET), false)
+    }
   });
 
   assert.equal(response.status, 400);
@@ -115,12 +119,14 @@ test("Given a matching OAuth state, when Kakao calls back, then the state cookie
   context.after(() => closeServer(server));
 
   const response = await fetch(`${baseUrl}/auth/kakao/callback?code=code-1&state=expected-state`, {
-    headers: { cookie: "kakao_oauth_state=expected-state" }
+    headers: {
+      cookie: createConnectCookie(createConnectCheck("expected-state", WEBHOOK_SECRET), false)
+    }
   });
 
   assert.equal(response.status, 200);
   assert.equal(exchangedCount, 1);
-  assert.match(response.headers.get("set-cookie") ?? "", /kakao_oauth_state=;/);
+  assert.match(response.headers.get("set-cookie") ?? "", /kakao_connect_check=;/);
 });
 
 test("Given no signature, when a Kakao webhook is posted, then it is rejected before processing", async (context) => {

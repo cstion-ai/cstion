@@ -25,7 +25,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Security
 
 - Kakao webhook requests without a configured signing secret fail closed outside development; missing or invalid signatures are rejected before payload processing.
-- Kakao OAuth uses an HttpOnly, SameSite state cookie, timing-safe callback validation, no-store responses, and cookie clearing after callback.
+- Kakao OAuth stores a domain-separated HMAC check instead of raw state in its HttpOnly, SameSite cookie, validates callbacks with a timing-safe comparison, uses no-store responses, and clears the cookie after callback.
 - Kakao login no longer requests additional profile, email, or phone scopes before those features exist.
 - PostgreSQL constraints restrict event statuses, failure classifications, and attempt counts; the migration aborts on cross-customer identity conflicts.
 - Error logging redacts sensitive values in error messages.

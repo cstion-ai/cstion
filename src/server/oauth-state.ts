@@ -1,22 +1,30 @@
-import { timingSafeEqual } from "node:crypto";
+import { createHmac, timingSafeEqual } from "node:crypto";
 
-const OAUTH_STATE_COOKIE = "kakao_oauth_state";
-const OAUTH_STATE_MAX_AGE_SECONDS = 10 * 60;
+const CONNECT_COOKIE = "kakao_connect_check";
+const CONNECT_MAX_AGE_SECONDS = 10 * 60;
+const CONNECT_CHECK_CONTEXT = "kakao-oauth-state:v1";
 
-export function createOAuthStateCookie(state: string, secure: boolean): string {
+export function createConnectCheck(state: string, secret: string): string {
+  return createHmac("sha256", secret)
+    .update(CONNECT_CHECK_CONTEXT)
+    .update(state)
+    .digest("base64url");
+}
+
+export function createConnectCookie(check: string, secure: boolean): string {
   return [
-    `${OAUTH_STATE_COOKIE}=${state}`,
+    `${CONNECT_COOKIE}=${check}`,
     "Path=/auth/kakao",
     "HttpOnly",
     "SameSite=Lax",
-    `Max-Age=${OAUTH_STATE_MAX_AGE_SECONDS}`,
+    `Max-Age=${CONNECT_MAX_AGE_SECONDS}`,
     ...(secure ? ["Secure"] : [])
   ].join("; ");
 }
 
-export function clearOAuthStateCookie(secure: boolean): string {
+export function clearConnectCookie(secure: boolean): string {
   return [
-    `${OAUTH_STATE_COOKIE}=`,
+    `${CONNECT_COOKIE}=`,
     "Path=/auth/kakao",
     "HttpOnly",
     "SameSite=Lax",
@@ -25,18 +33,19 @@ export function clearOAuthStateCookie(secure: boolean): string {
   ].join("; ");
 }
 
-export function isValidOAuthState(
+export function hasValidConnectCheck(
   callbackState: string | null,
-  cookieHeader: string | undefined
+  cookieHeader: string | undefined,
+  secret: string
 ): boolean {
   if (!callbackState || !cookieHeader) return false;
-  const cookieState = readCookie(cookieHeader, OAUTH_STATE_COOKIE);
-  if (!cookieState) return false;
+  const cookieCheck = readCookie(cookieHeader, CONNECT_COOKIE);
+  if (!cookieCheck) return false;
 
-  const callbackBuffer = Buffer.from(callbackState);
-  const cookieBuffer = Buffer.from(cookieState);
-  return callbackBuffer.byteLength === cookieBuffer.byteLength
-    && timingSafeEqual(callbackBuffer, cookieBuffer);
+  const expected = Buffer.from(createConnectCheck(callbackState, secret));
+  const received = Buffer.from(cookieCheck);
+  return expected.byteLength === received.byteLength
+    && timingSafeEqual(expected, received);
 }
 
 function readCookie(header: string, name: string): string | undefined {

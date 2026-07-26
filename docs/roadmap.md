@@ -35,7 +35,8 @@ Exit evidence:
 
 Current state: blocked. CRM and Google Sheets adapters are fakes; production
 startup correctly fails closed. Adapter context carries an idempotency key and
-retry policy, but not cancellation, and OAuth state is cookie-only.
+retry policy, but not cancellation, and OAuth state uses a client-held HMAC
+check rather than a server-side one-time record.
 
 Each adapter must qualify independently, but production remains closed until
 both a real CRM adapter and a real Google Sheets adapter qualify.
@@ -46,7 +47,8 @@ Required work:
   request and retry sequence, and classify failures by typed retry policy;
 - record pending writes durably before dispatch, verify lease ownership, and
   make replay safe at the downstream API;
-- replace cookie-only OAuth state with an atomic server-side TTL store;
+- replace the client-held OAuth state check with an atomic server-side TTL
+  store;
 - document the data flow, rollback procedure, credential handling, and privacy
   boundary.
 
