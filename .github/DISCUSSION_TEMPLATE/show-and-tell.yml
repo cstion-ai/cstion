@@ -1,0 +1,49 @@
+title: "[Evaluation]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Share what you evaluated or built with the project. Use synthetic or redacted data only.
+        A report is not listed in ADOPTERS.md unless you explicitly grant permission below.
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Evaluation stage
+      description: Choose the furthest stage you have personally reached.
+      options:
+        - Local evaluation
+        - Prototype or internal proof of concept
+        - Deployed in a non-production environment
+        - Deployed in production
+    validations:
+      required: true
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Use case and changes
+      description: What did you try, and which adapters or components did you replace?
+      placeholder: We evaluated the webhook and PostgreSQL pipeline with synthetic travel inquiries...
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Outcome and evidence
+      description: Describe what worked, what did not, and any public link or reproducible result you can share.
+    validations:
+      required: true
+  - type: textarea
+    id: feedback
+    attributes:
+      label: Most useful next improvement
+      description: Name the single change that would make adoption easier for your use case.
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy and listing permission
+      options:
+        - label: This report contains no credentials, access tokens, real customer messages, personal data, or unredacted logs.
+          required: true
+        - label: The maintainers may summarize and link this report in ADOPTERS.md.
