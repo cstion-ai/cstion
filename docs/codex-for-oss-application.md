@@ -6,9 +6,9 @@ This draft targets the **Codex for Open Source** maintainer program. Its public 
 
 As of 2026-07-27:
 
-- Pull requests #4 and #12 are merged into public `main`; the current merge commit is `b280574d064f9702eef05798f7832998aaeec5f4`.
-- Releases `v0.1.0` and `v0.1.1` are published, and the latest tag resolves to the current merge commit.
-- CI and CodeQL pass on the latest merge commit. CI enforces coverage thresholds and includes the real PostgreSQL 16 integration job.
+- Pull requests #4 and #12 are merged into public `main`; the `v0.1.1` release merge commit is `b280574d064f9702eef05798f7832998aaeec5f4`.
+- Releases `v0.1.0` and `v0.1.1` are published, and the latest tag resolves to that release merge commit.
+- CI and CodeQL pass on the release merge commit. CI enforces coverage thresholds and includes the real PostgreSQL 16 integration job.
 - All five review threads from pull request #4 are resolved, and pull request #12 has no review threads.
 - Dependabot alerts and automated security updates are enabled; the alert API reports zero open alerts.
 - The repository has 0 stars, 0 forks, and no documented adopters or download data.
@@ -82,7 +82,7 @@ Do not store the OpenAI Organization ID, account email, or other private applica
 - Public repository: `https://github.com/cstion-ai/cstion`
 - Hardened pull request: `https://github.com/cstion-ai/cstion/pull/4`
 - Maintenance pull request: `https://github.com/cstion-ai/cstion/pull/12`
-- Current reviewed merge commit: `https://github.com/cstion-ai/cstion/commit/b280574d064f9702eef05798f7832998aaeec5f4`
+- `v0.1.1` reviewed merge commit: `https://github.com/cstion-ai/cstion/commit/b280574d064f9702eef05798f7832998aaeec5f4`
 - First release: `https://github.com/cstion-ai/cstion/releases/tag/v0.1.0`
 - Current release: `https://github.com/cstion-ai/cstion/releases/tag/v0.1.1`
 - Main CI: `https://github.com/cstion-ai/cstion/actions/runs/30224005904`
