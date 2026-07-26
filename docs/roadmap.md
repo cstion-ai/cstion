@@ -100,9 +100,9 @@ Exit evidence:
 
 ## Community evidence
 
-Baseline as of 2026-07-26:
+Baseline as of 2026-07-27:
 
-- tagged releases: 1 (`v0.1.0`);
+- tagged releases: 2 (`v0.1.0` and `v0.1.1`);
 - GitHub stars and forks: 0 and 0;
 - verified external deployments or adopters: 0;
 

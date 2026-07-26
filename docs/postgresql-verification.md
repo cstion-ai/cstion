@@ -19,12 +19,12 @@ The CI job and its PostgreSQL image digest are defined in [`.github/workflows/ci
 
 ## Public evidence
 
-The `v0.1.0` release commit `02816097365bb57dd523e9400ee66dab5b1eade7`
+The `v0.1.1` release commit `b280574d064f9702eef05798f7832998aaeec5f4`
 passed the public
-[`PostgreSQL 16 integration` job](https://github.com/cstion-ai/cstion/actions/runs/30183068811/job/89742897735).
+[`PostgreSQL 16 integration` job](https://github.com/cstion-ai/cstion/actions/runs/30224005904/job/89851166795).
 The job initialized a disposable PostgreSQL service, installed the locked Node
 dependencies, and completed the scenarios above through the production `pg`
-driver.
+driver after the Zod 4, TypeScript 7, and Node.js 22 type-definition upgrade.
 
 ## Reproduce
 
