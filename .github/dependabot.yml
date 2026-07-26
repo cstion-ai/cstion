@@ -6,6 +6,11 @@ updates:
       interval: weekly
       time: "03:00"
       timezone: Asia/Seoul
+    ignore:
+      # Keep type definitions aligned with the declared Node.js 22 runtime.
+      - dependency-name: "@types/node"
+        update-types:
+          - version-update:semver-major
 
   - package-ecosystem: github-actions
     directory: /
