@@ -102,7 +102,7 @@ Exit evidence:
 
 Baseline as of 2026-07-26:
 
-- tagged releases: 0;
+- tagged releases: 1 (`v0.1.0`);
 - GitHub stars and forks: 0 and 0;
 - verified external deployments or adopters: 0;
 

@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { z } from "zod";
 import { ClassifiedError, runWithRetry } from "../src/platform/retry.js";
 import { createAppRuntime } from "../src/server/runtime.js";
 import { loadConfig } from "../src/shared/config.js";
@@ -28,7 +29,15 @@ test("production config rejects missing secrets", () => {
 test("Given an out-of-range port, when config loads, then it rejects the value", () => {
   assert.throws(
     () => loadConfig({ NODE_ENV: "test", PORT: "65536" }),
-    /less than or equal to 65535/
+    (error: unknown) =>
+      error instanceof z.ZodError &&
+      error.issues.some(
+        (issue) =>
+          issue.code === "too_big" &&
+          issue.path.length === 1 &&
+          issue.path[0] === "PORT" &&
+          issue.maximum === 65_535
+      )
   );
 });
 

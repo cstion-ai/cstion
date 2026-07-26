@@ -6,6 +6,18 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-07-27
+
+### Changed
+
+- Upgraded Zod to 4.4.3, TypeScript to 7.0.2, tsx to 4.23.1, and aligned Node.js types with the supported Node.js 22 runtime.
+- Updated the commit-pinned checkout and Node.js setup actions to their current major releases.
+- Configuration tests now assert structured Zod issue data instead of unstable human-readable validation messages.
+
+### Security
+
+- CI now rejects unit and repository test runs below 90% line, 80% branch, or 85% function coverage.
+
 ## [0.1.0] - 2026-07-26
 
 ### Added
@@ -34,5 +46,6 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Malformed HTTP request targets return a client error instead of terminating the server process.
 - Checkout credentials are not persisted in CI, CodeQL, or dependency-review jobs.
 
-[Unreleased]: https://github.com/cstion-ai/cstion/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/cstion-ai/cstion/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/cstion-ai/cstion/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/cstion-ai/cstion/releases/tag/v0.1.0
