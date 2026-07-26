@@ -17,6 +17,15 @@ The CI workflow includes a `PostgreSQL 16 integration` job backed by a disposabl
 
 The CI job and its PostgreSQL image digest are defined in [`.github/workflows/ci.yml`](../.github/workflows/ci.yml).
 
+## Public evidence
+
+The `v0.1.0` release commit `02816097365bb57dd523e9400ee66dab5b1eade7`
+passed the public
+[`PostgreSQL 16 integration` job](https://github.com/cstion-ai/cstion/actions/runs/30183068811/job/89742897735).
+The job initialized a disposable PostgreSQL service, installed the locked Node
+dependencies, and completed the scenarios above through the production `pg`
+driver.
+
 ## Reproduce
 
 Use a disposable PostgreSQL database containing no valuable data:
