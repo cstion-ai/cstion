@@ -1,0 +1,44 @@
+{
+  "family": "travel-ai-automation",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "512",
+  "memory": "1024",
+  "executionRoleArn": "arn:aws:iam::123456789012:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::123456789012:role/travelAiAutomationTaskRole",
+  "containerDefinitions": [
+    {
+      "name": "app",
+      "image": "123456789012.dkr.ecr.ap-northeast-2.amazonaws.com/travel-ai-automation@sha256:REPLACE_WITH_REVIEWED_IMAGE_DIGEST",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        { "name": "NODE_ENV", "value": "production" },
+        { "name": "CRM_BASE_URL", "value": "https://crm.internal.example.com" },
+        { "name": "KAKAO_REDIRECT_URI", "value": "https://travel.example.com/auth/kakao/callback" }
+      ],
+      "secrets": [
+        { "name": "KAKAO_REST_API_KEY", "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:123456789012:secret:kakao-rest-api-key" },
+        { "name": "KAKAO_CLIENT_SECRET", "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:123456789012:secret:kakao-client-secret" },
+        { "name": "KAKAO_WEBHOOK_SECRET", "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:123456789012:secret:kakao-webhook-secret" },
+        { "name": "DATABASE_URL", "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:123456789012:secret:database-url" },
+        { "name": "CRM_API_KEY", "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:123456789012:secret:crm-api-key" },
+        { "name": "GOOGLE_SHEET_ID", "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:123456789012:secret:google-sheet-id" }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/travel-ai-automation",
+          "awslogs-region": "ap-northeast-2",
+          "awslogs-stream-prefix": "app"
+        }
+      }
+    }
+  ]
+}

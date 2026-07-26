@@ -1,0 +1,58 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: travel-ai-automation
+  annotations:
+    run.googleapis.com/ingress: all
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "1"
+        autoscaling.knative.dev/maxScale: "10"
+    spec:
+      containers:
+        - image: REGION-docker.pkg.dev/PROJECT_ID/travel-ai/app@sha256:REPLACE_WITH_REVIEWED_IMAGE_DIGEST
+          ports:
+            - containerPort: 8080
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: CRM_BASE_URL
+              value: https://crm.internal.example.com
+            - name: KAKAO_REST_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: kakao-rest-api-key
+                  key: latest
+            - name: KAKAO_REDIRECT_URI
+              value: https://travel.example.com/auth/kakao/callback
+            - name: KAKAO_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: kakao-client-secret
+                  key: latest
+            - name: KAKAO_WEBHOOK_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: kakao-webhook-secret
+                  key: latest
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: database-url
+                  key: latest
+            - name: CRM_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: crm-api-key
+                  key: latest
+            - name: GOOGLE_SHEET_ID
+              valueFrom:
+                secretKeyRef:
+                  name: google-sheet-id
+                  key: latest
+          resources:
+            limits:
+              cpu: "1"
+              memory: 512Mi

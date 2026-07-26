@@ -1,0 +1,51 @@
+{
+  "name": "travel-ai-automation-platform",
+  "version": "0.1.0",
+  "description": "A TypeScript and PostgreSQL reference implementation for converting Kakao travel inquiries into CRM customer records and booking leads.",
+  "private": true,
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/cstion-ai/cstion#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cstion-ai/cstion.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cstion-ai/cstion/issues"
+  },
+  "keywords": [
+    "typescript",
+    "travel",
+    "kakao",
+    "crm",
+    "booking",
+    "webhook",
+    "idempotency",
+    "postgresql"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit && tsc --project tsconfig.test.json",
+    "build": "tsc && node scripts/copy-build-assets.mjs",
+    "check:all": "npm test && npm run typecheck && npm run build && npm audit --audit-level=high",
+    "db:migrate": "tsx src/repositories/migrate.ts",
+    "db:migrate:prod": "node dist/src/repositories/migrate.js",
+    "dev": "tsx src/pipelines/kakao-to-crm.ts",
+    "start": "node dist/src/server.js",
+    "dev:server": "tsx src/server.ts",
+    "test": "tsx --test test/*.test.ts",
+    "test:postgres": "tsx --test test/postgres-live.integration.ts"
+  },
+  "dependencies": {
+    "pg": "^8.22.0",
+    "zod": "^3.25.67"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.3",
+    "@types/pg": "^8.20.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  }
+}

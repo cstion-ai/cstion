@@ -1,0 +1,38 @@
+name: Feature request
+description: Propose a reusable improvement with a verifiable outcome.
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem and reusable scope
+      description: Who encounters this problem, and why does it belong in the shared project rather than one deployment?
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Observable outcome
+      description: What visible behavior would show the feature is complete? Include concrete acceptance examples.
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Privacy, security, and migration impact
+      description: Describe changes to data handling, permissions or trust boundaries, and backward compatibility or rollout. Write "None" for each unaffected area.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Submission checks
+      options:
+        - label: This proposal addresses a reusable project need rather than one private deployment.
+          required: true
+        - label: This request contains no credentials, tokens, real customer data, or unredacted logs.
+          required: true
+        - label: This is not a confidential security report.
+          required: true
