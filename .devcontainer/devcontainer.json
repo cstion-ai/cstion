@@ -1,0 +1,13 @@
+{
+  "name": "Travel AI Automation Platform",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:5-22-bookworm",
+  "postCreateCommand": "npm ci",
+  "customizations": {
+    "codespaces": {
+      "openFiles": [
+        "README.md",
+        "src/pipelines/kakao-to-crm.ts"
+      ]
+    }
+  }
+}

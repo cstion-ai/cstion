@@ -4,7 +4,7 @@
   "description": "A TypeScript and PostgreSQL reference implementation for converting Kakao travel inquiries into CRM customer records and booking leads.",
   "private": true,
   "license": "Apache-2.0",
-  "homepage": "https://github.com/cstion-ai/cstion#readme",
+  "homepage": "https://cstion-ai.github.io/cstion/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cstion-ai/cstion.git"
@@ -32,6 +32,7 @@
     "check:all": "npm test && npm run typecheck && npm run build && npm audit --audit-level=high",
     "db:migrate": "tsx src/repositories/migrate.ts",
     "db:migrate:prod": "node dist/src/repositories/migrate.js",
+    "demo": "tsx src/pipelines/kakao-to-crm.ts",
     "dev": "tsx src/pipelines/kakao-to-crm.ts",
     "start": "node dist/src/server.js",
     "dev:server": "tsx src/server.ts",
