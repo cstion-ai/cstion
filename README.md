@@ -8,6 +8,8 @@ An Apache-2.0 TypeScript and PostgreSQL reference implementation for converting 
 
 > 한국어 요약: 카카오톡 여행 문의를 CRM 고객 기록과 예약 리드로 변환하는 TypeScript/PostgreSQL 예제입니다. 현재 파서는 규칙 기반이며, 실제 CRM·Google Sheets·WeChat 연동은 아직 구현되지 않았습니다.
 
+[Explore the project page](https://cstion-ai.github.io/cstion/) · [Open in Codespaces](https://codespaces.new/cstion-ai/cstion) · [Use this template](https://github.com/new?template_name=cstion&template_owner=cstion-ai)
+
 ## Current status
 
 The package is version 0.1.1 and is not production-ready. “Implemented” means the code and repository tests exist; it does not mean the capability has passed production or live-service validation.
@@ -47,10 +49,20 @@ Requirements:
 
 - Node.js 22
 
+Run one synthetic inquiry through the in-memory reference pipeline:
+
 ```bash
 git clone https://github.com/cstion-ai/cstion.git
 cd cstion
 npm ci
+npm run demo
+```
+
+The command needs no Kakao account or API key and prints a redacted result. It uses fake external adapters and is not a production connectivity test.
+
+To run every local quality gate and start the development HTTP server:
+
+```bash
 npm run check:all
 npm run dev:server
 ```
@@ -102,13 +114,21 @@ The PostgreSQL-backed runtime stores webhook idempotency and customer identity s
 - [Roadmap](docs/roadmap.md)
 - [Maintainer guide](docs/maintainer-guide.md)
 - [PostgreSQL verification](docs/postgresql-verification.md)
+- [Adoption evidence policy](ADOPTERS.md)
+- [Community launch kit](docs/community-launch-kit.md)
 - [Cloud deployment guardrails](cloud/README.md)
 - [Docker development stack](docker/README.md)
 - [Changelog](CHANGELOG.md)
 
+## Evaluate and adopt
+
+The repository is a template and includes a Node.js 22 dev container. You can create an independent copy with [Use this template](https://github.com/new?template_name=cstion&template_owner=cstion-ai), or open the source directly in [GitHub Codespaces](https://codespaces.new/cstion-ai/cstion).
+
+If you evaluate, prototype, or deploy any part of the project, share the outcome through the [Show and tell form](https://github.com/cstion-ai/cstion/discussions/categories/show-and-tell). Reports are listed only with explicit permission. Stars, forks, clones, and page views are not counted as adopters; see [ADOPTERS.md](ADOPTERS.md).
+
 ## Contributing
 
-Issues and focused pull requests are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md), follow the [Code of Conduct](CODE_OF_CONDUCT.md), and report vulnerabilities through the private process in [SECURITY.md](SECURITY.md).
+Issues, discussions, and focused pull requests are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md), follow the [Code of Conduct](CODE_OF_CONDUCT.md), and report vulnerabilities through the private process in [SECURITY.md](SECURITY.md).
 
 The project uses a primary-maintainer model described in [GOVERNANCE.md](GOVERNANCE.md). Support expectations are in [SUPPORT.md](SUPPORT.md).
 
