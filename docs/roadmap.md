@@ -6,30 +6,28 @@ repository.
 
 ## 0.1.0 — Public baseline release gate
 
-Current state: not met. `origin/main` still contains the old landing page, the
-service and community changes are unmerged, and no tag exists. The candidate
-branch defines a PostgreSQL 16 integration job, but it is not public evidence
-until the branch is pushed and the required check passes.
+Current state: met on 2026-07-26.
 
-Required work:
+Evidence:
 
-- merge the service, Apache-2.0 license, community files, and workflows into
-  `main`;
-- pass CI, CodeQL, and dependency review;
-- run migrations, duplicate delivery, identity races, and lease takeover
-  against a disposable PostgreSQL instance through the production database
-  driver;
-- publish the `0.1.0` tag and release notes.
-
-Exit evidence:
-
-- the public `main` commit SHA contains the documented service and project
-  files;
-- links to green required checks are recorded for that SHA;
-- one documented command runs the live PostgreSQL suite from a clean checkout
-  with Node.js 22 and a disposable database, and the same command passes in CI;
-- the public `0.1.0` tag resolves to that reviewed commit, and its release notes
-  include the verification commands and known limitations.
+- public `main` commit
+  [`0281609`](https://github.com/cstion-ai/cstion/commit/02816097365bb57dd523e9400ee66dab5b1eade7)
+  contains the service, Apache-2.0 license, community files, and workflows;
+- [main CI](https://github.com/cstion-ai/cstion/actions/runs/30183068811)
+  passed tests, type checks, build, metadata checks, dependency audit, and the
+  PostgreSQL 16 integration suite;
+- [CodeQL](https://github.com/cstion-ai/cstion/actions/runs/30183068816)
+  passed on the merge commit, and
+  [dependency review](https://github.com/cstion-ai/cstion/actions/runs/30183026080)
+  passed on the merged pull request;
+- the documented
+  [PostgreSQL job](https://github.com/cstion-ai/cstion/actions/runs/30183068811/job/89742897735)
+  exercised migrations, duplicate delivery, identity races, lease recovery,
+  and booking idempotency through the production database driver;
+- public release
+  [`v0.1.0`](https://github.com/cstion-ai/cstion/releases/tag/v0.1.0)
+  resolves to the reviewed merge commit and records verification commands and
+  known limitations.
 
 ## Production adapter gate
 

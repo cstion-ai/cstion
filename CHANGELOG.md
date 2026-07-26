@@ -4,7 +4,9 @@ Notable changes are recorded in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## Unreleased
+## [Unreleased]
+
+## [0.1.0] - 2026-07-26
 
 ### Added
 
@@ -31,3 +33,6 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Error logging redacts sensitive values in error messages.
 - Malformed HTTP request targets return a client error instead of terminating the server process.
 - Checkout credentials are not persisted in CI, CodeQL, or dependency-review jobs.
+
+[Unreleased]: https://github.com/cstion-ai/cstion/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/cstion-ai/cstion/releases/tag/v0.1.0
