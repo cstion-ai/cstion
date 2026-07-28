@@ -47,7 +47,7 @@ Use credits for Codex-assisted PR review, issue triage, CI failure summaries, mu
 
 ### Anything else we should know? — draft
 
-Codex review of PR #4 found ephemeral webhook state, missing webhook authentication, and an identity race. Public fixes added PostgreSQL-backed leases, HMAC verification, transactional identity locking, and protected OAuth state. PR #12 then upgraded the toolchain and enforced coverage thresholds. All review threads are resolved; the `v0.1.1` merge passes Node 22 CI, PostgreSQL 16, CodeQL, and dependency review.
+Codex review of PR #4 found ephemeral webhook state, missing webhook authentication, and an identity race. Public fixes added PostgreSQL-backed leases, HMAC verification, transactional identity locking, and protected OAuth state. PR #12 then upgraded the toolchain and enforced coverage thresholds. PR #4's five review threads are resolved; later follow-up findings are tracked separately and must be verified against the default branch before submission. The `v0.1.1` merge passes Node 22 CI, PostgreSQL 16, CodeQL, and dependency review.
 
 ## Better current fit: Codex Open Source Fund
 
