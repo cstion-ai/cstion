@@ -33,6 +33,8 @@ jobs:
         run: npm ci
       - name: Run tests with coverage thresholds
         run: npm run test:coverage
+      - name: Run deterministic reservation evaluation
+        run: npm run evaluate:parser
       - name: Typecheck
         run: npm run typecheck
       - name: Build
