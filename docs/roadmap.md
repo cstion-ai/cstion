@@ -100,18 +100,27 @@ Implemented starting point:
 
 - `evaluation/reservation-cases.v1.json` contains ten hand-authored Korean
   smoke cases and a provenance manifest with no profile or contact fields;
+- `evaluation/reservation-challenge.v2.json` adds 48 balanced synthetic cases
+  across eight Korean-domain categories and publishes the deterministic
+  parser's 18 known-failure cases instead of tuning the fixture to a perfect
+  result;
 - `npm run --silent evaluate:parser` validates the dataset and output schemas,
   then reports per-field exact match, false positives, abstentions,
   confirmation routing, invalid output, and extractor errors;
-- CI runs the same command, and the build contains the same versioned dataset.
+- `npm run --silent evaluate:challenge` binds the exact dataset SHA-256 and
+  evaluator identity to a regression gate with Wilson intervals, route
+  confusion, confirmation-set agreement, and category summaries;
+- CI runs both commands, and the build contains the same versioned datasets and
+  challenge baseline.
 
-A perfect score on this small checked-in set is regression evidence only, not a
-general accuracy, multilingual quality, or model-comparison claim.
+A perfect score on the ten-case v1 smoke set is regression evidence only, not a
+general accuracy, multilingual quality, or model-comparison claim. The v2
+challenge deliberately publishes its 18 known failures.
 
 Required work:
 
-- expand the versioned set beyond the ten-case Korean smoke baseline before
-  comparing providers;
+- expand the challenge toward about 200 reviewed synthetic cases before drawing
+  comparative conclusions;
 - document any de-identification process before admitting a non-synthetic
   fixture;
 - evaluate through an offline typed interface with no production traffic;

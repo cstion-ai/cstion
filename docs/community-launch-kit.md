@@ -4,6 +4,28 @@ Use this copy only after the project page is live and the demo command has been 
 
 Do not ask for votes, stars, or supportive comments. Ask for specific evaluation feedback.
 
+## Targeted 10-minute evaluation request
+
+Send this to one developer or operator who already works with Kakao, Node.js,
+PostgreSQL, travel inquiries, or CRM integrations. Do not send it as a mass
+message and do not offer a reciprocal star or endorsement.
+
+> I maintain a small Apache-2.0 reference project for turning signed Kakao
+> travel inquiries into duplicate-safe PostgreSQL booking leads. I am looking
+> for one independent technical evaluation, not a star. Could you spend ten
+> minutes running a synthetic example in the browser sandbox and tell me the
+> first thing that would block you from evaluating it further? Please do not use
+> customer messages or contact details. If you are comfortable making the
+> result public, the Show and tell form records the path you tried, the outcome,
+> and your permission separately.
+>
+> Sandbox: https://cstion-ai.github.io/cstion/#sandbox
+> Report: https://github.com/cstion-ai/cstion/discussions/new?category=show-and-tell
+
+An independent report is evidence only after the reporter actually tries a
+path and permits the stated summary. No response, a star, or a supportive
+comment is an evaluation.
+
 ## Show GN
 
 ### 제목

@@ -8,7 +8,7 @@ This project is pre-1.0 and has no supported release line. Security fixes target
 
 Do not open a public issue, discussion, or pull request for a suspected vulnerability.
 
-Email the primary maintainer at [cstion1@gmail.com](mailto:cstion1@gmail.com) with the subject `[SECURITY] cstion vulnerability`. Do not send production credentials, access tokens, customer data, or unredacted logs. Include:
+Use GitHub's [private vulnerability report](https://github.com/cstion-ai/cstion/security/advisories/new). If that path is unavailable, email the primary maintainer at [cstion1@gmail.com](mailto:cstion1@gmail.com) with the subject `[SECURITY] cstion vulnerability`. Do not send production credentials, access tokens, customer data, or unredacted logs. Include:
 
 - the affected commit;
 - impact, prerequisites, and a realistic attack path;

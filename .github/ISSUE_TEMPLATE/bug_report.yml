@@ -9,7 +9,7 @@ body:
       value: |
         Thank you for reporting a problem.
 
-        Suspected vulnerability? Do not file a public issue. Email [cstion1@gmail.com](mailto:cstion1@gmail.com) and follow the [Security Policy](https://github.com/cstion-ai/cstion/blob/main/SECURITY.md).
+        Suspected vulnerability? Do not file a public issue. Use the [private vulnerability report](https://github.com/cstion-ai/cstion/security/advisories/new) and follow the [Security Policy](https://github.com/cstion-ai/cstion/blob/main/SECURITY.md).
   - type: input
     id: version
     attributes:

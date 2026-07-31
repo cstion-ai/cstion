@@ -36,7 +36,7 @@
         "license": "https://www.apache.org/licenses/LICENSE-2.0",
         "programmingLanguage": "TypeScript",
         "runtimePlatform": "Node.js 22",
-        "version": "0.1.2"
+        "version": "0.1.3"
       }
     </script>
   </head>
@@ -105,9 +105,9 @@
 
     <main id="content">
       <section class="evidence-strip" aria-label="Public project evidence">
-        <a href="https://github.com/cstion-ai/cstion/releases/tag/v0.1.2">
+        <a href="https://github.com/cstion-ai/cstion/blob/main/CHANGELOG.md#013---2026-08-01">
           <span>Release</span>
-          <strong>v0.1.2 published</strong>
+          <strong>v0.1.3 prepared</strong>
         </a>
         <a href="https://github.com/cstion-ai/cstion/actions/workflows/ci.yml">
           <span>CI</span>
@@ -204,8 +204,9 @@
 cd cstion
 npm ci
 npm run demo
-npm run --silent evaluate:parser</code></pre>
-          <p>Expected: a redacted <code>created</code> result, followed by a JSON report for the ten-case synthetic parser baseline.</p>
+npm run --silent evaluate:parser
+npm run --silent evaluate:challenge</code></pre>
+          <p>Expected: a redacted <code>created</code> result, the ten-case regression report, and the frozen 48-case challenge checked against its published known-failure baseline.</p>
         </div>
       </section>
 
@@ -223,7 +224,7 @@ npm run --silent evaluate:parser</code></pre>
               <li><strong>Duplicate safety</strong><span>Event leases, stable booking IDs, and token-fenced completion.</span></li>
               <li><strong>Identity ownership</strong><span>Deterministic locks and conflicting-owner rejection.</span></li>
               <li><strong>PostgreSQL upgrade</strong><span>Recorded migration and concurrency scenarios on PostgreSQL 16.</span></li>
-              <li><strong>Offline evaluation</strong><span>Versioned synthetic fixtures, typed output checks, and CI-enforced metrics.</span></li>
+              <li><strong>Offline evaluation</strong><span>A ten-case regression gate plus a frozen 48-case challenge using the production confirmation route.</span></li>
             </ul>
             <div class="evidence-links">
               <a class="text-link" href="https://github.com/cstion-ai/cstion/blob/main/evaluation/README.md">Read the evaluation evidence</a>

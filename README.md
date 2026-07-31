@@ -12,13 +12,13 @@ An Apache-2.0 TypeScript and PostgreSQL reference implementation for converting 
 
 ## Current status
 
-The package is version 0.1.2 and is not production-ready. “Implemented” means the code and repository tests exist; it does not mean the capability has passed production or live-service validation.
+The package is version 0.1.3 and is not production-ready. “Implemented” means the code and repository tests exist; it does not mean the capability has passed production or live-service validation.
 
 | Capability | Status |
 | --- | --- |
 | Kakao message normalization and deterministic reservation parsing | Implemented and unit-tested |
 | Install-free browser sandbox | Runs the production parser locally with synthetic text and no network request |
-| Versioned offline reservation evaluation | 10 synthetic Korean cases with typed validation and CI enforcement |
+| Versioned offline reservation evaluation | 10-case regression baseline plus a frozen 48-case Korean-domain challenge with typed validation and CI enforcement |
 | HMAC-authenticated Kakao webhook with a 256 KiB limit | Implemented and tested |
 | PostgreSQL event, customer identity, and booking repositories | Implemented with unit tests and a PostgreSQL 16 CI integration suite |
 | Crash recovery with processing leases and token fencing | Implemented; restart and concurrency paths run against PostgreSQL 16 in CI |
@@ -30,7 +30,9 @@ The package is version 0.1.2 and is not production-ready. “Implemented” mean
 
 The current parser is deterministic and rule based. Documentation that mentions model-assisted extraction describes the roadmap, not an active runtime dependency.
 
-The current public release is [`v0.1.2`](https://github.com/cstion-ai/cstion/releases/tag/v0.1.2).
+This branch prepares `v0.1.3`; the current public release remains
+[`v0.1.2`](https://github.com/cstion-ai/cstion/releases/tag/v0.1.2) until the
+tag-triggered release gate completes.
 Its exact commit, release gate, database job, and claim boundaries are indexed
 in the [public evidence snapshot](docs/public-evidence.md).
 
@@ -79,6 +81,17 @@ The checked-in v1 set contains ten synthetic Korean cases. A perfect result
 shows regression stability on those cases only; it is not a general accuracy
 claim. See the [evaluation guide](evaluation/README.md) for metrics, privacy
 rules, and custom fixture usage.
+
+Run the frozen challenge and verify that its honest known-failure baseline has
+not changed:
+
+```bash
+npm run --silent evaluate:challenge
+```
+
+The 48 maintainer-authored cases cover eight Korean-domain categories and use
+the production confirmation decision. The command exposes current limitations;
+it is not a holdout score, multilingual claim, or evidence of adoption.
 
 To run every local quality gate and start the development HTTP server:
 

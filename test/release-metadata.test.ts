@@ -12,6 +12,19 @@ const PREPARE_RELEASE_SCRIPT = join(
   "scripts/prepare-release-notes.mjs"
 );
 
+test("Given the container build stage, when build assets are copied, then the frozen evaluation input is available", async () => {
+  const dockerfile = await readFile(join(PROJECT_ROOT, "Dockerfile"), "utf8");
+
+  assert.match(dockerfile, /^COPY evaluation \.\/evaluation$/m);
+  assert.match(dockerfile, /^RUN npm run build$/m);
+});
+
+test("Given a cross-platform checkout, when evaluation JSON is materialized, then exact-byte identity keeps LF endings", async () => {
+  const attributes = await readFile(join(PROJECT_ROOT, ".gitattributes"), "utf8");
+
+  assert.match(attributes, /^evaluation\/\*\*\/\*\.json text eol=lf$/m);
+});
+
 test("Given a version tag matching package metadata, when release notes are prepared, then only that changelog section is written", async (context) => {
   const temporaryDirectory = await mkdtemp(join(tmpdir(), "cstion-release-"));
   context.after(() => rm(temporaryDirectory, { recursive: true, force: true }));
@@ -19,13 +32,15 @@ test("Given a version tag matching package metadata, when release notes are prep
 
   execFileSync(
     process.execPath,
-    [PREPARE_RELEASE_SCRIPT, "v0.1.2", notesPath],
+    [PREPARE_RELEASE_SCRIPT, "v0.1.3", notesPath],
     { cwd: PROJECT_ROOT }
   );
 
   const notes = await readFile(notesPath, "utf8");
-  assert.match(notes, /browser-based synthetic reservation sandbox/);
-  assert.match(notes, /offline reservation-parser evaluation/);
+  assert.match(notes, /frozen synthetic challenge/);
+  assert.match(notes, /clipboard completions/);
+  assert.match(notes, /Roll back the application/);
+  assert.doesNotMatch(notes, /browser-based synthetic reservation sandbox/);
   assert.doesNotMatch(notes, /Upgraded Zod/);
   assert.doesNotMatch(notes, /Apache-2\.0 licensing/);
 });
