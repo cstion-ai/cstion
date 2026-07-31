@@ -88,6 +88,7 @@ a:focus-visible {
   }
 
   .demo-section,
+  .sandbox-section,
   .evidence-layout,
   .adoption-section {
     grid-template-columns: 1fr;
@@ -119,7 +120,16 @@ a:focus-visible {
   }
 
   .hero h1 {
+    margin-bottom: var(--space-5);
     font-size: clamp(2.5rem, 13vw, 4rem);
+  }
+
+  .hero-grid {
+    padding-block: var(--space-10) var(--space-16);
+  }
+
+  .korean-summary {
+    margin-bottom: var(--space-6);
   }
 
   .pipeline,
@@ -143,6 +153,27 @@ a:focus-visible {
 
   .adoption-section {
     padding: var(--space-6);
+  }
+
+  .sandbox-result-heading,
+  .sandbox-fields {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .sandbox-status {
+    max-width: none;
+    text-align: left;
+  }
+
+  .sandbox-fields div:nth-child(odd),
+  .sandbox-fields div:nth-child(even) {
+    padding-inline: 0;
+    border-left: 0;
+  }
+
+  .sandbox-result-actions .action {
+    width: 100%;
   }
 
   .site-footer {

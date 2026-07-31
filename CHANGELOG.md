@@ -6,8 +6,16 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-07-31
+
 ### Added
 
+- Added a browser-based synthetic reservation sandbox that runs the real
+  deterministic parser without an account, API key, server, or network request
+  and exposes only a safe, input-free result for copying or download.
+- Added a public project page, social preview, crawler metadata, Node.js 22 dev
+  container, repository-template path, and permissioned evaluation-report form
+  so third parties can inspect and try the project with less setup.
 - Added a versioned, offline reservation-parser evaluation with ten synthetic
   Korean cases, strict privacy and output schemas, machine-readable metrics,
   source/build parity, and a CI gate.
@@ -17,9 +25,28 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
-- Hardened provider identifiers, Kakao token responses, configuration URLs,
-  deterministic PostgreSQL lock ordering, executable entrypoint detection, and
-  PII redaction edge cases.
+- Coverage now includes unimported executable TypeScript entrypoints and keeps
+  the 90% line, 80% branch, and 85% function thresholds.
+- Hardened provider identifiers, Kakao token responses, PostgreSQL URLs,
+  deterministic PostgreSQL lock ordering, executable entrypoint detection,
+  reservation traveler parsing, and PII redaction edge cases.
+
+### Compatibility
+
+- Provider event and user identifiers must now contain 1–255 characters;
+  non-PostgreSQL `DATABASE_URL` values, empty or non-positive Kakao token fields,
+  and non-positive or non-integer traveler expressions are rejected earlier.
+- The browser sandbox evaluates parser and confirmation-routing behavior only.
+  It does not exercise PostgreSQL, Kakao, CRM, or Google Sheets connectivity.
+
+### Known limitations
+
+- The checked-in evaluation has ten synthetic Korean cases and cannot establish
+  general accuracy. Real CRM and Google Sheets adapters remain fakes, so
+  production startup remains blocked.
+- No database schema migration is included in 0.1.2. If the stricter application
+  boundaries are incompatible with a development client, roll the application
+  back to v0.1.1 using the normal deployment rollback process.
 
 ## [0.1.1] - 2026-07-27
 
@@ -61,6 +88,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Malformed HTTP request targets return a client error instead of terminating the server process.
 - Checkout credentials are not persisted in CI, CodeQL, or dependency-review jobs.
 
-[Unreleased]: https://github.com/cstion-ai/cstion/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/cstion-ai/cstion/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/cstion-ai/cstion/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/cstion-ai/cstion/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/cstion-ai/cstion/releases/tag/v0.1.0

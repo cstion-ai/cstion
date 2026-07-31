@@ -4,6 +4,12 @@ This directory contains the versioned, offline baseline for the deterministic
 Kakao reservation parser. It is an evaluation artifact, not production data and
 not evidence of model quality or third-party adoption.
 
+For an install-free single-message check, use the public
+[browser sandbox](https://cstion-ai.github.io/cstion/#sandbox). It reuses the
+same deterministic parser and booking-field decision, runs without a network
+request, and returns an input-free JSON result. It is not the ten-case baseline,
+a PostgreSQL test, or a live CRM integration.
+
 ## Run the baseline
 
 ```bash

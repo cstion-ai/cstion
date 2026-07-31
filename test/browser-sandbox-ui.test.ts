@@ -1,0 +1,84 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import {
+  initReservationSandbox,
+  type SandboxNavigator
+} from "../src/web/reservation-sandbox-entry.js";
+import {
+  createFakeSandboxDocument,
+  FAKE_SANDBOX_CONSTRUCTORS
+} from "./support/fake-browser-dom.js";
+
+test("Given the browser sandbox, when input changes and is parsed, then stale results cannot be copied", async () => {
+  const fixture = createFakeSandboxDocument();
+  const clipboardWrites: string[] = [];
+  const browserNavigator: SandboxNavigator = {
+    clipboard: {
+      writeText: async (value: string) => { clipboardWrites.push(value); }
+    }
+  };
+
+  initReservationSandbox(
+    fixture.document,
+    browserNavigator,
+    FAKE_SANDBOX_CONSTRUCTORS
+  );
+
+  assert.equal(fixture.elements["sandbox-route"].textContent, "Required fields complete");
+  assert.equal(fixture.elements["sandbox-copy"].disabled, false);
+
+  fixture.elements["sandbox-message"].value = "다낭 자유여행 2명 문의";
+  fixture.elements["sandbox-message"].dispatchEvent(new Event("input"));
+
+  assert.equal(fixture.elements["sandbox-route"].textContent, "Not parsed");
+  assert.equal(fixture.elements["sandbox-copy"].disabled, true);
+  assert.equal(fixture.elements["sandbox-json"].textContent, "{}");
+
+  fixture.elements["reservation-sandbox-form"].dispatchEvent(
+    new Event("submit", { cancelable: true })
+  );
+  assert.equal(fixture.elements["sandbox-route"].textContent, "Needs confirmation");
+  assert.equal(fixture.elements["sandbox-copy"].disabled, false);
+
+  fixture.elements["sandbox-copy"].click();
+  await Promise.resolve();
+  assert.equal(clipboardWrites.length, 1);
+  assert.doesNotMatch(clipboardWrites[0] ?? "", /다낭 자유여행/);
+
+  fixture.elements["sandbox-download"].click();
+  assert.equal(fixture.document.anchors.length, 1);
+  assert.equal(fixture.document.anchors[0]?.clickCount, 1);
+  assert.equal(
+    fixture.document.anchors[0]?.download,
+    "cstion-synthetic-reservation-result.json"
+  );
+});
+
+test("Given invalid synthetic input, when it is submitted, then result actions stay disabled", () => {
+  const fixture = createFakeSandboxDocument();
+
+  initReservationSandbox(fixture.document, {}, FAKE_SANDBOX_CONSTRUCTORS);
+  fixture.elements["sandbox-message"].value = "   ";
+  fixture.elements["reservation-sandbox-form"].dispatchEvent(
+    new Event("submit", { cancelable: true })
+  );
+
+  assert.equal(fixture.elements["sandbox-route"].textContent, "Input needed");
+  assert.equal(fixture.elements["sandbox-copy"].disabled, true);
+  assert.equal(fixture.elements["sandbox-download"].disabled, true);
+});
+
+test("Given another checked-in example, when it is selected, then parsing uses the loaded text", () => {
+  const fixture = createFakeSandboxDocument();
+
+  initReservationSandbox(fixture.document, {}, FAKE_SANDBOX_CONSTRUCTORS);
+  fixture.elements["sandbox-example"].value = "invalid-date";
+  fixture.elements["sandbox-example"].dispatchEvent(new Event("change"));
+
+  assert.match(fixture.elements["sandbox-message"].value, /2월 31일/);
+  assert.equal(fixture.elements["sandbox-copy"].disabled, true);
+  fixture.elements["reservation-sandbox-form"].dispatchEvent(
+    new Event("submit", { cancelable: true })
+  );
+  assert.equal(fixture.elements["sandbox-route"].textContent, "Needs confirmation");
+});
