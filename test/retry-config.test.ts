@@ -47,6 +47,16 @@ test("Given development config, when no host is set, then it binds to loopback",
   assert.equal(config.host, "127.0.0.1");
 });
 
+test("Given a non-PostgreSQL database URL, when config loads, then it is rejected", () => {
+  assert.throws(
+    () => loadConfig({
+      NODE_ENV: "test",
+      DATABASE_URL: "https://database.example.com/travel"
+    }),
+    /DATABASE_URL must use a PostgreSQL URL/
+  );
+});
+
 test("Given every other production secret, when DATABASE_URL is missing, then config rejects in-memory persistence", () => {
   assert.throws(
     () =>

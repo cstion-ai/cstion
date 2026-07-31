@@ -7,7 +7,7 @@ import {
 } from "../shared/schemas.js";
 
 const DATE_PATTERN = /(20\d{2})[-./년\s]+(\d{1,2})[-./월\s]+(\d{1,2})/;
-const TRAVELERS_PATTERN = /(\d+)\s*(명|인|people|pax)/i;
+const TRAVELERS_PATTERN = /(?:^|[^\d.])(-?\d+)(?![.\d])\s*(명|인|people|pax)/i;
 const PRODUCT_PATTERN = /(패키지|항공권|호텔|투어|렌터카|신혼여행|자유여행|골프여행)/;
 
 export const KakaoMessageSchema = ChannelMessageSchema.omit({ channel: true });
@@ -60,8 +60,10 @@ function extractStartDate(text: string): string | undefined {
 }
 
 function extractTravelers(text: string): number | undefined {
-  const value = TRAVELERS_PATTERN.exec(text)?.at(1);
-  return value === undefined ? undefined : Number(value);
+  const textValue = TRAVELERS_PATTERN.exec(text)?.at(1);
+  if (textValue === undefined) return undefined;
+  const value = Number(textValue);
+  return Number.isSafeInteger(value) && value > 0 ? value : undefined;
 }
 
 function inferDestination(text: string): string | undefined {

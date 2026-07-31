@@ -219,3 +219,9 @@ test("Error 로그는 이름을 보존하고 메시지의 PII를 마스킹", () 
   assert.doesNotMatch(redacted, /test@example.com/);
   assert.doesNotMatch(redacted, /1234-5678/);
 });
+
+test("전화번호와 비슷한 UUID는 로그에서 훼손하지 않음", () => {
+  const customerId = "12345678-1234-1234-8234-123456789012";
+
+  assert.match(safeLogPayload({ customerId }), new RegExp(customerId));
+});

@@ -1,11 +1,13 @@
 import { z } from "zod";
 
+const ProviderIdentifierSchema = z.string().min(1).max(255);
+
 export const ChannelSchema = z.enum(["kakao", "wechat", "google-sheet", "booking"]);
 
 export const ChannelMessageSchema = z.object({
   channel: ChannelSchema,
-  providerEventId: z.string().min(1),
-  providerUserId: z.string().min(1),
+  providerEventId: ProviderIdentifierSchema,
+  providerUserId: ProviderIdentifierSchema,
   text: z.string().min(1),
   receivedAt: z.string().datetime(),
   profile: z.object({ nickname: z.string().optional(), phone: z.string().optional(), email: z.string().email().optional() }).optional()
@@ -15,8 +17,8 @@ export type ChannelMessage = z.infer<typeof ChannelMessageSchema>;
 
 export const ReservationDraftSchema = z.object({
   channel: ChannelSchema,
-  providerEventId: z.string().min(1),
-  providerUserId: z.string().min(1),
+  providerEventId: ProviderIdentifierSchema,
+  providerUserId: ProviderIdentifierSchema,
   customerName: z.string().min(1),
   phone: z.string().optional(),
   email: z.string().email().optional(),

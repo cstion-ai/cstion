@@ -1,8 +1,8 @@
 import type { Server } from "node:http";
-import { pathToFileURL } from "node:url";
 import { createAppServer } from "./server/http-server.js";
 import { createAppRuntime } from "./server/runtime.js";
 import { loadConfig, type PlatformConfig } from "./shared/config.js";
+import { isMainModule } from "./shared/main-module.js";
 
 export async function startServer(config: PlatformConfig = loadConfig()): Promise<Server> {
   const runtime = createAppRuntime(config);
@@ -35,6 +35,6 @@ export async function startServer(config: PlatformConfig = loadConfig()): Promis
   return server;
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (isMainModule(import.meta.url)) {
   await startServer();
 }

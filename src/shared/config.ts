@@ -1,5 +1,10 @@
 import { z } from "zod";
 
+export const DatabaseUrlSchema = z.string().url().refine(
+  (value) => /^postgres(?:ql)?:\/\//i.test(value),
+  { message: "DATABASE_URL must use a PostgreSQL URL" }
+);
+
 const EnvSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   HOST: z.string().min(1).optional(),
@@ -11,7 +16,7 @@ const EnvSchema = z.object({
   KAKAO_CLIENT_SECRET: z.string().optional(),
   KAKAO_WEBHOOK_SECRET: z.string().optional(),
   GOOGLE_SHEET_ID: z.string().optional(),
-  DATABASE_URL: z.string().min(1).optional()
+  DATABASE_URL: DatabaseUrlSchema.optional()
 }).superRefine((env, context) => {
   if (env.NODE_ENV !== "production") return;
   const requiredKeys: readonly ProductionRequiredKey[] = [

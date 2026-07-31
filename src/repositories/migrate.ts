@@ -1,11 +1,12 @@
 import { readFile } from "node:fs/promises";
-import { pathToFileURL } from "node:url";
 import { Pool } from "pg";
 import { z } from "zod";
 import { safeLogPayload } from "../platform/redaction.js";
+import { DatabaseUrlSchema } from "../shared/config.js";
+import { isMainModule } from "../shared/main-module.js";
 
 const MigrationEnvironmentSchema = z.object({
-  DATABASE_URL: z.string().min(1)
+  DATABASE_URL: DatabaseUrlSchema
 });
 const MIGRATION_FILES = ["001_harden_existing_schema.sql"];
 
@@ -96,7 +97,7 @@ class MigrationInvariantError extends Error {
   readonly name = "MigrationInvariantError";
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (isMainModule(import.meta.url)) {
   try {
     await runMigrationsFromEnvironment();
     console.log("Database migrations completed");

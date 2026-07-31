@@ -9,6 +9,7 @@ import { ClassifiedError, defaultRetryPolicy, runWithRetry } from "../platform/r
 import type { RetryPolicy } from "../platform/retry.js";
 import { FakeBookingRepository, FakeCustomerRepository, FakePostgresIdempotencyRepository } from "../repositories/fakes.js";
 import type { BookingRepository, CustomerRepository, IdempotencyRepository } from "../repositories/interfaces.js";
+import { isMainModule } from "../shared/main-module.js";
 
 export type PipelineDependencies = {
   readonly idempotencyRepository: IdempotencyRepository;
@@ -86,7 +87,7 @@ export function createInMemoryDemoPipeline() {
 
 export const handleKakaoMessage = createInMemoryDemoPipeline();
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (isMainModule(import.meta.url)) {
   const result = await handleKakaoMessage({
     providerEventId: "demo-event-1",
     providerUserId: "demo-user",

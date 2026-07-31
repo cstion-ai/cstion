@@ -23,9 +23,11 @@ export class PostgresCustomerRepository implements CustomerRepository {
 
   async upsertByIdentities(input: CustomerUpsertInput): Promise<CrmCustomer> {
     return this.transactions.transaction(async (client) => {
-      const orderedIdentities = [...input.identities].sort((left, right) =>
-        identityLockKey(left).localeCompare(identityLockKey(right))
-      );
+      const orderedIdentities = [...input.identities].sort((left, right) => {
+        const leftKey = identityLockKey(left);
+        const rightKey = identityLockKey(right);
+        return leftKey < rightKey ? -1 : leftKey > rightKey ? 1 : 0;
+      });
 
       for (const identity of orderedIdentities) {
         await client.query(

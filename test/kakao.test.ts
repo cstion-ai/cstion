@@ -6,7 +6,10 @@ import {
   exchangeKakaoAuthorizationCode,
   KakaoOAuthExchangeError
 } from "../src/kakao/oauth.js";
-import { parseKakaoReservation } from "../src/kakao/reservation-parser.js";
+import {
+  KakaoMessageSchema,
+  parseKakaoReservation
+} from "../src/kakao/reservation-parser.js";
 
 test("parseKakaoReservation extracts complete reservation draft", () => {
   const reservation = parseKakaoReservation({
@@ -25,6 +28,39 @@ test("parseKakaoReservation extracts complete reservation draft", () => {
   assert.equal(reservation.travelers, 2);
   assert.equal(reservation.productName, "패키지");
   assert.equal(reservation.confidence, 0.86);
+});
+
+test("Given an overlong provider ID, when the Kakao boundary parses it, then it is rejected", () => {
+  assert.throws(() => KakaoMessageSchema.parse({
+    providerEventId: "x".repeat(256),
+    providerUserId: "user-1",
+    text: "제주 패키지 문의",
+    receivedAt: "2026-07-09T00:00:00.000Z"
+  }));
+});
+
+test("Given a negative traveler count, when the reservation is parsed, then confirmation is required", () => {
+  const reservation = parseKakaoReservation({
+    providerEventId: "event-negative-travelers",
+    providerUserId: "user-1",
+    text: "2026년 9월 3일 오사카 패키지 -1명 예약",
+    receivedAt: "2026-07-09T00:00:00.000Z"
+  });
+
+  assert.equal(reservation.travelers, undefined);
+  assert.deepEqual(reservation.issues, ["travelers"]);
+});
+
+test("Given a fractional traveler count, when the reservation is parsed, then confirmation is required", () => {
+  const reservation = parseKakaoReservation({
+    providerEventId: "event-fractional-travelers",
+    providerUserId: "user-1",
+    text: "2026년 9월 3일 오사카 패키지 1.5명 예약",
+    receivedAt: "2026-07-09T00:00:00.000Z"
+  });
+
+  assert.equal(reservation.travelers, undefined);
+  assert.deepEqual(reservation.issues, ["travelers"]);
 });
 
 test("Given the login boundary, when an authorization URL is built, then it does not request unused personal scopes", () => {
@@ -112,11 +148,36 @@ test("exchangeKakaoAuthorizationCode returns a typed error for invalid success p
   );
 });
 
-async function startTokenServer(statusCode: number): Promise<Server> {
+test("Given an empty token payload, when Kakao reports success, then the response is rejected", async (context) => {
+  const server = await startTokenServer(200, JSON.stringify({
+    token_type: "bearer",
+    access_token: "",
+    expires_in: 0
+  }));
+  context.after(() => closeServer(server));
+  const address = server.address();
+  assert.ok(address && typeof address === "object");
+
+  await assert.rejects(
+    exchangeKakaoAuthorizationCode(
+      {
+        clientId: "rest-key",
+        redirectUri: "https://travel.example.com/auth/kakao/callback",
+        tokenUrl: `http://127.0.0.1:${address.port}/token`
+      },
+      "authorization-code"
+    ),
+    (error: unknown) =>
+      error instanceof KakaoOAuthExchangeError
+      && error.reason === "invalid_response"
+  );
+});
+
+async function startTokenServer(statusCode: number, body = "{}"): Promise<Server> {
   const { createServer } = await import("node:http");
   const server = createServer((_request, response) => {
     response.writeHead(statusCode);
-    response.end("{}");
+    response.end(body);
   });
   await new Promise<void>((resolve) => server.listen(0, resolve));
   return server;
