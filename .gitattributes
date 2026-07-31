@@ -1,0 +1,2 @@
+# The generated browser bundle preserves whitespace inside dependency template literals.
+docs/assets/reservation-sandbox.js whitespace=-blank-at-eol

@@ -12,11 +12,12 @@ An Apache-2.0 TypeScript and PostgreSQL reference implementation for converting 
 
 ## Current status
 
-The package is version 0.1.1 and is not production-ready. “Implemented” means the code and repository tests exist; it does not mean the capability has passed production or live-service validation.
+The package is version 0.1.2 and is not production-ready. “Implemented” means the code and repository tests exist; it does not mean the capability has passed production or live-service validation.
 
 | Capability | Status |
 | --- | --- |
 | Kakao message normalization and deterministic reservation parsing | Implemented and unit-tested |
+| Install-free browser sandbox | Runs the production parser locally with synthetic text and no network request |
 | Versioned offline reservation evaluation | 10 synthetic Korean cases with typed validation and CI enforcement |
 | HMAC-authenticated Kakao webhook with a 256 KiB limit | Implemented and tested |
 | PostgreSQL event, customer identity, and booking repositories | Implemented with unit tests and a PostgreSQL 16 CI integration suite |
@@ -46,6 +47,8 @@ The current parser is deterministic and rule based. Documentation that mentions 
 See the [threat model](docs/threat-model.md) for trust boundaries and remaining risks.
 
 ## Quick start
+
+Try the deterministic parser in the [browser sandbox](https://cstion-ai.github.io/cstion/#sandbox) without installing anything. It runs locally in the page, accepts synthetic text only, and does not test PostgreSQL or a real CRM connection.
 
 Requirements:
 
@@ -128,6 +131,7 @@ The PostgreSQL-backed runtime stores webhook idempotency and customer identity s
 - [Maintainer guide](docs/maintainer-guide.md)
 - [PostgreSQL verification](docs/postgresql-verification.md)
 - [Reservation evaluation baseline](evaluation/README.md)
+- [Public project-page design contract](DESIGN.md)
 - [Adoption evidence policy](ADOPTERS.md)
 - [Community launch kit](docs/community-launch-kit.md)
 - [Cloud deployment guardrails](cloud/README.md)

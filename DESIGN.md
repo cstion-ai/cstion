@@ -128,6 +128,25 @@ Supporting tokens:
 - **States**: selectable text; no fake copy control.
 - **Accessibility**: commands remain readable at 200% zoom and wrap on narrow screens.
 
+### Browser evaluation sandbox
+
+- **Structure**: synthetic-example selector, editable message, explicit local-only
+  notice, parse action, field summary, confirmation route, JSON result, and
+  evaluation-sharing action.
+- **States**: ready with a checked-in synthetic example, complete result,
+  confirmation-required result, invalid input, copy success/failure, and JSON
+  download.
+- **Surface**: white input panel and navy result panel reuse the command block
+  trust-boundary treatment; field values use the existing evidence-item
+  hierarchy.
+- **Accessibility**: every control has a visible label, status changes use an
+  `aria-live` region, keyboard order follows the workflow, and result meaning
+  is written in text rather than color alone.
+- **Privacy**: copy states that processing stays in the browser and warns users
+  to use synthetic data only. The component makes no network request.
+- **Motion**: only action hover/press states use the standard and micro timing
+  tokens; result updates do not animate.
+
 ### Adoption callout
 
 - **Structure**: honest current count, qualification rule, template and discussion actions.

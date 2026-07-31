@@ -16,7 +16,7 @@ Show GN: 카카오 여행 문의를 PostgreSQL 예약 리드로 바꾸는 TypeSc
 
 현재 구현 범위는 HMAC 웹훅 검증, 256 KiB 본문 제한, Zod 경계 검증, 규칙 기반 예약 정보 추출, 고객 식별자 소유권 충돌 방지, 이벤트 lease·token fencing, 멱등 예약 리드 저장입니다. PostgreSQL 16 기반 마이그레이션·동시성 테스트는 공개 CI에서 실행합니다.
 
-`npm run demo`로 계정이나 API 키 없이 합성 메시지 한 건을 실행할 수 있습니다. 실제 CRM·Google Sheets 어댑터는 아직 fake이며, 그 상태에서는 production 시작을 차단합니다.
+프로젝트 페이지의 브라우저 샌드박스에서 설치 없이 합성 메시지 한 건을 실행할 수 있고, `npm run demo`로 전체 로컬 참조 경로를 확인할 수 있습니다. 실제 CRM·Google Sheets 어댑터는 아직 fake이며, 그 상태에서는 production 시작을 차단합니다.
 
 - 프로젝트 페이지: https://cstion-ai.github.io/cstion/
 - 저장소: https://github.com/cstion-ai/cstion
@@ -36,7 +36,8 @@ I built an Apache-2.0 TypeScript reference pipeline that turns signed Kakao trav
 
 The implemented path includes raw-body HMAC verification, a 256 KiB request limit, Zod parsing, deterministic reservation extraction, event leases with token fencing, customer identity ownership checks, and idempotent booking inserts. A public PostgreSQL 16 CI job covers the recorded migration and concurrency scenarios.
 
-You can run one synthetic message without an account or API key:
+You can run one synthetic message without installing anything in the browser
+sandbox on the project page. To exercise the full local reference path:
 
 ```bash
 git clone https://github.com/cstion-ai/cstion.git
@@ -53,7 +54,10 @@ I would value concrete feedback on the evaluation path: what boundary, fixture, 
 
 ## Product Hunt
 
-Wait until at least one real external adapter or a safe interactive sandbox exists. A source repository alone can be listed, but the current project will get more useful feedback from developer communities than from a broad product launch.
+The safe interactive sandbox now exists. Still wait until there is at least one
+permissioned independent evaluation report or one real external adapter before
+a broad product launch. Developer communities remain the better first channel
+for a reference implementation at this stage.
 
 Suggested later tagline:
 
@@ -61,11 +65,11 @@ Suggested later tagline:
 
 ## Current channel fit
 
-Reviewed on 2026-07-27:
+Reviewed on 2026-07-31:
 
 - [Show GN](https://hada.io/blog/geeknews-show/) fits an early open-source release when visitors can inspect or try it and the post asks for specific feedback.
 - [Show HN](https://news.ycombinator.com/showhn.html) fits something people can run, but its rules prohibit asking for upvotes or supportive comments.
-- [Product Hunt](https://www.producthunt.com/launch) can point directly to a GitHub repository, but a broader launch should wait for a safer interactive product experience.
+- [Product Hunt](https://www.producthunt.com/launch) can point directly to a GitHub repository, but a broader launch should wait for independent evaluation evidence or a real external adapter.
 - [`awesome-nodejs`](https://github.com/sindresorhus/awesome-nodejs/blob/main/contributing.md) is not eligible: its current contribution rules require at least 30 days and 100 stars and reject boilerplates.
 - [`awesome-selfhosted`](https://github.com/awesome-selfhosted/awesome-selfhosted-data/blob/master/CONTRIBUTING.md) is not eligible: its current contribution rules require a substantially older first release and a working end-user application.
 
@@ -74,6 +78,7 @@ Do not submit to an ineligible directory to manufacture a backlink. Recheck the 
 ## Launch checklist
 
 - Confirm the project page and every link load without authentication.
+- Run every browser-sandbox state and verify that no request leaves the page.
 - Run `npm ci` and `npm run demo` from a clean checkout.
 - Confirm CI, PostgreSQL, CodeQL, and the current release are green.
 - State the fake-adapter and production-readiness limits in the launch post.

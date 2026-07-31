@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="styles/base.css" />
     <link rel="stylesheet" href="styles/hero.css" />
     <link rel="stylesheet" href="styles/content.css" />
+    <link rel="stylesheet" href="styles/sandbox.css" />
     <link rel="stylesheet" href="styles/responsive.css" />
     <script type="application/ld+json">
       {
@@ -35,7 +36,7 @@
         "license": "https://www.apache.org/licenses/LICENSE-2.0",
         "programmingLanguage": "TypeScript",
         "runtimePlatform": "Node.js 22",
-        "version": "0.1.1"
+        "version": "0.1.2"
       }
     </script>
   </head>
@@ -48,7 +49,7 @@
           <span>Travel AI Automation</span>
         </a>
         <div class="nav-links">
-          <a href="#demo">Run it</a>
+          <a href="#sandbox">Try it</a>
           <a href="#evidence">Evidence</a>
           <a href="#adopt">Adopt</a>
           <a href="https://github.com/cstion-ai/cstion">GitHub</a>
@@ -66,7 +67,7 @@
             서명된 카카오 여행 문의를 검증하고 PostgreSQL 고객·예약 리드로 변환하는 실행 가능한 오픈소스 예제입니다.
           </p>
           <div class="hero-actions">
-            <a class="action action-primary" href="#demo">Run the 60-second demo</a>
+            <a class="action action-primary" href="#sandbox">Try the browser sandbox</a>
             <a class="action action-outline" href="https://codespaces.new/cstion-ai/cstion">Open in Codespaces</a>
           </div>
           <p class="scope-note">
@@ -122,12 +123,76 @@
         </a>
       </section>
 
-      <section id="demo" class="section demo-section">
+      <section id="sandbox" class="section sandbox-section">
         <div class="section-heading">
-          <p class="overline">Evaluate locally</p>
-          <h2>One synthetic message. No account or API key.</h2>
+          <p class="overline">Evaluate in your browser</p>
+          <h2>See the booking fields before you clone anything.</h2>
           <p>
-            The demo runs the real parser, idempotency boundary, customer creation, booking decision, and fake downstream adapters. It never sends data to a hosted service.
+            Choose a checked-in synthetic Kakao message or edit it, then run the real deterministic parser locally in this page. No account, API key, server, or network request is involved.
+          </p>
+          <ul class="sandbox-boundaries">
+            <li>Use synthetic text only. Do not paste customer messages or contact details.</li>
+            <li>The result tests parsing and confirmation routing, not PostgreSQL or a real CRM connection.</li>
+          </ul>
+        </div>
+
+        <div class="sandbox-shell">
+          <form id="reservation-sandbox-form" class="sandbox-form">
+            <label for="sandbox-example">Synthetic example</label>
+            <select id="sandbox-example" name="example">
+              <option value="complete">Complete reservation</option>
+              <option value="missing-date">Missing start date</option>
+              <option value="invalid-date">Impossible calendar date</option>
+            </select>
+
+            <label for="sandbox-message">Kakao-style message</label>
+            <textarea id="sandbox-message" name="message" maxlength="4000" rows="4" aria-describedby="sandbox-privacy">2026년 9월 3일 오사카 패키지 2명 예약하고 싶어요.</textarea>
+            <p id="sandbox-privacy" class="sandbox-privacy">Processing stays in this browser. The safe result omits the input text and internal IDs.</p>
+
+            <button class="action action-primary" type="submit">Parse locally</button>
+          </form>
+
+          <section id="sandbox-result" class="sandbox-result" data-route="created" aria-labelledby="sandbox-result-title">
+            <div class="sandbox-result-heading">
+              <div>
+                <p class="node-label">Deterministic parser</p>
+                <h3 id="sandbox-result-title">Reservation result</h3>
+              </div>
+              <p id="sandbox-status" class="sandbox-status" role="status" aria-live="polite">Ready to parse.</p>
+            </div>
+
+            <dl class="sandbox-fields">
+              <div><dt>Destination</dt><dd id="sandbox-destination">—</dd></div>
+              <div><dt>Start date</dt><dd id="sandbox-start-date">—</dd></div>
+              <div><dt>Travelers</dt><dd id="sandbox-travelers">—</dd></div>
+              <div><dt>Product</dt><dd id="sandbox-product">—</dd></div>
+            </dl>
+
+            <div class="sandbox-route">
+              <p id="sandbox-route">Waiting for input</p>
+              <span id="sandbox-route-detail">Select Parse locally to evaluate the synthetic message.</span>
+            </div>
+
+            <details class="sandbox-json">
+              <summary>View safe result JSON</summary>
+              <pre><code id="sandbox-json">{}</code></pre>
+            </details>
+
+            <div class="sandbox-result-actions">
+              <button id="sandbox-copy" class="action action-outline" type="button" disabled>Copy safe JSON</button>
+              <button id="sandbox-download" class="action action-outline" type="button" disabled>Download JSON</button>
+              <a class="text-link" href="https://github.com/cstion-ai/cstion/discussions/new?category=show-and-tell">Share an evaluation</a>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section id="local-demo" class="section demo-section">
+        <div class="section-heading">
+          <p class="overline">Run the full local reference path</p>
+          <h2>Take the next step with Node.js 22.</h2>
+          <p>
+            The CLI demo adds the in-memory idempotency boundary, customer creation, booking decision, and fake downstream adapters. It never sends data to a hosted service.
           </p>
         </div>
         <div class="terminal" aria-label="Shell commands for the local demo">
@@ -200,5 +265,6 @@ npm run --silent evaluate:parser</code></pre>
         <a href="https://github.com/cstion-ai/cstion/blob/main/SUPPORT.md">Support</a>
       </div>
     </footer>
+    <script type="module" src="docs/assets/reservation-sandbox.js"></script>
   </body>
 </html>
