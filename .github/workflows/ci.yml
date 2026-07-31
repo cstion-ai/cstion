@@ -35,6 +35,8 @@ jobs:
         run: npm run test:coverage
       - name: Run deterministic reservation evaluation
         run: npm run evaluate:parser
+      - name: Run frozen reservation challenge regression gate
+        run: npm run evaluate:challenge
       - name: Typecheck
         run: npm run typecheck
       - name: Build

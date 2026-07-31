@@ -1,0 +1,1122 @@
+{
+  "schemaVersion": 2,
+  "dataset": {
+    "name": "synthetic-korean-reservation-challenge",
+    "schemaVersion": 2,
+    "createdAt": "2026-07-31",
+    "language": "ko",
+    "domain": "travel-reservation-inquiry",
+    "source": "synthetic",
+    "containsPersonalData": false,
+    "cases": 48,
+    "sha256": "d0f440a7ff98827539235a881a258f6d40e11860bbdbf839acb9306c3e9b084f"
+  },
+  "evaluator": {
+    "id": "cstion-deterministic-kakao-parser",
+    "version": "1"
+  },
+  "summary": {
+    "cases": 48,
+    "validOutputs": 48,
+    "caseExact": {
+      "numerator": 30,
+      "denominator": 48,
+      "rate": 0.625,
+      "wilson95": {
+        "low": 0.4836,
+        "high": 0.7478
+      }
+    },
+    "fields": {
+      "aggregate": {
+        "exact": {
+          "numerator": 167,
+          "denominator": 192,
+          "rate": 0.8698,
+          "wilson95": {
+            "low": 0.8149,
+            "high": 0.9102
+          }
+        },
+        "falsePositive": {
+          "numerator": 18,
+          "denominator": 34,
+          "rate": 0.5294,
+          "wilson95": {
+            "low": 0.3674,
+            "high": 0.6855
+          }
+        },
+        "falseNegative": {
+          "numerator": 6,
+          "denominator": 158,
+          "rate": 0.038,
+          "wilson95": {
+            "low": 0.0175,
+            "high": 0.0804
+          }
+        }
+      },
+      "byField": {
+        "destination": {
+          "exact": {
+            "numerator": 40,
+            "denominator": 48,
+            "rate": 0.8333,
+            "wilson95": {
+              "low": 0.7042,
+              "high": 0.913
+            }
+          },
+          "falsePositive": {
+            "numerator": 5,
+            "denominator": 6,
+            "rate": 0.8333,
+            "wilson95": {
+              "low": 0.4365,
+              "high": 0.9699
+            }
+          },
+          "falseNegative": {
+            "numerator": 3,
+            "denominator": 42,
+            "rate": 0.0714,
+            "wilson95": {
+              "low": 0.0246,
+              "high": 0.1901
+            }
+          }
+        },
+        "startDate": {
+          "exact": {
+            "numerator": 43,
+            "denominator": 48,
+            "rate": 0.8958,
+            "wilson95": {
+              "low": 0.7783,
+              "high": 0.9547
+            }
+          },
+          "falsePositive": {
+            "numerator": 5,
+            "denominator": 10,
+            "rate": 0.5,
+            "wilson95": {
+              "low": 0.2366,
+              "high": 0.7634
+            }
+          },
+          "falseNegative": {
+            "numerator": 0,
+            "denominator": 38,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0.0918
+            }
+          }
+        },
+        "travelers": {
+          "exact": {
+            "numerator": 40,
+            "denominator": 48,
+            "rate": 0.8333,
+            "wilson95": {
+              "low": 0.7042,
+              "high": 0.913
+            }
+          },
+          "falsePositive": {
+            "numerator": 4,
+            "denominator": 11,
+            "rate": 0.3636,
+            "wilson95": {
+              "low": 0.1517,
+              "high": 0.6462
+            }
+          },
+          "falseNegative": {
+            "numerator": 3,
+            "denominator": 37,
+            "rate": 0.0811,
+            "wilson95": {
+              "low": 0.028,
+              "high": 0.213
+            }
+          }
+        },
+        "productName": {
+          "exact": {
+            "numerator": 44,
+            "denominator": 48,
+            "rate": 0.9167,
+            "wilson95": {
+              "low": 0.8045,
+              "high": 0.9671
+            }
+          },
+          "falsePositive": {
+            "numerator": 4,
+            "denominator": 7,
+            "rate": 0.5714,
+            "wilson95": {
+              "low": 0.2505,
+              "high": 0.8418
+            }
+          },
+          "falseNegative": {
+            "numerator": 0,
+            "denominator": 41,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0.0857
+            }
+          }
+        }
+      }
+    },
+    "abstention": {
+      "precision": {
+        "numerator": 16,
+        "denominator": 22,
+        "rate": 0.7273,
+        "wilson95": {
+          "low": 0.5185,
+          "high": 0.8685
+        }
+      },
+      "recall": {
+        "numerator": 16,
+        "denominator": 34,
+        "rate": 0.4706,
+        "wilson95": {
+          "low": 0.3145,
+          "high": 0.6326
+        }
+      }
+    },
+    "route": {
+      "confusion": {
+        "expectedCreated": {
+          "actualCreated": 18,
+          "actualNeedsConfirmation": 6
+        },
+        "expectedNeedsConfirmation": {
+          "actualCreated": 11,
+          "actualNeedsConfirmation": 13
+        }
+      },
+      "accuracy": {
+        "numerator": 31,
+        "denominator": 48,
+        "rate": 0.6458,
+        "wilson95": {
+          "low": 0.5044,
+          "high": 0.7657
+        }
+      }
+    },
+    "confirmationSetExact": {
+      "numerator": 31,
+      "denominator": 48,
+      "rate": 0.6458,
+      "wilson95": {
+        "low": 0.5044,
+        "high": 0.7657
+      }
+    },
+    "invalidOutputs": 0,
+    "extractorErrors": 0,
+    "byCategory": {
+      "canonical-complete": {
+        "cases": 6,
+        "validOutputs": 6,
+        "caseExact": {
+          "numerator": 6,
+          "denominator": 6,
+          "rate": 1,
+          "wilson95": {
+            "low": 0.6097,
+            "high": 1
+          }
+        },
+        "fields": {
+          "exact": {
+            "numerator": 24,
+            "denominator": 24,
+            "rate": 1,
+            "wilson95": {
+              "low": 0.862,
+              "high": 1
+            }
+          },
+          "falsePositive": {
+            "numerator": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null
+          },
+          "falseNegative": {
+            "numerator": 0,
+            "denominator": 24,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0.138
+            }
+          }
+        },
+        "abstention": {
+          "precision": {
+            "numerator": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null
+          },
+          "recall": {
+            "numerator": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null
+          }
+        },
+        "route": {
+          "confusion": {
+            "expectedCreated": {
+              "actualCreated": 6,
+              "actualNeedsConfirmation": 0
+            },
+            "expectedNeedsConfirmation": {
+              "actualCreated": 0,
+              "actualNeedsConfirmation": 0
+            }
+          },
+          "accuracy": {
+            "numerator": 6,
+            "denominator": 6,
+            "rate": 1,
+            "wilson95": {
+              "low": 0.6097,
+              "high": 1
+            }
+          }
+        },
+        "confirmationSetExact": {
+          "numerator": 6,
+          "denominator": 6,
+          "rate": 1,
+          "wilson95": {
+            "low": 0.6097,
+            "high": 1
+          }
+        },
+        "invalidOutputs": 0,
+        "extractorErrors": 0
+      },
+      "date-format-variants": {
+        "cases": 6,
+        "validOutputs": 6,
+        "caseExact": {
+          "numerator": 6,
+          "denominator": 6,
+          "rate": 1,
+          "wilson95": {
+            "low": 0.6097,
+            "high": 1
+          }
+        },
+        "fields": {
+          "exact": {
+            "numerator": 24,
+            "denominator": 24,
+            "rate": 1,
+            "wilson95": {
+              "low": 0.862,
+              "high": 1
+            }
+          },
+          "falsePositive": {
+            "numerator": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null
+          },
+          "falseNegative": {
+            "numerator": 0,
+            "denominator": 24,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0.138
+            }
+          }
+        },
+        "abstention": {
+          "precision": {
+            "numerator": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null
+          },
+          "recall": {
+            "numerator": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null
+          }
+        },
+        "route": {
+          "confusion": {
+            "expectedCreated": {
+              "actualCreated": 6,
+              "actualNeedsConfirmation": 0
+            },
+            "expectedNeedsConfirmation": {
+              "actualCreated": 0,
+              "actualNeedsConfirmation": 0
+            }
+          },
+          "accuracy": {
+            "numerator": 6,
+            "denominator": 6,
+            "rate": 1,
+            "wilson95": {
+              "low": 0.6097,
+              "high": 1
+            }
+          }
+        },
+        "confirmationSetExact": {
+          "numerator": 6,
+          "denominator": 6,
+          "rate": 1,
+          "wilson95": {
+            "low": 0.6097,
+            "high": 1
+          }
+        },
+        "invalidOutputs": 0,
+        "extractorErrors": 0
+      },
+      "code-switched-units": {
+        "cases": 6,
+        "validOutputs": 6,
+        "caseExact": {
+          "numerator": 3,
+          "denominator": 6,
+          "rate": 0.5,
+          "wilson95": {
+            "low": 0.1876,
+            "high": 0.8124
+          }
+        },
+        "fields": {
+          "exact": {
+            "numerator": 21,
+            "denominator": 24,
+            "rate": 0.875,
+            "wilson95": {
+              "low": 0.69,
+              "high": 0.9566
+            }
+          },
+          "falsePositive": {
+            "numerator": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null
+          },
+          "falseNegative": {
+            "numerator": 3,
+            "denominator": 24,
+            "rate": 0.125,
+            "wilson95": {
+              "low": 0.0434,
+              "high": 0.31
+            }
+          }
+        },
+        "abstention": {
+          "precision": {
+            "numerator": 0,
+            "denominator": 3,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0.5615
+            }
+          },
+          "recall": {
+            "numerator": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null
+          }
+        },
+        "route": {
+          "confusion": {
+            "expectedCreated": {
+              "actualCreated": 3,
+              "actualNeedsConfirmation": 3
+            },
+            "expectedNeedsConfirmation": {
+              "actualCreated": 0,
+              "actualNeedsConfirmation": 0
+            }
+          },
+          "accuracy": {
+            "numerator": 3,
+            "denominator": 6,
+            "rate": 0.5,
+            "wilson95": {
+              "low": 0.1876,
+              "high": 0.8124
+            }
+          }
+        },
+        "confirmationSetExact": {
+          "numerator": 3,
+          "denominator": 6,
+          "rate": 0.5,
+          "wilson95": {
+            "low": 0.1876,
+            "high": 0.8124
+          }
+        },
+        "invalidOutputs": 0,
+        "extractorErrors": 0
+      },
+      "reordered-noisy-complete": {
+        "cases": 6,
+        "validOutputs": 6,
+        "caseExact": {
+          "numerator": 3,
+          "denominator": 6,
+          "rate": 0.5,
+          "wilson95": {
+            "low": 0.1876,
+            "high": 0.8124
+          }
+        },
+        "fields": {
+          "exact": {
+            "numerator": 21,
+            "denominator": 24,
+            "rate": 0.875,
+            "wilson95": {
+              "low": 0.69,
+              "high": 0.9566
+            }
+          },
+          "falsePositive": {
+            "numerator": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null
+          },
+          "falseNegative": {
+            "numerator": 3,
+            "denominator": 24,
+            "rate": 0.125,
+            "wilson95": {
+              "low": 0.0434,
+              "high": 0.31
+            }
+          }
+        },
+        "abstention": {
+          "precision": {
+            "numerator": 0,
+            "denominator": 3,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0.5615
+            }
+          },
+          "recall": {
+            "numerator": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null
+          }
+        },
+        "route": {
+          "confusion": {
+            "expectedCreated": {
+              "actualCreated": 3,
+              "actualNeedsConfirmation": 3
+            },
+            "expectedNeedsConfirmation": {
+              "actualCreated": 0,
+              "actualNeedsConfirmation": 0
+            }
+          },
+          "accuracy": {
+            "numerator": 3,
+            "denominator": 6,
+            "rate": 0.5,
+            "wilson95": {
+              "low": 0.1876,
+              "high": 0.8124
+            }
+          }
+        },
+        "confirmationSetExact": {
+          "numerator": 3,
+          "denominator": 6,
+          "rate": 0.5,
+          "wilson95": {
+            "low": 0.1876,
+            "high": 0.8124
+          }
+        },
+        "invalidOutputs": 0,
+        "extractorErrors": 0
+      },
+      "missing-required": {
+        "cases": 6,
+        "validOutputs": 6,
+        "caseExact": {
+          "numerator": 6,
+          "denominator": 6,
+          "rate": 1,
+          "wilson95": {
+            "low": 0.6097,
+            "high": 1
+          }
+        },
+        "fields": {
+          "exact": {
+            "numerator": 24,
+            "denominator": 24,
+            "rate": 1,
+            "wilson95": {
+              "low": 0.862,
+              "high": 1
+            }
+          },
+          "falsePositive": {
+            "numerator": 0,
+            "denominator": 9,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0.2991
+            }
+          },
+          "falseNegative": {
+            "numerator": 0,
+            "denominator": 15,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0.2039
+            }
+          }
+        },
+        "abstention": {
+          "precision": {
+            "numerator": 9,
+            "denominator": 9,
+            "rate": 1,
+            "wilson95": {
+              "low": 0.7009,
+              "high": 1
+            }
+          },
+          "recall": {
+            "numerator": 9,
+            "denominator": 9,
+            "rate": 1,
+            "wilson95": {
+              "low": 0.7009,
+              "high": 1
+            }
+          }
+        },
+        "route": {
+          "confusion": {
+            "expectedCreated": {
+              "actualCreated": 0,
+              "actualNeedsConfirmation": 0
+            },
+            "expectedNeedsConfirmation": {
+              "actualCreated": 0,
+              "actualNeedsConfirmation": 6
+            }
+          },
+          "accuracy": {
+            "numerator": 6,
+            "denominator": 6,
+            "rate": 1,
+            "wilson95": {
+              "low": 0.6097,
+              "high": 1
+            }
+          }
+        },
+        "confirmationSetExact": {
+          "numerator": 6,
+          "denominator": 6,
+          "rate": 1,
+          "wilson95": {
+            "low": 0.6097,
+            "high": 1
+          }
+        },
+        "invalidOutputs": 0,
+        "extractorErrors": 0
+      },
+      "invalid-values": {
+        "cases": 6,
+        "validOutputs": 6,
+        "caseExact": {
+          "numerator": 6,
+          "denominator": 6,
+          "rate": 1,
+          "wilson95": {
+            "low": 0.6097,
+            "high": 1
+          }
+        },
+        "fields": {
+          "exact": {
+            "numerator": 24,
+            "denominator": 24,
+            "rate": 1,
+            "wilson95": {
+              "low": 0.862,
+              "high": 1
+            }
+          },
+          "falsePositive": {
+            "numerator": 0,
+            "denominator": 6,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0.3903
+            }
+          },
+          "falseNegative": {
+            "numerator": 0,
+            "denominator": 18,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0.1759
+            }
+          }
+        },
+        "abstention": {
+          "precision": {
+            "numerator": 6,
+            "denominator": 6,
+            "rate": 1,
+            "wilson95": {
+              "low": 0.6097,
+              "high": 1
+            }
+          },
+          "recall": {
+            "numerator": 6,
+            "denominator": 6,
+            "rate": 1,
+            "wilson95": {
+              "low": 0.6097,
+              "high": 1
+            }
+          }
+        },
+        "route": {
+          "confusion": {
+            "expectedCreated": {
+              "actualCreated": 0,
+              "actualNeedsConfirmation": 0
+            },
+            "expectedNeedsConfirmation": {
+              "actualCreated": 0,
+              "actualNeedsConfirmation": 6
+            }
+          },
+          "accuracy": {
+            "numerator": 6,
+            "denominator": 6,
+            "rate": 1,
+            "wilson95": {
+              "low": 0.6097,
+              "high": 1
+            }
+          }
+        },
+        "confirmationSetExact": {
+          "numerator": 6,
+          "denominator": 6,
+          "rate": 1,
+          "wilson95": {
+            "low": 0.6097,
+            "high": 1
+          }
+        },
+        "invalidOutputs": 0,
+        "extractorErrors": 0
+      },
+      "ambiguous-or-multiple": {
+        "cases": 6,
+        "validOutputs": 6,
+        "caseExact": {
+          "numerator": 0,
+          "denominator": 6,
+          "rate": 0,
+          "wilson95": {
+            "low": 0,
+            "high": 0.3903
+          }
+        },
+        "fields": {
+          "exact": {
+            "numerator": 14,
+            "denominator": 24,
+            "rate": 0.5833,
+            "wilson95": {
+              "low": 0.3883,
+              "high": 0.7553
+            }
+          },
+          "falsePositive": {
+            "numerator": 10,
+            "denominator": 10,
+            "rate": 1,
+            "wilson95": {
+              "low": 0.7225,
+              "high": 1
+            }
+          },
+          "falseNegative": {
+            "numerator": 0,
+            "denominator": 14,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0.2153
+            }
+          }
+        },
+        "abstention": {
+          "precision": {
+            "numerator": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson95": null
+          },
+          "recall": {
+            "numerator": 0,
+            "denominator": 10,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0.2775
+            }
+          }
+        },
+        "route": {
+          "confusion": {
+            "expectedCreated": {
+              "actualCreated": 0,
+              "actualNeedsConfirmation": 0
+            },
+            "expectedNeedsConfirmation": {
+              "actualCreated": 6,
+              "actualNeedsConfirmation": 0
+            }
+          },
+          "accuracy": {
+            "numerator": 0,
+            "denominator": 6,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0.3903
+            }
+          }
+        },
+        "confirmationSetExact": {
+          "numerator": 0,
+          "denominator": 6,
+          "rate": 0,
+          "wilson95": {
+            "low": 0,
+            "high": 0.3903
+          }
+        },
+        "invalidOutputs": 0,
+        "extractorErrors": 0
+      },
+      "unsupported-or-negated": {
+        "cases": 6,
+        "validOutputs": 6,
+        "caseExact": {
+          "numerator": 0,
+          "denominator": 6,
+          "rate": 0,
+          "wilson95": {
+            "low": 0,
+            "high": 0.3903
+          }
+        },
+        "fields": {
+          "exact": {
+            "numerator": 15,
+            "denominator": 24,
+            "rate": 0.625,
+            "wilson95": {
+              "low": 0.4271,
+              "high": 0.7884
+            }
+          },
+          "falsePositive": {
+            "numerator": 8,
+            "denominator": 9,
+            "rate": 0.8889,
+            "wilson95": {
+              "low": 0.565,
+              "high": 0.9801
+            }
+          },
+          "falseNegative": {
+            "numerator": 0,
+            "denominator": 15,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0.2039
+            }
+          }
+        },
+        "abstention": {
+          "precision": {
+            "numerator": 1,
+            "denominator": 1,
+            "rate": 1,
+            "wilson95": {
+              "low": 0.2065,
+              "high": 1
+            }
+          },
+          "recall": {
+            "numerator": 1,
+            "denominator": 9,
+            "rate": 0.1111,
+            "wilson95": {
+              "low": 0.0199,
+              "high": 0.435
+            }
+          }
+        },
+        "route": {
+          "confusion": {
+            "expectedCreated": {
+              "actualCreated": 0,
+              "actualNeedsConfirmation": 0
+            },
+            "expectedNeedsConfirmation": {
+              "actualCreated": 5,
+              "actualNeedsConfirmation": 1
+            }
+          },
+          "accuracy": {
+            "numerator": 1,
+            "denominator": 6,
+            "rate": 0.1667,
+            "wilson95": {
+              "low": 0.0301,
+              "high": 0.5635
+            }
+          }
+        },
+        "confirmationSetExact": {
+          "numerator": 1,
+          "denominator": 6,
+          "rate": 0.1667,
+          "wilson95": {
+            "low": 0.0301,
+            "high": 0.5635
+          }
+        },
+        "invalidOutputs": 0,
+        "extractorErrors": 0
+      }
+    }
+  },
+  "knownFailures": [
+    {
+      "id": "code-switched-guests",
+      "category": "code-switched-units",
+      "reasons": [
+        "travelers",
+        "route",
+        "confirmation_fields"
+      ]
+    },
+    {
+      "id": "code-switched-adults",
+      "category": "code-switched-units",
+      "reasons": [
+        "travelers",
+        "route",
+        "confirmation_fields"
+      ]
+    },
+    {
+      "id": "code-switched-party-of",
+      "category": "code-switched-units",
+      "reasons": [
+        "travelers",
+        "route",
+        "confirmation_fields"
+      ]
+    },
+    {
+      "id": "reordered-noisy-sapporo",
+      "category": "reordered-noisy-complete",
+      "reasons": [
+        "destination",
+        "route",
+        "confirmation_fields"
+      ]
+    },
+    {
+      "id": "reordered-noisy-taipei",
+      "category": "reordered-noisy-complete",
+      "reasons": [
+        "destination",
+        "route",
+        "confirmation_fields"
+      ]
+    },
+    {
+      "id": "reordered-noisy-singapore",
+      "category": "reordered-noisy-complete",
+      "reasons": [
+        "destination",
+        "route",
+        "confirmation_fields"
+      ]
+    },
+    {
+      "id": "ambiguous-multiple-destinations",
+      "category": "ambiguous-or-multiple",
+      "reasons": [
+        "destination",
+        "route",
+        "confirmation_fields"
+      ]
+    },
+    {
+      "id": "ambiguous-multiple-dates",
+      "category": "ambiguous-or-multiple",
+      "reasons": [
+        "startDate",
+        "route",
+        "confirmation_fields"
+      ]
+    },
+    {
+      "id": "ambiguous-multiple-traveler-counts",
+      "category": "ambiguous-or-multiple",
+      "reasons": [
+        "travelers",
+        "route",
+        "confirmation_fields"
+      ]
+    },
+    {
+      "id": "ambiguous-multiple-products",
+      "category": "ambiguous-or-multiple",
+      "reasons": [
+        "productName",
+        "route",
+        "confirmation_fields"
+      ]
+    },
+    {
+      "id": "ambiguous-destination-and-date",
+      "category": "ambiguous-or-multiple",
+      "reasons": [
+        "destination",
+        "startDate",
+        "route",
+        "confirmation_fields"
+      ]
+    },
+    {
+      "id": "ambiguous-two-complete-options",
+      "category": "ambiguous-or-multiple",
+      "reasons": [
+        "destination",
+        "startDate",
+        "travelers",
+        "productName",
+        "route",
+        "confirmation_fields"
+      ]
+    },
+    {
+      "id": "negated-corrected-destination",
+      "category": "unsupported-or-negated",
+      "reasons": [
+        "destination",
+        "route",
+        "confirmation_fields"
+      ]
+    },
+    {
+      "id": "negated-corrected-start-date",
+      "category": "unsupported-or-negated",
+      "reasons": [
+        "startDate",
+        "route",
+        "confirmation_fields"
+      ]
+    },
+    {
+      "id": "negated-corrected-travelers",
+      "category": "unsupported-or-negated",
+      "reasons": [
+        "travelers",
+        "route",
+        "confirmation_fields"
+      ]
+    },
+    {
+      "id": "negated-corrected-product",
+      "category": "unsupported-or-negated",
+      "reasons": [
+        "productName",
+        "route",
+        "confirmation_fields"
+      ]
+    },
+    {
+      "id": "negated-entire-reservation-intent",
+      "category": "unsupported-or-negated",
+      "reasons": [
+        "destination",
+        "startDate",
+        "travelers",
+        "productName",
+        "route",
+        "confirmation_fields"
+      ]
+    },
+    {
+      "id": "unsupported-korean-party-composition",
+      "category": "unsupported-or-negated",
+      "reasons": [
+        "travelers"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1072 @@
+{
+  "schemaVersion": 2,
+  "kind": "challenge",
+  "name": "synthetic-korean-reservation-challenge",
+  "createdAt": "2026-07-31",
+  "languages": ["ko"],
+  "domain": "travel-reservation-inquiry",
+  "labelPolicy": "reservation-fields-v1",
+  "provenance": {
+    "source": "synthetic",
+    "containsPersonalData": false,
+    "description": "Hand-authored Korean travel-reservation challenge cases. The messages and provider identifiers are synthetic; no customer records, contact details, profiles, credentials, or copied conversations are included."
+  },
+  "cases": [
+    {
+      "id": "canonical-complete-osaka-package",
+      "category": "canonical-complete",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-001",
+        "providerUserId": "challenge-user-001",
+        "text": "2027년 1월 8일 오사카 패키지 2명 예약하고 싶어요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "오사카",
+          "startDate": "2027-01-08",
+          "travelers": 2,
+          "productName": "패키지"
+        },
+        "route": "created",
+        "confirmationFields": []
+      }
+    },
+    {
+      "id": "canonical-complete-jeju-hotel",
+      "category": "canonical-complete",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-002",
+        "providerUserId": "challenge-user-002",
+        "text": "2027년 2월 9일 제주 호텔 3인 예약 부탁드립니다.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "제주",
+          "startDate": "2027-02-09",
+          "travelers": 3,
+          "productName": "호텔"
+        },
+        "route": "created",
+        "confirmationFields": []
+      }
+    },
+    {
+      "id": "canonical-complete-tokyo-flight",
+      "category": "canonical-complete",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-003",
+        "providerUserId": "challenge-user-003",
+        "text": "2027년 3월 10일 도쿄 항공권 4명 예약 문의합니다.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "도쿄",
+          "startDate": "2027-03-10",
+          "travelers": 4,
+          "productName": "항공권"
+        },
+        "route": "created",
+        "confirmationFields": []
+      }
+    },
+    {
+      "id": "canonical-complete-bangkok-tour",
+      "category": "canonical-complete",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-004",
+        "providerUserId": "challenge-user-004",
+        "text": "2027년 4월 11일 방콕 투어 5명으로 신청할게요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "방콕",
+          "startDate": "2027-04-11",
+          "travelers": 5,
+          "productName": "투어"
+        },
+        "route": "created",
+        "confirmationFields": []
+      }
+    },
+    {
+      "id": "canonical-complete-danang-free-travel",
+      "category": "canonical-complete",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-005",
+        "providerUserId": "challenge-user-005",
+        "text": "2027년 5월 12일 다낭 자유여행 2인 견적 요청합니다.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "다낭",
+          "startDate": "2027-05-12",
+          "travelers": 2,
+          "productName": "자유여행"
+        },
+        "route": "created",
+        "confirmationFields": []
+      }
+    },
+    {
+      "id": "canonical-complete-paris-honeymoon",
+      "category": "canonical-complete",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-006",
+        "providerUserId": "challenge-user-006",
+        "text": "2027년 6월 13일 파리 신혼여행 2명 예약 원합니다.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "파리",
+          "startDate": "2027-06-13",
+          "travelers": 2,
+          "productName": "신혼여행"
+        },
+        "route": "created",
+        "confirmationFields": []
+      }
+    },
+    {
+      "id": "date-format-hyphen-depart",
+      "category": "date-format-variants",
+      "language": "ko",
+      "features": ["english-code-switch"],
+      "input": {
+        "providerEventId": "challenge-event-007",
+        "providerUserId": "challenge-user-007",
+        "text": "depart 2027-07-14, 오사카 패키지 2명 예약 부탁해요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "오사카",
+          "startDate": "2027-07-14",
+          "travelers": 2,
+          "productName": "패키지"
+        },
+        "route": "created",
+        "confirmationFields": []
+      }
+    },
+    {
+      "id": "date-format-dot-start",
+      "category": "date-format-variants",
+      "language": "ko",
+      "features": ["english-code-switch"],
+      "input": {
+        "providerEventId": "challenge-event-008",
+        "providerUserId": "challenge-user-008",
+        "text": "start 2027.08.15 제주 호텔 3인 예약해 주세요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "제주",
+          "startDate": "2027-08-15",
+          "travelers": 3,
+          "productName": "호텔"
+        },
+        "route": "created",
+        "confirmationFields": []
+      }
+    },
+    {
+      "id": "date-format-slash-check-in",
+      "category": "date-format-variants",
+      "language": "ko",
+      "features": ["english-code-switch"],
+      "input": {
+        "providerEventId": "challenge-event-009",
+        "providerUserId": "challenge-user-009",
+        "text": "check-in 2027/9/16 도쿄 호텔 4명으로 문의합니다.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "도쿄",
+          "startDate": "2027-09-16",
+          "travelers": 4,
+          "productName": "호텔"
+        },
+        "route": "created",
+        "confirmationFields": []
+      }
+    },
+    {
+      "id": "date-format-korean-travel-date",
+      "category": "date-format-variants",
+      "language": "ko",
+      "features": ["english-code-switch"],
+      "input": {
+        "providerEventId": "challenge-event-010",
+        "providerUserId": "challenge-user-010",
+        "text": "travel date 2027년 10월 17일, 방콕 투어 5인 예약입니다.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "방콕",
+          "startDate": "2027-10-17",
+          "travelers": 5,
+          "productName": "투어"
+        },
+        "route": "created",
+        "confirmationFields": []
+      }
+    },
+    {
+      "id": "date-format-spaced-departure",
+      "category": "date-format-variants",
+      "language": "ko",
+      "features": ["english-code-switch"],
+      "input": {
+        "providerEventId": "challenge-event-011",
+        "providerUserId": "challenge-user-011",
+        "text": "departure: 2027 - 11 - 18 / 다낭 항공권 / 2명 예약",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "다낭",
+          "startDate": "2027-11-18",
+          "travelers": 2,
+          "productName": "항공권"
+        },
+        "route": "created",
+        "confirmationFields": []
+      }
+    },
+    {
+      "id": "date-format-space-on",
+      "category": "date-format-variants",
+      "language": "ko",
+      "features": ["english-code-switch"],
+      "input": {
+        "providerEventId": "challenge-event-012",
+        "providerUserId": "challenge-user-012",
+        "text": "on 2027 12 19 파리 패키지를 3명으로 예약하고 싶어요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "파리",
+          "startDate": "2027-12-19",
+          "travelers": 3,
+          "productName": "패키지"
+        },
+        "route": "created",
+        "confirmationFields": []
+      }
+    },
+    {
+      "id": "code-switched-lowercase-pax",
+      "category": "code-switched-units",
+      "language": "ko",
+      "features": ["english-code-switch"],
+      "input": {
+        "providerEventId": "challenge-event-013",
+        "providerUserId": "challenge-user-013",
+        "text": "2028년 1월 20일 오사카 패키지 2 pax 예약 부탁해요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "오사카",
+          "startDate": "2028-01-20",
+          "travelers": 2,
+          "productName": "패키지"
+        },
+        "route": "created",
+        "confirmationFields": []
+      }
+    },
+    {
+      "id": "code-switched-uppercase-pax",
+      "category": "code-switched-units",
+      "language": "ko",
+      "features": ["english-code-switch"],
+      "input": {
+        "providerEventId": "challenge-event-014",
+        "providerUserId": "challenge-user-014",
+        "text": "2028년 2월 21일 제주 호텔 3 PAX로 예약합니다.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "제주",
+          "startDate": "2028-02-21",
+          "travelers": 3,
+          "productName": "호텔"
+        },
+        "route": "created",
+        "confirmationFields": []
+      }
+    },
+    {
+      "id": "code-switched-people",
+      "category": "code-switched-units",
+      "language": "ko",
+      "features": ["english-code-switch"],
+      "input": {
+        "providerEventId": "challenge-event-015",
+        "providerUserId": "challenge-user-015",
+        "text": "2028년 3월 22일 도쿄 투어 4 people 신청할게요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "도쿄",
+          "startDate": "2028-03-22",
+          "travelers": 4,
+          "productName": "투어"
+        },
+        "route": "created",
+        "confirmationFields": []
+      }
+    },
+    {
+      "id": "code-switched-guests",
+      "category": "code-switched-units",
+      "language": "ko",
+      "features": ["english-code-switch"],
+      "input": {
+        "providerEventId": "challenge-event-016",
+        "providerUserId": "challenge-user-016",
+        "text": "2028년 4월 23일 방콕 호텔 5 guests 예약 문의예요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "방콕",
+          "startDate": "2028-04-23",
+          "travelers": 5,
+          "productName": "호텔"
+        },
+        "route": "created",
+        "confirmationFields": []
+      }
+    },
+    {
+      "id": "code-switched-adults",
+      "category": "code-switched-units",
+      "language": "ko",
+      "features": ["english-code-switch"],
+      "input": {
+        "providerEventId": "challenge-event-017",
+        "providerUserId": "challenge-user-017",
+        "text": "2028년 5월 24일 다낭 자유여행 2 adults 예약하고 싶어요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "다낭",
+          "startDate": "2028-05-24",
+          "travelers": 2,
+          "productName": "자유여행"
+        },
+        "route": "created",
+        "confirmationFields": []
+      }
+    },
+    {
+      "id": "code-switched-party-of",
+      "category": "code-switched-units",
+      "language": "ko",
+      "features": ["english-code-switch"],
+      "input": {
+        "providerEventId": "challenge-event-018",
+        "providerUserId": "challenge-user-018",
+        "text": "2028년 6월 25일 파리 패키지 party of 6 예약 요청합니다.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "파리",
+          "startDate": "2028-06-25",
+          "travelers": 6,
+          "productName": "패키지"
+        },
+        "route": "created",
+        "confirmationFields": []
+      }
+    },
+    {
+      "id": "reordered-noisy-budget-and-nights",
+      "category": "reordered-noisy-complete",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-019",
+        "providerUserId": "challenge-user-019",
+        "text": "예산 120만원, 4박 예정입니다. 인원 3명, 상품 호텔, 목적지 제주, 출발 2028년 7월 26일.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "제주",
+          "startDate": "2028-07-26",
+          "travelers": 3,
+          "productName": "호텔"
+        },
+        "route": "created",
+        "confirmationFields": []
+      }
+    },
+    {
+      "id": "reordered-noisy-multiline-osaka",
+      "category": "reordered-noisy-complete",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-020",
+        "providerUserId": "challenge-user-020",
+        "text": "인원: 2명\n상품: 패키지\n출발: 2028.08.27\n목적지: 오사카\n예약 부탁합니다.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "오사카",
+          "startDate": "2028-08-27",
+          "travelers": 2,
+          "productName": "패키지"
+        },
+        "route": "created",
+        "confirmationFields": []
+      }
+    },
+    {
+      "id": "reordered-noisy-room-count",
+      "category": "reordered-noisy-complete",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-021",
+        "providerUserId": "challenge-user-021",
+        "text": "객실 2개와 조식 3회를 알아보고 있어요. 도쿄 호텔, 예약 인원 5명, 2028/9/28 출발입니다.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "도쿄",
+          "startDate": "2028-09-28",
+          "travelers": 5,
+          "productName": "호텔"
+        },
+        "route": "created",
+        "confirmationFields": []
+      }
+    },
+    {
+      "id": "reordered-noisy-sapporo",
+      "category": "reordered-noisy-complete",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-022",
+        "providerUserId": "challenge-user-022",
+        "text": "렌터카로 부탁해요 — 4명 / 삿포로 / 2028년 10월 29일 / 예약 문의.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "삿포로",
+          "startDate": "2028-10-29",
+          "travelers": 4,
+          "productName": "렌터카"
+        },
+        "route": "created",
+        "confirmationFields": []
+      }
+    },
+    {
+      "id": "reordered-noisy-taipei",
+      "category": "reordered-noisy-complete",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-023",
+        "providerUserId": "challenge-user-023",
+        "text": "예약요청! 2028-11-30, 3인, 항공권, 타이베이. 좌석은 나중에 정할게요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "타이베이",
+          "startDate": "2028-11-30",
+          "travelers": 3,
+          "productName": "항공권"
+        },
+        "route": "created",
+        "confirmationFields": []
+      }
+    },
+    {
+      "id": "reordered-noisy-singapore",
+      "category": "reordered-noisy-complete",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-024",
+        "providerUserId": "challenge-user-024",
+        "text": "투어 문의입니다… 인원은 6명이고, 목적지는 싱가포르예요. 출발일 2028년 12월 31일로 예약해 주세요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "싱가포르",
+          "startDate": "2028-12-31",
+          "travelers": 6,
+          "productName": "투어"
+        },
+        "route": "created",
+        "confirmationFields": []
+      }
+    },
+    {
+      "id": "missing-required-destination",
+      "category": "missing-required",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-025",
+        "providerUserId": "challenge-user-025",
+        "text": "2029년 1월 2일 패키지 2명 예약 문의합니다.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": null,
+          "startDate": "2029-01-02",
+          "travelers": 2,
+          "productName": "패키지"
+        },
+        "route": "needs_confirmation",
+        "confirmationFields": ["destination"]
+      }
+    },
+    {
+      "id": "missing-required-start-date",
+      "category": "missing-required",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-026",
+        "providerUserId": "challenge-user-026",
+        "text": "제주 호텔 3인 예약하고 싶어요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "제주",
+          "startDate": null,
+          "travelers": 3,
+          "productName": "호텔"
+        },
+        "route": "needs_confirmation",
+        "confirmationFields": ["startDate"]
+      }
+    },
+    {
+      "id": "missing-required-travelers",
+      "category": "missing-required",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-027",
+        "providerUserId": "challenge-user-027",
+        "text": "2029년 3월 4일 도쿄 항공권 예약 문의합니다.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "도쿄",
+          "startDate": "2029-03-04",
+          "travelers": null,
+          "productName": "항공권"
+        },
+        "route": "needs_confirmation",
+        "confirmationFields": ["travelers"]
+      }
+    },
+    {
+      "id": "missing-required-product",
+      "category": "missing-required",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-028",
+        "providerUserId": "challenge-user-028",
+        "text": "2029년 4월 5일 방콕 4명 예약하고 싶습니다.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "방콕",
+          "startDate": "2029-04-05",
+          "travelers": 4,
+          "productName": null
+        },
+        "route": "needs_confirmation",
+        "confirmationFields": ["productName"]
+      }
+    },
+    {
+      "id": "missing-required-date-and-product",
+      "category": "missing-required",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-029",
+        "providerUserId": "challenge-user-029",
+        "text": "다낭 2명 예약 문의예요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "다낭",
+          "startDate": null,
+          "travelers": 2,
+          "productName": null
+        },
+        "route": "needs_confirmation",
+        "confirmationFields": ["startDate", "productName"]
+      }
+    },
+    {
+      "id": "missing-required-three-fields",
+      "category": "missing-required",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-030",
+        "providerUserId": "challenge-user-030",
+        "text": "하와이 여행 상담을 받고 싶어요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "하와이",
+          "startDate": null,
+          "travelers": null,
+          "productName": null
+        },
+        "route": "needs_confirmation",
+        "confirmationFields": ["startDate", "travelers", "productName"]
+      }
+    },
+    {
+      "id": "invalid-values-february-thirtieth",
+      "category": "invalid-values",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-031",
+        "providerUserId": "challenge-user-031",
+        "text": "2029년 2월 30일 오사카 패키지 2명 예약해 주세요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "오사카",
+          "startDate": "2029-02-30",
+          "travelers": 2,
+          "productName": "패키지"
+        },
+        "route": "needs_confirmation",
+        "confirmationFields": ["startDate"]
+      }
+    },
+    {
+      "id": "invalid-values-thirteenth-month",
+      "category": "invalid-values",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-032",
+        "providerUserId": "challenge-user-032",
+        "text": "2029년 13월 1일 제주 호텔 3인 예약 문의입니다.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "제주",
+          "startDate": "2029-13-01",
+          "travelers": 3,
+          "productName": "호텔"
+        },
+        "route": "needs_confirmation",
+        "confirmationFields": ["startDate"]
+      }
+    },
+    {
+      "id": "invalid-values-zero-travelers",
+      "category": "invalid-values",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-033",
+        "providerUserId": "challenge-user-033",
+        "text": "2029년 4월 2일 도쿄 투어 0명 예약 요청합니다.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "도쿄",
+          "startDate": "2029-04-02",
+          "travelers": null,
+          "productName": "투어"
+        },
+        "route": "needs_confirmation",
+        "confirmationFields": ["travelers"]
+      }
+    },
+    {
+      "id": "invalid-values-negative-travelers",
+      "category": "invalid-values",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-034",
+        "providerUserId": "challenge-user-034",
+        "text": "2029년 5월 3일 방콕 항공권 -2명 예약 문의입니다.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "방콕",
+          "startDate": "2029-05-03",
+          "travelers": null,
+          "productName": "항공권"
+        },
+        "route": "needs_confirmation",
+        "confirmationFields": ["travelers"]
+      }
+    },
+    {
+      "id": "invalid-values-fractional-travelers",
+      "category": "invalid-values",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-035",
+        "providerUserId": "challenge-user-035",
+        "text": "2029년 6월 4일 다낭 자유여행 1.5명 예약하고 싶어요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "다낭",
+          "startDate": "2029-06-04",
+          "travelers": null,
+          "productName": "자유여행"
+        },
+        "route": "needs_confirmation",
+        "confirmationFields": ["travelers"]
+      }
+    },
+    {
+      "id": "invalid-values-unsafe-integer-travelers",
+      "category": "invalid-values",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-036",
+        "providerUserId": "challenge-user-036",
+        "text": "2029년 7월 5일 파리 패키지 9007199254740992명 예약 요청합니다.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "파리",
+          "startDate": "2029-07-05",
+          "travelers": null,
+          "productName": "패키지"
+        },
+        "route": "needs_confirmation",
+        "confirmationFields": ["travelers"]
+      }
+    },
+    {
+      "id": "ambiguous-multiple-destinations",
+      "category": "ambiguous-or-multiple",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-037",
+        "providerUserId": "challenge-user-037",
+        "text": "2029년 8월 6일 오사카 또는 도쿄 패키지 2명 중 어디든 예약하고 싶어요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": null,
+          "startDate": "2029-08-06",
+          "travelers": 2,
+          "productName": "패키지"
+        },
+        "route": "needs_confirmation",
+        "confirmationFields": ["destination"]
+      }
+    },
+    {
+      "id": "ambiguous-multiple-dates",
+      "category": "ambiguous-or-multiple",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-038",
+        "providerUserId": "challenge-user-038",
+        "text": "제주 호텔 3인, 2029년 9월 7일이나 2029년 9월 14일 중 가능한 날로 예약할게요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "제주",
+          "startDate": null,
+          "travelers": 3,
+          "productName": "호텔"
+        },
+        "route": "needs_confirmation",
+        "confirmationFields": ["startDate"]
+      }
+    },
+    {
+      "id": "ambiguous-multiple-traveler-counts",
+      "category": "ambiguous-or-multiple",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-039",
+        "providerUserId": "challenge-user-039",
+        "text": "2029년 10월 8일 방콕 투어, 2명 또는 3명으로 예약 문의합니다.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "방콕",
+          "startDate": "2029-10-08",
+          "travelers": null,
+          "productName": "투어"
+        },
+        "route": "needs_confirmation",
+        "confirmationFields": ["travelers"]
+      }
+    },
+    {
+      "id": "ambiguous-multiple-products",
+      "category": "ambiguous-or-multiple",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-040",
+        "providerUserId": "challenge-user-040",
+        "text": "2029년 11월 9일 다낭 4명, 호텔이나 패키지 중 하나로 예약하고 싶어요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "다낭",
+          "startDate": "2029-11-09",
+          "travelers": 4,
+          "productName": null
+        },
+        "route": "needs_confirmation",
+        "confirmationFields": ["productName"]
+      }
+    },
+    {
+      "id": "ambiguous-destination-and-date",
+      "category": "ambiguous-or-multiple",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-041",
+        "providerUserId": "challenge-user-041",
+        "text": "파리 2029년 12월 10일 또는 로마 2029년 12월 17일 패키지 2명으로 알아봐 주세요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": null,
+          "startDate": null,
+          "travelers": 2,
+          "productName": "패키지"
+        },
+        "route": "needs_confirmation",
+        "confirmationFields": ["destination", "startDate"]
+      }
+    },
+    {
+      "id": "ambiguous-two-complete-options",
+      "category": "ambiguous-or-multiple",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-042",
+        "providerUserId": "challenge-user-042",
+        "text": "제주 2030년 1월 11일 호텔 2명 또는 오사카 2030년 1월 18일 패키지 3명 중 하나를 예약하려고 해요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": null,
+          "startDate": null,
+          "travelers": null,
+          "productName": null
+        },
+        "route": "needs_confirmation",
+        "confirmationFields": ["destination", "startDate", "travelers", "productName"]
+      }
+    },
+    {
+      "id": "negated-corrected-destination",
+      "category": "unsupported-or-negated",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-043",
+        "providerUserId": "challenge-user-043",
+        "text": "제주는 말고 오사카로, 2030년 2월 12일 패키지 2명 예약해 주세요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "오사카",
+          "startDate": "2030-02-12",
+          "travelers": 2,
+          "productName": "패키지"
+        },
+        "route": "needs_confirmation",
+        "confirmationFields": ["destination"]
+      }
+    },
+    {
+      "id": "negated-corrected-start-date",
+      "category": "unsupported-or-negated",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-044",
+        "providerUserId": "challenge-user-044",
+        "text": "2030년 3월 13일 말고 2030년 3월 14일에 제주 호텔 3인 예약할게요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "제주",
+          "startDate": "2030-03-14",
+          "travelers": 3,
+          "productName": "호텔"
+        },
+        "route": "needs_confirmation",
+        "confirmationFields": ["startDate"]
+      }
+    },
+    {
+      "id": "negated-corrected-travelers",
+      "category": "unsupported-or-negated",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-045",
+        "providerUserId": "challenge-user-045",
+        "text": "2030년 4월 15일 도쿄 투어 2명 아니고 3명으로 예약 부탁해요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "도쿄",
+          "startDate": "2030-04-15",
+          "travelers": 3,
+          "productName": "투어"
+        },
+        "route": "needs_confirmation",
+        "confirmationFields": ["travelers"]
+      }
+    },
+    {
+      "id": "negated-corrected-product",
+      "category": "unsupported-or-negated",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-046",
+        "providerUserId": "challenge-user-046",
+        "text": "2030년 5월 16일 방콕 4명, 호텔 말고 패키지로 예약해 주세요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "방콕",
+          "startDate": "2030-05-16",
+          "travelers": 4,
+          "productName": "패키지"
+        },
+        "route": "needs_confirmation",
+        "confirmationFields": ["productName"]
+      }
+    },
+    {
+      "id": "negated-entire-reservation-intent",
+      "category": "unsupported-or-negated",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-047",
+        "providerUserId": "challenge-user-047",
+        "text": "2030년 6월 17일 다낭 호텔 2명 예약은 하지 않겠습니다.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": null,
+          "startDate": null,
+          "travelers": null,
+          "productName": null
+        },
+        "route": "needs_confirmation",
+        "confirmationFields": ["destination", "startDate", "travelers", "productName"]
+      }
+    },
+    {
+      "id": "unsupported-korean-party-composition",
+      "category": "unsupported-or-negated",
+      "language": "ko",
+      "features": [],
+      "input": {
+        "providerEventId": "challenge-event-048",
+        "providerUserId": "challenge-user-048",
+        "text": "2030년 7월 18일 파리 패키지, 어른 둘과 아이 하나로 예약 문의합니다.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "fields": {
+          "destination": "파리",
+          "startDate": "2030-07-18",
+          "travelers": 3,
+          "productName": "패키지"
+        },
+        "route": "needs_confirmation",
+        "confirmationFields": ["travelers"]
+      }
+    }
+  ]
+}

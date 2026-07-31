@@ -19,13 +19,14 @@ test("Given a version tag matching package metadata, when release notes are prep
 
   execFileSync(
     process.execPath,
-    [PREPARE_RELEASE_SCRIPT, "v0.1.2", notesPath],
+    [PREPARE_RELEASE_SCRIPT, "v0.1.3", notesPath],
     { cwd: PROJECT_ROOT }
   );
 
   const notes = await readFile(notesPath, "utf8");
-  assert.match(notes, /browser-based synthetic reservation sandbox/);
-  assert.match(notes, /offline reservation-parser evaluation/);
+  assert.match(notes, /frozen synthetic challenge/);
+  assert.match(notes, /clipboard completions/);
+  assert.doesNotMatch(notes, /browser-based synthetic reservation sandbox/);
   assert.doesNotMatch(notes, /Upgraded Zod/);
   assert.doesNotMatch(notes, /Apache-2\.0 licensing/);
 });

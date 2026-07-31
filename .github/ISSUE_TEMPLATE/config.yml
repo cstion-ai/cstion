@@ -1,5 +1,5 @@
 blank_issues_enabled: false
 contact_links:
   - name: Confidential security report
-    url: https://github.com/cstion-ai/cstion/blob/main/SECURITY.md
-    about: Follow the confidential reporting instructions in SECURITY.md.
+    url: https://github.com/cstion-ai/cstion/security/advisories/new
+    about: Open a private vulnerability report; do not post sensitive details publicly.

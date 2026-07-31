@@ -54,25 +54,29 @@ No wording change can substitute for missing public usage or adoption evidence.
 
 ## Form fields
 
+The drafts below assume `v0.1.3` has been published. Do not paste them into a
+form until the verified state and public evidence links above have been updated
+to the successful release run.
+
 ### Role
 
 Primary maintainer
 
-### Why does this repository qualify? — draft (495 characters)
+### Why does this repository qualify? — draft
 
-CSTION is an Apache-2.0 safety reference for KakaoTalk travel automation. Kakao reports a 50M-user KakaoTalk ecosystem; that is context, not CSTION adoption. The project combines signed webhook ingestion, crash-safe idempotency, identity-conflict protection, real PostgreSQL 16 concurrency tests, and an install-free synthetic sandbox. I am the primary maintainer. Three releases, reviewed PRs, CI/CodeQL, and a fail-closed production gate show active maintenance. It has zero verified adopters.
+CSTION is an Apache-2.0 reference implementation for safer KakaoTalk travel-inquiry automation. It combines signed webhook ingestion, crash-safe idempotency, identity-conflict protection, a real PostgreSQL 16 concurrency suite, and an install-free synthetic sandbox. Public Codex review/fix history, four releases, CI/CodeQL, and a fail-closed production gate show active maintenance. KakaoTalk scale is ecosystem context only; CSTION has zero verified adopters.
 
-### How will you use API credits? — draft (467 characters)
+### How will you use API credits? — draft
 
-Credits would fund a public, offline comparison of deterministic and optional model-assisted reservation extraction. We will expand the versioned synthetic set, measure per-field exact match, required-field false positives, abstention, invalid output, latency, and cost, and publish failures as regression tests and maintenance notes. Credits will also support PR review and CI triage. No customer messages, identifiers, credentials, or tokens will be sent to models.
+Over 90 days, credits would expand the 48-case synthetic Korean challenge to about 200 reviewed cases and compare the deterministic parser with up to two version-pinned model candidates behind the same Zod boundary. We will publish exact match, false positives, abstention, route accuracy, invalid output, cost, p50/p95 latency, failure cases, and regression fixtures. No customer messages, identifiers, credentials, tokens, or production traffic will be sent to models.
 
-### Anything else we should know? — draft (359 characters)
+### Anything else we should know? — draft
 
-Codex reviews found and helped close durable event-lease, HMAC webhook,
-identity-locking, OAuth-state, and browser race issues. Public main passes Node
-22 CI, PostgreSQL 16, CodeQL, and the tag-triggered release gate. The browser
-sandbox and evaluator use synthetic, profile-free input only. Production
-remains blocked while CRM and Sheets adapters are fakes.
+Codex review/fix history is public and includes event-lease, webhook HMAC,
+identity-locking, OAuth-state, and browser-race hardening. Main passes Node 22,
+PostgreSQL 16, CodeQL, dependency review, and tag release gates. The 48-case
+challenge publishes known failures instead of claiming perfect quality.
+Production remains closed while CRM and Sheets adapters are fakes.
 
 ## Alternative current fit: Codex Open Source Fund
 
@@ -94,13 +98,13 @@ An Apache-2.0 TypeScript and PostgreSQL project that turns Kakao travel inquirie
 
 ### How would API credits be used?
 
-Credits would extend the checked-in offline evaluator with a broader synthetic
-set and optional model candidates behind the same typed output boundary.
-Published reports would compare exact match, false positives, abstention,
-invalid output, latency, and cost; failures would become deterministic tests.
-Credits would also support PR review and CI triage. No customer messages,
-identifiers, credentials, access tokens, or private application data would be
-sent to models.
+Over 90 days, credits would extend the 48-case challenge toward about 200
+reviewed synthetic Korean cases and compare the deterministic parser with up to
+two version-pinned model candidates behind the same Zod boundary. Published
+reports would include exact match, false positives, abstention, route accuracy,
+invalid output, cost, p50/p95 latency, failure cases, and regression fixtures.
+No customer messages, identifiers, credentials, access tokens, production
+traffic, or private application data would be sent to models.
 
 ## Personal fields still required
 

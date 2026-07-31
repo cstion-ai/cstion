@@ -6,10 +6,24 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-08-01
+
+### Added
+
+- Added a frozen synthetic challenge with 48 Korean-domain cases across eight
+  categories, balanced between expected creation and human-confirmation routes.
+- Added a deterministic known-failure baseline so CI detects any challenge
+  result change without pretending that the current parser passes every case.
+- Added field error denominators, abstention measures, route confusion,
+  confirmation-field agreement, category results, and Wilson intervals to the
+  challenge report.
+
 ### Fixed
 
 - Prevent delayed clipboard completions from overwriting a newer browser
   sandbox status after the input or parsed result changes.
+- Measure challenge routing through the production missing-field and calendar
+  validation decision instead of treating parser issue equality as routing.
 
 ### Documentation
 
@@ -19,6 +33,20 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Added a canonical public evidence snapshot that separates reproducible
   maintenance evidence, KakaoTalk ecosystem context, and the current zero-adopter
   state.
+- Added a focused ten-minute independent-evaluation invitation and enabled
+  GitHub private vulnerability reporting with email as a fallback.
+
+### Compatibility
+
+- No runtime API or database schema change is included in 0.1.3. The new
+  challenge command and report are additive evaluation surfaces.
+
+### Known limitations
+
+- The challenge is maintainer-authored synthetic data, not an independent
+  holdout, general accuracy estimate, multilingual result, or adoption signal.
+- Real CRM and Google Sheets adapters remain fakes, so production startup
+  remains blocked.
 
 ## [0.1.2] - 2026-07-31
 
@@ -102,7 +130,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Malformed HTTP request targets return a client error instead of terminating the server process.
 - Checkout credentials are not persisted in CI, CodeQL, or dependency-review jobs.
 
-[Unreleased]: https://github.com/cstion-ai/cstion/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/cstion-ai/cstion/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/cstion-ai/cstion/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/cstion-ai/cstion/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/cstion-ai/cstion/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/cstion-ai/cstion/releases/tag/v0.1.0
