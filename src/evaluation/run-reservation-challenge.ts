@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { readFile, stat } from "node:fs/promises";
+import { open } from "node:fs/promises";
 import { resolve } from "node:path";
 import { parseKakaoReservation } from "../kakao/reservation-parser.js";
 import { isMainModule } from "../shared/main-module.js";
@@ -82,11 +82,27 @@ export async function runReservationChallengeCli(
 }
 
 async function readBoundedInput(location: string | URL): Promise<Buffer> {
-  const fileStats = await stat(location);
-  if (fileStats.size > MAX_INPUT_BYTES) {
-    throw new ReservationChallengeInputError("Challenge input exceeds the 1 MiB limit");
+  const handle = await open(location, "r");
+  try {
+    const source = Buffer.alloc(MAX_INPUT_BYTES + 1);
+    let offset = 0;
+    while (offset < source.length) {
+      const { bytesRead } = await handle.read(
+        source,
+        offset,
+        source.length - offset,
+        offset
+      );
+      if (bytesRead === 0) break;
+      offset += bytesRead;
+    }
+    if (offset > MAX_INPUT_BYTES) {
+      throw new ReservationChallengeInputError("Challenge input exceeds the 1 MiB limit");
+    }
+    return source.subarray(0, offset);
+  } finally {
+    await handle.close();
   }
-  return readFile(location);
 }
 
 class ReservationChallengeInputError extends Error {

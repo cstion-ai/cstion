@@ -41,6 +41,8 @@ jobs:
         run: npm run typecheck
       - name: Build
         run: npm run build
+      - name: Verify source and build evaluation parity
+        run: npm run verify:evaluation-build-parity
       - name: Verify migration asset
         run: cmp src/repositories/migrations/001_harden_existing_schema.sql dist/src/repositories/migrations/001_harden_existing_schema.sql
       - name: Verify browser sandbox asset

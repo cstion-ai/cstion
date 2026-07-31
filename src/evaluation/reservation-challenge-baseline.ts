@@ -131,7 +131,7 @@ function compareSummary(
     "abstention_recall",
     regressions
   );
-  checkHigher(current.route.accuracy, baseline.route.accuracy, "route_accuracy", regressions);
+  compareRoute(current.route, baseline.route, "route", regressions);
   checkHigher(
     current.confirmationSetExact,
     baseline.confirmationSetExact,
@@ -148,7 +148,19 @@ function compareSummary(
     }
     checkHigher(actual.caseExact, expected.caseExact, `category:${category}:case_exact`, regressions);
     compareAggregate(actual.fields, expected.fields, `category:${category}:fields`, regressions);
-    checkHigher(actual.route.accuracy, expected.route.accuracy, `category:${category}:route`, regressions);
+    checkHigher(
+      actual.abstention.precision,
+      expected.abstention.precision,
+      `category:${category}:abstention_precision`,
+      regressions
+    );
+    checkHigher(
+      actual.abstention.recall,
+      expected.abstention.recall,
+      `category:${category}:abstention_recall`,
+      regressions
+    );
+    compareRoute(actual.route, expected.route, `category:${category}:route`, regressions);
     checkHigher(
       actual.confirmationSetExact,
       expected.confirmationSetExact,
@@ -161,6 +173,33 @@ function compareSummary(
     if (actual.extractorErrors > expected.extractorErrors) {
       regressions.push(`category:${category}:extractor_errors`);
     }
+  }
+}
+
+function compareRoute(
+  current: ReservationChallengeReport["summary"]["route"],
+  baseline: ReservationChallengeReport["summary"]["route"],
+  prefix: string,
+  regressions: string[]
+): void {
+  checkHigher(current.accuracy, baseline.accuracy, `${prefix}:accuracy`, regressions);
+  const currentConfusion = current.confusion;
+  const baselineConfusion = baseline.confusion;
+  if (currentConfusion.expectedCreated.actualCreated
+    < baselineConfusion.expectedCreated.actualCreated) {
+    regressions.push(`${prefix}:expected_created:actual_created`);
+  }
+  if (currentConfusion.expectedCreated.actualNeedsConfirmation
+    > baselineConfusion.expectedCreated.actualNeedsConfirmation) {
+    regressions.push(`${prefix}:expected_created:actual_needs_confirmation`);
+  }
+  if (currentConfusion.expectedNeedsConfirmation.actualCreated
+    > baselineConfusion.expectedNeedsConfirmation.actualCreated) {
+    regressions.push(`${prefix}:expected_needs_confirmation:actual_created`);
+  }
+  if (currentConfusion.expectedNeedsConfirmation.actualNeedsConfirmation
+    < baselineConfusion.expectedNeedsConfirmation.actualNeedsConfirmation) {
+    regressions.push(`${prefix}:expected_needs_confirmation:actual_needs_confirmation`);
   }
 }
 
@@ -194,7 +233,7 @@ function checkHigher(
   regressions: string[]
 ): void {
   if (baseline.denominator > 0 && (
-    current.denominator === 0
+    (current.denominator === 0 && baseline.numerator > 0)
     || current.numerator * baseline.denominator
       < baseline.numerator * current.denominator
   )) regressions.push(code);

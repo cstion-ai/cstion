@@ -113,8 +113,9 @@ Implemented starting point:
 - CI runs both commands, and the build contains the same versioned datasets and
   challenge baseline.
 
-A perfect score on this small checked-in set is regression evidence only, not a
-general accuracy, multilingual quality, or model-comparison claim.
+A perfect score on the ten-case v1 smoke set is regression evidence only, not a
+general accuracy, multilingual quality, or model-comparison claim. The v2
+challenge deliberately publishes its 18 known failures.
 
 Required work:
 

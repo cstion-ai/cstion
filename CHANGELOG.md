@@ -12,8 +12,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - Added a frozen synthetic challenge with 48 Korean-domain cases across eight
   categories, balanced between expected creation and human-confirmation routes.
-- Added a deterministic known-failure baseline so CI detects any challenge
-  result change without pretending that the current parser passes every case.
+- Added a deterministic known-failure baseline so CI rejects challenge
+  regressions while allowing measured improvements to known failures.
 - Added field error denominators, abstention measures, route confusion,
   confirmation-field agreement, category results, and Wilson intervals to the
   challenge report.
@@ -40,6 +40,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - No runtime API or database schema change is included in 0.1.3. The new
   challenge command and report are additive evaluation surfaces.
+
+### Rollback
+
+- Roll back the application to the reviewed `v0.1.2` release if the additive
+  evaluation assets or command cause a release-environment problem. No database
+  rollback or data deletion is required because 0.1.3 adds no migration.
 
 ### Known limitations
 
