@@ -206,6 +206,12 @@
   color: var(--accent-cyan-strong);
 }
 
+.evidence-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-6);
+}
+
 .adoption-section {
   margin-bottom: var(--space-20);
   padding: var(--space-10);

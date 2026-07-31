@@ -29,6 +29,31 @@ Evidence:
   resolves to the reviewed merge commit and records verification commands and
   known limitations.
 
+## 0.1.2 — Install-free evaluation and automated release gate
+
+Current state: met on 2026-07-31.
+
+Evidence:
+
+- [pull request #22](https://github.com/cstion-ai/cstion/pull/22) added an
+  install-free synthetic browser sandbox, browser/source parity checks, and the
+  `v0.1.2` release preparation before merging as
+  [`327a243`](https://github.com/cstion-ai/cstion/commit/327a243b9ed0343aac43429693258d7747a63148);
+- [main CI](https://github.com/cstion-ai/cstion/actions/runs/30623841372),
+  [PostgreSQL 16](https://github.com/cstion-ai/cstion/actions/runs/30623841372/job/91134377310),
+  and [CodeQL](https://github.com/cstion-ai/cstion/actions/runs/30623841383)
+  passed on that exact merge commit;
+- the first live
+  [release workflow](https://github.com/cstion-ai/cstion/actions/runs/30623954739)
+  revalidated the complete gate and PostgreSQL 16 before publishing
+  [`v0.1.2`](https://github.com/cstion-ai/cstion/releases/tag/v0.1.2);
+- the [browser sandbox](https://cstion-ai.github.io/cstion/#sandbox) runs the real
+  deterministic parser locally without an account, API key, server, or network
+  request. It remains synthetic evaluation, not production connectivity.
+
+The exact run and claim boundaries are collected in the
+[public evidence snapshot](public-evidence.md).
+
 ## Production adapter gate
 
 Current state: blocked. CRM and Google Sheets adapters are fakes; production
@@ -115,7 +140,7 @@ Exit evidence:
 
 Baseline as of 2026-07-31:
 
-- tagged releases: 2 (`v0.1.0` and `v0.1.1`);
+- tagged releases: 3 (`v0.1.0`, `v0.1.1`, and `v0.1.2`);
 - GitHub stars and forks: 0 and 0;
 - verified external deployments or adopters: 0;
 

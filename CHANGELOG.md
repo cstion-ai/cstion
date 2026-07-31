@@ -6,6 +6,20 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Fixed
+
+- Prevent delayed clipboard completions from overwriting a newer browser
+  sandbox status after the input or parsed result changes.
+
+### Documentation
+
+- Updated the project page and reviewer-facing evidence to the published
+  `v0.1.2` release, exact main CI and CodeQL runs, release-workflow run, and
+  real PostgreSQL 16 job.
+- Added a canonical public evidence snapshot that separates reproducible
+  maintenance evidence, KakaoTalk ecosystem context, and the current zero-adopter
+  state.
+
 ## [0.1.2] - 2026-07-31
 
 ### Added

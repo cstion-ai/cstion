@@ -30,6 +30,10 @@ The package is version 0.1.2 and is not production-ready. “Implemented” mean
 
 The current parser is deterministic and rule based. Documentation that mentions model-assisted extraction describes the roadmap, not an active runtime dependency.
 
+The current public release is [`v0.1.2`](https://github.com/cstion-ai/cstion/releases/tag/v0.1.2).
+Its exact commit, release gate, database job, and claim boundaries are indexed
+in the [public evidence snapshot](docs/public-evidence.md).
+
 ## Implemented safeguards
 
 - PostgreSQL channel events are unique by `channel` and `providerEventId`.
@@ -130,6 +134,7 @@ The PostgreSQL-backed runtime stores webhook idempotency and customer identity s
 - [Roadmap](docs/roadmap.md)
 - [Maintainer guide](docs/maintainer-guide.md)
 - [PostgreSQL verification](docs/postgresql-verification.md)
+- [Public evidence snapshot](docs/public-evidence.md)
 - [Reservation evaluation baseline](evaluation/README.md)
 - [Public project-page design contract](DESIGN.md)
 - [Adoption evidence policy](ADOPTERS.md)
@@ -163,7 +168,9 @@ baseline through the offline typed evaluation interface and support maintainer
 workflows. No runtime model path exists. Real customer messages, credentials,
 and access tokens must not be sent to models.
 
-The draft application and evidence checklist are maintained in [docs/codex-for-oss-application.md](docs/codex-for-oss-application.md).
+The [draft application](docs/codex-for-oss-application.md) and
+[public evidence snapshot](docs/public-evidence.md) keep program wording
+separate from reproducible repository evidence.
 
 ## License
 
