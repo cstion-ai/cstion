@@ -9,6 +9,35 @@ import {
   FAKE_SANDBOX_CONSTRUCTORS
 } from "./support/fake-browser-dom.js";
 
+type ClipboardCompletion = {
+  readonly resolve: () => void;
+  readonly reject: (reason: Error) => void;
+};
+
+class DeferredClipboard {
+  private readonly completions: ClipboardCompletion[] = [];
+
+  writeText(_value: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.completions.push({ resolve, reject });
+    });
+  }
+
+  succeed(): void {
+    this.takeCompletion().resolve();
+  }
+
+  fail(): void {
+    this.takeCompletion().reject(new Error("clipboard blocked"));
+  }
+
+  private takeCompletion(): ClipboardCompletion {
+    const completion = this.completions.shift();
+    if (completion === undefined) throw new Error("No clipboard write is pending");
+    return completion;
+  }
+}
+
 test("Given the browser sandbox, when input changes and is parsed, then stale results cannot be copied", async () => {
   const fixture = createFakeSandboxDocument();
   const clipboardWrites: string[] = [];
@@ -81,4 +110,92 @@ test("Given another checked-in example, when it is selected, then parsing uses t
     new Event("submit", { cancelable: true })
   );
   assert.equal(fixture.elements["sandbox-route"].textContent, "Needs confirmation");
+});
+
+test("Given a pending copy, when the message changes before success, then the newer status remains", async () => {
+  const fixture = createFakeSandboxDocument();
+  const clipboard = new DeferredClipboard();
+  initReservationSandbox(fixture.document, { clipboard }, FAKE_SANDBOX_CONSTRUCTORS);
+
+  fixture.elements["sandbox-copy"].click();
+  fixture.elements["sandbox-message"].value = "다낭 자유여행 2명 문의";
+  fixture.elements["sandbox-message"].dispatchEvent(new Event("input"));
+  clipboard.succeed();
+  await Promise.resolve();
+
+  assert.equal(
+    fixture.elements["sandbox-status"].textContent,
+    "Message changed. Select Parse locally."
+  );
+});
+
+test("Given a pending copy, when an example loads before failure, then the newer status remains", async () => {
+  const fixture = createFakeSandboxDocument();
+  const clipboard = new DeferredClipboard();
+  initReservationSandbox(fixture.document, { clipboard }, FAKE_SANDBOX_CONSTRUCTORS);
+
+  fixture.elements["sandbox-copy"].click();
+  fixture.elements["sandbox-example"].value = "missing-date";
+  fixture.elements["sandbox-example"].dispatchEvent(new Event("change"));
+  clipboard.fail();
+  await Promise.resolve();
+
+  assert.equal(
+    fixture.elements["sandbox-status"].textContent,
+    "Synthetic example loaded. Select Parse locally."
+  );
+});
+
+test("Given a pending copy, when the form is resubmitted before success, then the parsed status remains", async () => {
+  const fixture = createFakeSandboxDocument();
+  const clipboard = new DeferredClipboard();
+  initReservationSandbox(fixture.document, { clipboard }, FAKE_SANDBOX_CONSTRUCTORS);
+
+  fixture.elements["sandbox-copy"].click();
+  fixture.elements["reservation-sandbox-form"].dispatchEvent(
+    new Event("submit", { cancelable: true })
+  );
+  clipboard.succeed();
+  await Promise.resolve();
+
+  assert.equal(
+    fixture.elements["sandbox-status"].textContent,
+    "Parsed locally. All required fields were found."
+  );
+});
+
+test("Given a pending copy, when a download finishes first, then copy success cannot replace its status", async () => {
+  const fixture = createFakeSandboxDocument();
+  const clipboard = new DeferredClipboard();
+  initReservationSandbox(fixture.document, { clipboard }, FAKE_SANDBOX_CONSTRUCTORS);
+
+  fixture.elements["sandbox-copy"].click();
+  fixture.elements["sandbox-download"].click();
+  clipboard.succeed();
+  await Promise.resolve();
+
+  assert.equal(
+    fixture.elements["sandbox-status"].textContent,
+    "Safe result JSON downloaded."
+  );
+});
+
+test("Given two pending copies, when the older one fails first, then only the latest copy updates status", async () => {
+  const fixture = createFakeSandboxDocument();
+  const clipboard = new DeferredClipboard();
+  initReservationSandbox(fixture.document, { clipboard }, FAKE_SANDBOX_CONSTRUCTORS);
+
+  fixture.elements["sandbox-copy"].click();
+  fixture.elements["sandbox-copy"].click();
+  clipboard.fail();
+  await Promise.resolve();
+
+  assert.equal(
+    fixture.elements["sandbox-status"].textContent,
+    "Parsed locally. All required fields were found."
+  );
+
+  clipboard.succeed();
+  await Promise.resolve();
+  assert.equal(fixture.elements["sandbox-status"].textContent, "Safe result JSON copied.");
 });

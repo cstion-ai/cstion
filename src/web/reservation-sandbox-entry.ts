@@ -96,8 +96,15 @@ export function initReservationSandbox(
     result: getRequiredElement(root, "sandbox-result", constructors.element)
   };
   let currentJson: string | undefined;
+  let statusRevision = 0;
+
+  const beginStatusOperation = (): number => {
+    statusRevision += 1;
+    return statusRevision;
+  };
 
   const parseCurrentMessage = (): void => {
+    beginStatusOperation();
     try {
       const result = evaluateSyntheticReservation(view.message.value);
       currentJson = JSON.stringify(result, null, 2);
@@ -113,12 +120,14 @@ export function initReservationSandbox(
   };
 
   view.example.addEventListener("change", () => {
+    beginStatusOperation();
     view.message.value = getSyntheticExample(view.example.value);
     currentJson = undefined;
     renderPending(view, "Synthetic example loaded. Select Parse locally.");
   });
 
   view.message.addEventListener("input", () => {
+    beginStatusOperation();
     currentJson = undefined;
     renderPending(view, "Message changed. Select Parse locally.");
   });
@@ -130,19 +139,27 @@ export function initReservationSandbox(
 
   view.copy.addEventListener("click", () => {
     if (currentJson === undefined) return;
+    const copyStatusRevision = beginStatusOperation();
     const clipboard = browserNavigator.clipboard;
     if (clipboard === undefined) {
       view.status.textContent = "Clipboard access is unavailable. Open the JSON result and copy it manually.";
       return;
     }
     void clipboard.writeText(currentJson).then(
-      () => { view.status.textContent = "Safe result JSON copied."; },
-      () => { view.status.textContent = "Copy was blocked. Open the JSON result and copy it manually."; }
+      () => {
+        if (copyStatusRevision === statusRevision) view.status.textContent = "Safe result JSON copied.";
+      },
+      () => {
+        if (copyStatusRevision === statusRevision) {
+          view.status.textContent = "Copy was blocked. Open the JSON result and copy it manually.";
+        }
+      }
     );
   });
 
   view.download.addEventListener("click", () => {
     if (currentJson === undefined) return;
+    beginStatusOperation();
     const url = URL.createObjectURL(new Blob([currentJson], { type: "application/json" }));
     const link = root.createElement("a");
     link.href = url;
