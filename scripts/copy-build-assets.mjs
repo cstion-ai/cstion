@@ -5,3 +5,5 @@ cpSync(
   "dist/src/repositories/migrations",
   { recursive: true }
 );
+
+cpSync("evaluation", "dist/evaluation", { recursive: true });

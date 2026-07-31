@@ -37,7 +37,13 @@ The project publishes reviewed GitHub releases from `main`. Before proposing a r
 
 4. Review `CHANGELOG.md`; remove unsupported claims and distinguish unit-tested behavior from live integration or production validation.
 5. Prepare release notes that cover relevant migrations, security changes, known limitations, and rollback considerations.
-6. Create the release only after required checks pass on the merged commit, and verify that its tag resolves to that commit.
+6. Create a `v<package-version>` tag only after required checks pass on the
+   merged commit. The release workflow rechecks main-branch ancestry, tag,
+   package version, dated changelog section, tests, evaluation, type checks,
+   build assets, dependency audit, and PostgreSQL 16 integration scenarios
+   before creating the GitHub release.
+7. Verify the published release tag resolves to the reviewed commit and that
+   its notes contain only the matching changelog section.
 
 Do not claim production readiness while the runtime blocks production startup for incomplete external adapters.
 

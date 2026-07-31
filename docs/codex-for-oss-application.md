@@ -4,17 +4,23 @@ This draft targets the **Codex for Open Source** maintainer program. Its public 
 
 ## Verified public state
 
-As of 2026-07-27:
+Verified on 2026-07-31:
 
-- Pull requests #4 and #12 are merged into public `main`; the `v0.1.1` release merge commit is `b280574d064f9702eef05798f7832998aaeec5f4`.
-- Releases `v0.1.0` and `v0.1.1` are published, and the latest tag resolves to that release merge commit.
-- CI and CodeQL pass on the release merge commit. CI enforces coverage thresholds and includes the real PostgreSQL 16 integration job.
-- All five review threads from pull request #4 are resolved, and pull request #12 has no review threads.
+- Pull requests #4 and #12 are merged into public `main`; current public `main`
+  is `33a4de2e3d521f23fde0fb6ce95eb743ad9f65d4`.
+- Releases `v0.1.0` and `v0.1.1` are published; the latest tag resolves to
+  `b280574d064f9702eef05798f7832998aaeec5f4`.
+- CI and CodeQL pass on current public `main`. CI enforces coverage thresholds
+  and includes the real PostgreSQL 16 integration job.
+- All five review threads from pull request #4 and the one review thread from
+  pull request #12 are resolved.
 - Dependabot alerts and automated security updates are enabled; the alert API reports zero open alerts.
-- The repository has 0 stars, 0 forks, and no documented adopters or download data.
+- At this snapshot, the repository has 0 stars, 0 forks, 0 watchers, one
+  contributor, and no documented adopters or download data.
 - The maintainer profile `cstion-ai` is public.
 
 Refresh these facts immediately before using any draft answer.
+Unmerged working-tree changes are not public evidence.
 
 ## Submission gate
 
@@ -26,6 +32,8 @@ Do not submit until all checked facts are visible on the public repository:
 - [x] All review threads on the hardened pull request are resolved.
 - [x] At least one tagged release exists.
 - [x] A real PostgreSQL integration scenario is documented and passing.
+- [ ] The versioned evaluation baseline and release workflow are merged into
+  public `main`, and their public checks pass.
 - [ ] Any claimed adopter, pilot, star, fork, or usage number has public or permissioned evidence.
 - [x] The applicant's GitHub profile is public.
 
@@ -39,19 +47,23 @@ Primary maintainer
 
 ### Why does this repository qualify? — draft
 
-Travel AI Automation Platform is an Apache-2.0 TypeScript/PostgreSQL project for authenticated, duplicate-safe Kakao travel inquiry processing. Its public `v0.1.1` release tests privacy, crash recovery, schema migration, and identity concurrency against PostgreSQL 16, with coverage gates, CodeQL, and dependency review. It has no public adopters, stars, forks, or download data, so no adoption claim is made.
+Travel AI Automation Platform is an Apache-2.0 TypeScript/PostgreSQL reference project for authenticated, duplicate-safe Kakao inquiry processing. Public main has two published releases, coverage-gated CI, CodeQL, and PostgreSQL 16 migration/concurrency tests. A versioned synthetic evaluation reports parser regressions without customer data. The project has no public adopters, stars, forks, or download data, so no adoption claim is made.
 
 ### How will you use API credits? — draft
 
-Use credits for Codex-assisted PR review, issue triage, CI failure summaries, multilingual release notes, and security regression analysis. For core product work, evaluate reservation extraction on synthetic or de-identified fixtures and convert failures into deterministic tests. Real customer messages, credentials, and access tokens will not be sent to models. Results will be reported in public maintenance notes.
+Credits would fund a public, offline comparison of deterministic and optional model-assisted reservation extraction. We will expand the versioned synthetic set, measure per-field exact match, required-field false positives, abstention, invalid output, latency, and cost, and publish failures as regression tests and maintenance notes. Credits will also support PR review and CI triage. No customer messages, identifiers, credentials, or tokens will be sent to models.
 
 ### Anything else we should know? — draft
 
-Codex review of PR #4 found ephemeral webhook state, missing webhook authentication, and an identity race. Public fixes added PostgreSQL-backed leases, HMAC verification, transactional identity locking, and protected OAuth state. PR #12 then upgraded the toolchain and enforced coverage thresholds. PR #4's five review threads are resolved; later follow-up findings are tracked separately and must be verified against the default branch before submission. The `v0.1.1` merge passes Node 22 CI, PostgreSQL 16, CodeQL, and dependency review.
+Codex review of PR #4 led to durable event leases, HMAC webhook verification, transactional identity locking, and protected OAuth state; all five threads are resolved. Public main passes Node 22 CI, PostgreSQL 16, and CodeQL. The offline evaluator accepts only synthetic, profile-free fixtures. The runtime still blocks production while CRM and Sheets adapters are fakes.
 
-## Better current fit: Codex Open Source Fund
+## Alternative current fit: Codex Open Source Fund
 
-Consider the separate Codex Open Source Fund first. Its public application accepts project proposals for using Codex CLI and OpenAI models and does not publish the usage or adoption criteria listed by Codex for Open Source. Because this project lacks public adoption evidence, the Fund may be the better current fit. Selection is not implied.
+The separate Codex Open Source Fund form asks for a project description,
+repository, collaborators, and proposed API-credit use. The Codex for Open
+Source form separately emphasizes usage, adoption, ecosystem importance, and
+active maintenance. Because this project lacks public adoption evidence, the
+Fund form supports a more direct project-plan answer. Selection is not implied.
 
 Do not use the Fund draft until the public repository contains the project described below.
 
@@ -65,7 +77,13 @@ An Apache-2.0 TypeScript and PostgreSQL project that turns Kakao travel inquirie
 
 ### How would API credits be used?
 
-Credits would support Codex-assisted maintenance, pull request review, issue triage, security regression analysis, multilingual documentation, and evaluation of optional model-assisted reservation extraction on synthetic or de-identified fixtures. Failures would be converted into deterministic tests and public maintenance notes. No real customer messages, credentials, access tokens, or private application data would be sent to models.
+Credits would extend the checked-in offline evaluator with a broader synthetic
+set and optional model candidates behind the same typed output boundary.
+Published reports would compare exact match, false positives, abstention,
+invalid output, latency, and cost; failures would become deterministic tests.
+Credits would also support PR review and CI triage. No customer messages,
+identifiers, credentials, access tokens, or private application data would be
+sent to models.
 
 ## Personal fields still required
 
@@ -82,16 +100,18 @@ Do not store the OpenAI Organization ID, account email, or other private applica
 - Public repository: `https://github.com/cstion-ai/cstion`
 - Hardened pull request: `https://github.com/cstion-ai/cstion/pull/4`
 - Maintenance pull request: `https://github.com/cstion-ai/cstion/pull/12`
+- Current public main: `https://github.com/cstion-ai/cstion/commit/33a4de2e3d521f23fde0fb6ce95eb743ad9f65d4`
 - `v0.1.1` reviewed merge commit: `https://github.com/cstion-ai/cstion/commit/b280574d064f9702eef05798f7832998aaeec5f4`
 - First release: `https://github.com/cstion-ai/cstion/releases/tag/v0.1.0`
 - Current release: `https://github.com/cstion-ai/cstion/releases/tag/v0.1.1`
-- Main CI: `https://github.com/cstion-ai/cstion/actions/runs/30224005904`
-- Main CodeQL: `https://github.com/cstion-ai/cstion/actions/runs/30224005903`
-- PostgreSQL 16 integration job: `https://github.com/cstion-ai/cstion/actions/runs/30224005904/job/89851166795`
+- Main CI: `https://github.com/cstion-ai/cstion/actions/runs/30329238353`
+- Main CodeQL: `https://github.com/cstion-ai/cstion/actions/runs/30329238354`
+- PostgreSQL 16 integration job: `https://github.com/cstion-ai/cstion/actions/runs/30329238353/job/90180775369`
 - Merged pull-request dependency review: `https://github.com/cstion-ai/cstion/actions/runs/30223952858`
 - Public maintenance notes or adopter evidence: add when real
 
 ## Official program sources
 
 - Codex for Open Source: `https://openai.com/form/codex-for-oss/`
+- Codex for Open Source program details: `https://developers.openai.com/community/codex-for-oss`
 - Codex Open Source Fund: `https://openai.com/form/codex-open-source-fund/`

@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
+import { cp, mkdtemp, rm, symlink } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 import { z } from "zod";
 import { startServer } from "../src/server.js";
 import { loadConfig } from "../src/shared/config.js";
@@ -28,6 +32,36 @@ test("Given the public demo command, when it runs, then it returns a redacted cr
 
   assert.equal(result.status, "created");
   assert.doesNotMatch(output, /(?:\+82|홍길동|phone)/i);
+});
+
+test("Given a project path with spaces, when the demo entrypoint runs, then it returns a result", async (context) => {
+  const temporaryProject = await mkdtemp(join(tmpdir(), "cstion demo "));
+  context.after(() => rm(temporaryProject, { recursive: true, force: true }));
+  await cp(
+    fileURLToPath(new URL("../src", import.meta.url)),
+    join(temporaryProject, "src"),
+    { recursive: true }
+  );
+  await cp(
+    fileURLToPath(new URL("../package.json", import.meta.url)),
+    join(temporaryProject, "package.json")
+  );
+  await symlink(
+    fileURLToPath(new URL("../node_modules", import.meta.url)),
+    join(temporaryProject, "node_modules"),
+    "dir"
+  );
+
+  const output = execFileSync(
+    process.execPath,
+    [
+      fileURLToPath(new URL("../node_modules/tsx/dist/cli.mjs", import.meta.url)),
+      join(temporaryProject, "src/pipelines/kakao-to-crm.ts")
+    ],
+    { encoding: "utf8" }
+  );
+
+  assert.equal(DemoOutputSchema.parse(JSON.parse(output)).status, "created");
 });
 
 test("Given a test configuration, when the server entrypoint starts, then health is reachable", async (context) => {

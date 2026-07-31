@@ -39,6 +39,27 @@ test("Given overlapping identities, when a customer is upserted, then identity l
   ]);
 });
 
+test("Given locale-sensitive identities, when locks are acquired, then their order is locale independent", async () => {
+  const database = new RecordingTransactionRunner();
+  const repository = new PostgresCustomerRepository(database);
+
+  await repository.upsertByIdentities({
+    name: "Synthetic Traveler",
+    sourceChannel: "kakao",
+    identities: [
+      { type: "phone", value: "ä" },
+      { type: "phone", value: "z" }
+    ],
+    tags: []
+  });
+
+  assert.deepEqual(database.operations.slice(0, 3), [
+    "BEGIN",
+    "LOCK phone::z",
+    "LOCK phone::ä"
+  ]);
+});
+
 test("Given a failed event, when processing begins again, then the event is restarted", async () => {
   const client = new RecordingSqlClient([{ started: true }]);
   const repository = new PostgresIdempotencyRepository(client);

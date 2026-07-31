@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 1,
+  "name": "synthetic-kakao-reservation-baseline",
+  "createdAt": "2026-07-31",
+  "languages": ["ko"],
+  "domain": "travel-reservation-inquiry",
+  "provenance": {
+    "source": "synthetic",
+    "containsPersonalData": false,
+    "description": "Hand-authored Korean travel inquiries covering complete and confirmation-required cases. No customer records, contact details, or copied conversations are present."
+  },
+  "cases": [
+    {
+      "id": "complete-osaka",
+      "input": {
+        "providerEventId": "evaluation-event-1",
+        "providerUserId": "evaluation-user-1",
+        "text": "2026년 9월 3일 오사카 패키지 2명 예약하고 싶어요.",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "destination": "오사카",
+        "startDate": "2026-09-03",
+        "travelers": 2,
+        "productName": "패키지",
+        "issues": []
+      }
+    },
+    {
+      "id": "complete-jeju",
+      "input": {
+        "providerEventId": "evaluation-event-2",
+        "providerUserId": "evaluation-user-2",
+        "text": "2026.10.11 제주 호텔 3인 예약",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "destination": "제주",
+        "startDate": "2026-10-11",
+        "travelers": 3,
+        "productName": "호텔",
+        "issues": []
+      }
+    },
+    {
+      "id": "complete-bangkok",
+      "input": {
+        "providerEventId": "evaluation-event-3",
+        "providerUserId": "evaluation-user-3",
+        "text": "2027/1/5 방콕 투어 4 pax 예약",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "destination": "방콕",
+        "startDate": "2027-01-05",
+        "travelers": 4,
+        "productName": "투어",
+        "issues": []
+      }
+    },
+    {
+      "id": "missing-start-date",
+      "input": {
+        "providerEventId": "evaluation-event-4",
+        "providerUserId": "evaluation-user-4",
+        "text": "다낭 자유여행 2명 문의",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "destination": "다낭",
+        "startDate": null,
+        "travelers": 2,
+        "productName": "자유여행",
+        "issues": ["startDate"]
+      }
+    },
+    {
+      "id": "missing-travelers",
+      "input": {
+        "providerEventId": "evaluation-event-5",
+        "providerUserId": "evaluation-user-5",
+        "text": "2026년 10월 11일 제주 호텔 예약 문의",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "destination": "제주",
+        "startDate": "2026-10-11",
+        "travelers": null,
+        "productName": "호텔",
+        "issues": ["travelers"]
+      }
+    },
+    {
+      "id": "missing-destination",
+      "input": {
+        "providerEventId": "evaluation-event-6",
+        "providerUserId": "evaluation-user-6",
+        "text": "2026년 12월 1일 패키지 2명 문의",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "destination": null,
+        "startDate": "2026-12-01",
+        "travelers": 2,
+        "productName": "패키지",
+        "issues": ["destination"]
+      }
+    },
+    {
+      "id": "fractional-travelers",
+      "input": {
+        "providerEventId": "evaluation-event-7",
+        "providerUserId": "evaluation-user-7",
+        "text": "2026년 9월 3일 도쿄 항공권 1.5명 예약",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "destination": "도쿄",
+        "startDate": "2026-09-03",
+        "travelers": null,
+        "productName": "항공권",
+        "issues": ["travelers"]
+      }
+    },
+    {
+      "id": "negative-travelers",
+      "input": {
+        "providerEventId": "evaluation-event-8",
+        "providerUserId": "evaluation-user-8",
+        "text": "2026년 9월 3일 파리 패키지 -2명 예약",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "destination": "파리",
+        "startDate": "2026-09-03",
+        "travelers": null,
+        "productName": "패키지",
+        "issues": ["travelers"]
+      }
+    },
+    {
+      "id": "missing-product",
+      "input": {
+        "providerEventId": "evaluation-event-9",
+        "providerUserId": "evaluation-user-9",
+        "text": "2027년 3월 14일 괌 2명 예약",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "destination": "괌",
+        "startDate": "2027-03-14",
+        "travelers": 2,
+        "productName": null,
+        "issues": ["productName"]
+      }
+    },
+    {
+      "id": "sparse-hawaii",
+      "input": {
+        "providerEventId": "evaluation-event-10",
+        "providerUserId": "evaluation-user-10",
+        "text": "하와이 여행 문의",
+        "receivedAt": "2026-07-31T00:00:00.000Z"
+      },
+      "expected": {
+        "destination": "하와이",
+        "startDate": null,
+        "travelers": null,
+        "productName": null,
+        "issues": ["startDate", "travelers", "productName"]
+      }
+    }
+  ]
+}

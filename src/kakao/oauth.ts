@@ -34,11 +34,11 @@ export const KakaoOAuthConfigSchema = z.object({
 export type KakaoOAuthConfig = z.input<typeof KakaoOAuthConfigSchema>;
 
 export const KakaoTokenResponseSchema = z.object({
-  token_type: z.string(),
-  access_token: z.string(),
-  expires_in: z.number(),
-  refresh_token: z.string().optional(),
-  refresh_token_expires_in: z.number().optional(),
+  token_type: z.string().min(1),
+  access_token: z.string().min(1),
+  expires_in: z.number().int().positive(),
+  refresh_token: z.string().min(1).optional(),
+  refresh_token_expires_in: z.number().int().positive().optional(),
   scope: z.string().optional()
 });
 

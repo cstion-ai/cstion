@@ -6,6 +6,21 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+
+- Added a versioned, offline reservation-parser evaluation with ten synthetic
+  Korean cases, strict privacy and output schemas, machine-readable metrics,
+  source/build parity, and a CI gate.
+- Added a tag-triggered release workflow that verifies main-branch ancestry,
+  package and changelog version alignment, and the complete quality gate before
+  creating a GitHub release.
+
+### Changed
+
+- Hardened provider identifiers, Kakao token responses, configuration URLs,
+  deterministic PostgreSQL lock ordering, executable entrypoint detection, and
+  PII redaction edge cases.
+
 ## [0.1.1] - 2026-07-27
 
 ### Changed
