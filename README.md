@@ -30,11 +30,10 @@ The package is version 0.1.3 and is not production-ready. “Implemented” mean
 
 The current parser is deterministic and rule based. Documentation that mentions model-assisted extraction describes the roadmap, not an active runtime dependency.
 
-This branch prepares `v0.1.3`; the current public release remains
-[`v0.1.2`](https://github.com/cstion-ai/cstion/releases/tag/v0.1.2) until the
-tag-triggered release gate completes.
-Its exact commit, release gate, database job, and claim boundaries are indexed
-in the [public evidence snapshot](docs/public-evidence.md).
+The current public release is
+[`v0.1.3`](https://github.com/cstion-ai/cstion/releases/tag/v0.1.3). Its exact
+merge commit, release gate, database job, and claim boundaries are indexed in
+the [public evidence snapshot](docs/public-evidence.md).
 
 ## Implemented safeguards
 

@@ -13,13 +13,16 @@ message and do not offer a reciprocal star or endorsement.
 > I maintain a small Apache-2.0 reference project for turning signed Kakao
 > travel inquiries into duplicate-safe PostgreSQL booking leads. I am looking
 > for one independent technical evaluation, not a star. Could you spend ten
-> minutes running a synthetic example in the browser sandbox and tell me the
-> first thing that would block you from evaluating it further? Please do not use
-> customer messages or contact details. If you are comfortable making the
-> result public, the Show and tell form records the path you tried, the outcome,
-> and your permission separately.
+> minutes either running a synthetic example in the browser sandbox or running
+> `npm run --silent evaluate:challenge`, then tell me the first thing that would
+> block further evaluation? The frozen challenge currently publishes 18 known
+> failures; this is a request for technical feedback, not a quality claim.
+> Please do not use customer messages or contact details. If you are comfortable
+> making the result public, the Show and tell form records the path you tried,
+> the outcome, and your permission separately.
 >
 > Sandbox: https://cstion-ai.github.io/cstion/#sandbox
+> Challenge: https://github.com/cstion-ai/cstion/blob/main/evaluation/README.md
 > Report: https://github.com/cstion-ai/cstion/discussions/new?category=show-and-tell
 
 An independent report is evidence only after the reporter actually tries a
@@ -87,7 +90,7 @@ Suggested later tagline:
 
 ## Current channel fit
 
-Reviewed on 2026-07-31:
+Reviewed on 2026-08-01:
 
 - [Show GN](https://hada.io/blog/geeknews-show/) fits an early open-source release when visitors can inspect or try it and the post asks for specific feedback.
 - [Show HN](https://news.ycombinator.com/showhn.html) fits something people can run, but its rules prohibit asking for upvotes or supportive comments.

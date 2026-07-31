@@ -19,16 +19,20 @@ The CI job and its PostgreSQL image digest are defined in [`.github/workflows/ci
 
 ## Public evidence
 
-The `v0.1.2` release commit `327a243b9ed0343aac43429693258d7747a63148`
+The `v0.1.3` release commit `95616a4f63576ef1ef4958aafbe869632a6d98a1`
 passed the public main
-[`PostgreSQL 16 integration` job](https://github.com/cstion-ai/cstion/actions/runs/30623841372/job/91134377310).
+[`PostgreSQL 16 integration` job](https://github.com/cstion-ai/cstion/actions/runs/30668586589/job/91281208082).
 The tag-triggered
-[`v0.1.2` release run](https://github.com/cstion-ai/cstion/actions/runs/30623954739)
+[`v0.1.3` release run](https://github.com/cstion-ai/cstion/actions/runs/30668702897)
 then ran the suite again before creating the public release; every step in its
-combined [verification job](https://github.com/cstion-ai/cstion/actions/runs/30623954739/job/91134739388)
+combined [verification job](https://github.com/cstion-ai/cstion/actions/runs/30668702897/job/91281567187)
 passed. Both jobs initialized a disposable PostgreSQL 16 service, installed the
 locked Node dependencies, and completed the scenarios above through the
 production `pg` driver.
+
+The earlier `v0.1.2` evidence remains available in its
+[main PostgreSQL job](https://github.com/cstion-ai/cstion/actions/runs/30623841372/job/91134377310)
+and [first live release run](https://github.com/cstion-ai/cstion/actions/runs/30623954739).
 
 ## Reproduce
 
