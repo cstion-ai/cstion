@@ -19,6 +19,12 @@ test("Given the container build stage, when build assets are copied, then the fr
   assert.match(dockerfile, /^RUN npm run build$/m);
 });
 
+test("Given a cross-platform checkout, when evaluation JSON is materialized, then exact-byte identity keeps LF endings", async () => {
+  const attributes = await readFile(join(PROJECT_ROOT, ".gitattributes"), "utf8");
+
+  assert.match(attributes, /^evaluation\/\*\*\/\*\.json text eol=lf$/m);
+});
+
 test("Given a version tag matching package metadata, when release notes are prepared, then only that changelog section is written", async (context) => {
   const temporaryDirectory = await mkdtemp(join(tmpdir(), "cstion-release-"));
   context.after(() => rm(temporaryDirectory, { recursive: true, force: true }));
