@@ -4,7 +4,7 @@ This page records permissioned, third-party use of the project without turning r
 
 ## Current evidence
 
-No verified third-party adopters are listed as of 2026-07-27.
+No verified third-party adopters are listed as of 2026-07-31.
 
 That is an intentional empty state. Stars, forks, clones, page views, template uses, maintainer-created examples, and automated CI traffic do not prove that another person evaluated or deployed the project.
 

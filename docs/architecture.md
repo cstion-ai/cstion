@@ -13,6 +13,7 @@
 /codex-agent    Codex 유지보수 원칙; 런타임 에이전트 없음
 /docker         로컬 PostgreSQL, Redis, migration, 앱 구성
 /cloud          검증 전 Cloud Run/ECS 배포 예시
+/evaluation     합성 예약 문의 데이터셋과 오프라인 파서 평가 기준
 /src            실행 가능한 TypeScript 코드
 /docs           아키텍처, 데이터 흐름, 위협 모델, 로드맵
 ```
@@ -27,6 +28,7 @@
 | Google Sheets | typed interface와 테스트용 fake | Sheets API, 자격증명, replay-safe 동기화 |
 | WeChat | 공통 채널 enum 값 | 웹훅, 인증, payload, 어댑터, 테스트 |
 | Codex | 코드 검토와 저장소 유지보수 | 런타임 에이전트 경로 없음 |
+| Evaluation | 합성 데이터셋, strict schema, 결정론적 파서 평가 CLI | 더 넓은 언어·표현 범위와 별도 검토된 모델 후보 |
 | 배포 | Docker/Cloud 예시와 recorded migration | 실제 공급자·PostgreSQL·클라우드 통합 검증 |
 
 ## 운영 전 배포 기준
@@ -53,7 +55,7 @@
 
 ## P0 안전장치
 
-- **Ingestion 경계**: Kakao webhook은 256KB 제한을 적용하고 원문 HMAC-SHA256 서명을 확인한 뒤 Zod schema로 파싱합니다. 모든 채널 메시지는 `ChannelMessage.providerEventId`와 `providerUserId`를 포함해야 합니다.
+- **Ingestion 경계**: Kakao webhook은 256KB 제한을 적용하고 원문 HMAC-SHA256 서명을 확인한 뒤 Zod schema로 파싱합니다. 모든 채널 메시지는 255자 이하의 `ChannelMessage.providerEventId`와 `providerUserId`를 포함해야 합니다.
 - **Idempotency**: 운영 서버는 `DATABASE_URL`로 PostgreSQL pipeline을 구성하고 `channel_events`의 `UNIQUE (channel, provider_event_id)` 제약으로 중복 이벤트를 차단합니다. `failed` 이벤트와 5분 넘게 멈춘 processing lease만 새 token으로 재시작하고, lease를 잃은 이전 작업은 상태를 완료로 바꿀 수 없습니다. Booking lead ID 충돌은 기존 레코드를 유지합니다.
 - **Customer identity**: 내부 고객 ID는 UUID로 유지하고, channel provider ID, phone, email은 `customer_identities`에서 별도 identity로 연결합니다. 동시 upsert는 정렬된 identity advisory lock을 transaction 범위로 획득한 후 모든 기존 owner를 재조회하며, owner가 둘 이상이면 transaction을 중단합니다.
 - **Booking 생성 차단**: 날짜, 인원, 상품, 목적지 필수값이 누락되거나 달력상 불가능한 날짜면 `needs_confirmation`을 반환하고 예약 리드를 만들지 않습니다.

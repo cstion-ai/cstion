@@ -30,7 +30,7 @@ The HTTP boundary authenticates a webhook before parsing its JSON. Zod schemas v
 | Threat | Enforced now | Known gap |
 | --- | --- | --- |
 | Forged webhook | The [HTTP server](../src/server/http-server.ts) verifies HMAC-SHA256 over the raw body, validates the signature encoding, and uses a timing-safe comparison before JSON parsing. Missing secrets fail closed outside development. | Development permits unsigned webhooks when no secret is configured and must not be exposed to untrusted traffic. |
-| Resource exhaustion or malformed input | Webhook bodies are limited to 256 KiB, then JSON- and schema-parsed. Invalid HTTP request targets return `400` instead of escaping the request boundary. Development binds to loopback unless `HOST` is explicitly set. | No request-rate or connection limit is implemented; a deployment edge must provide them. |
+| Resource exhaustion or malformed input | Webhook bodies are limited to 256 KiB, provider identifiers are limited to 255 characters, then requests are JSON- and schema-parsed. Invalid HTTP request targets return `400` instead of escaping the request boundary. Development binds to loopback unless `HOST` is explicitly set. | No request-rate or connection limit is implemented; a deployment edge must provide them. |
 | Duplicate delivery or worker takeover | PostgreSQL uniquely keys channel events, retries failed or five-minute-stale work with a random lease token, fences event status updates by that token, and keeps booking IDs unique. | Lease fencing does not cancel or deduplicate CRM or Sheets side effects. Before real adapters are enabled, add downstream idempotency, cancellation, and either lease renewal or an outbox. |
 | Customer identity race or cross-customer merge | The [customer repository](../src/repositories/postgres-customer-repository.ts) takes identity advisory locks in deterministic order, reads every existing owner, and aborts on multiple owners. The schema makes each identity unique. Concurrent same-identity upserts run against PostgreSQL 16 in CI. | Recovery of a legacy multi-owner conflict is not automated against PostgreSQL, and no maintainer recovery runbook exists. |
 | Sensitive logging | Current failure paths use [recursive redaction](../src/platform/redaction.ts) for email addresses, phone-like strings, secret-named fields, and `Error` messages. | Redaction is regex-based and does not cover names, provider user IDs, UUIDs, or arbitrary raw text. There is no centralized safe logger or production retention policy. |
@@ -40,7 +40,10 @@ The HTTP boundary authenticates a webhook before parsing its JSON. Zod schemas v
 
 ## Model and automation privacy
 
-No runtime path currently sends data to a model. Any future model-assisted extraction must:
+No runtime path currently sends data to a model. The checked-in offline baseline
+accepts only datasets declared synthetic and free of personal data; its strict
+schema rejects profile, phone, email, and unknown fields, and reports failures
+without echoing fixture content. Any future model-assisted extraction must:
 
 - use synthetic or explicitly de-identified evaluation fixtures;
 - omit access tokens, credentials, raw customer identifiers, and private conversations;

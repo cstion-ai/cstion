@@ -67,15 +67,28 @@ Exit evidence:
 
 ## Model privacy and usefulness evaluation gate
 
-Current state: no runtime model path exists. This gate authorizes evaluation,
-not a model feature or release.
+Current state: the deterministic offline baseline is implemented; no runtime
+model path exists. This gate authorizes evaluation, not a model feature or
+release.
+
+Implemented starting point:
+
+- `evaluation/reservation-cases.v1.json` contains ten hand-authored Korean
+  smoke cases and a provenance manifest with no profile or contact fields;
+- `npm run --silent evaluate:parser` validates the dataset and output schemas,
+  then reports per-field exact match, false positives, abstentions,
+  confirmation routing, invalid output, and extractor errors;
+- CI runs the same command, and the build contains the same versioned dataset.
+
+A perfect score on this small checked-in set is regression evidence only, not a
+general accuracy, multilingual quality, or model-comparison claim.
 
 Required work:
 
-- define the decision criteria and deterministic baseline before adding a
-  provider;
-- build a versioned synthetic or documented de-identified multilingual
-  evaluation set;
+- expand the versioned set beyond the ten-case Korean smoke baseline before
+  comparing providers;
+- document any de-identification process before admitting a non-synthetic
+  fixture;
 - evaluate through an offline typed interface with no production traffic;
 - compare deterministic and model-assisted extraction on per-field exact
   match, required-field false positives, abstention, invalid output, p50/p95
@@ -100,7 +113,7 @@ Exit evidence:
 
 ## Community evidence
 
-Baseline as of 2026-07-27:
+Baseline as of 2026-07-31:
 
 - tagged releases: 2 (`v0.1.0` and `v0.1.1`);
 - GitHub stars and forks: 0 and 0;

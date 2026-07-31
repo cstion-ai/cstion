@@ -17,6 +17,7 @@ The package is version 0.1.1 and is not production-ready. “Implemented” mean
 | Capability | Status |
 | --- | --- |
 | Kakao message normalization and deterministic reservation parsing | Implemented and unit-tested |
+| Versioned offline reservation evaluation | 10 synthetic Korean cases with typed validation and CI enforcement |
 | HMAC-authenticated Kakao webhook with a 256 KiB limit | Implemented and tested |
 | PostgreSQL event, customer identity, and booking repositories | Implemented with unit tests and a PostgreSQL 16 CI integration suite |
 | Crash recovery with processing leases and token fencing | Implemented; restart and concurrency paths run against PostgreSQL 16 in CI |
@@ -31,6 +32,7 @@ The current parser is deterministic and rule based. Documentation that mentions 
 ## Implemented safeguards
 
 - PostgreSQL channel events are unique by `channel` and `providerEventId`.
+- Provider event and user identifiers are required and limited to 255 characters at the message boundary.
 - Failed events and processing leases older than five minutes may restart with a new token; the token is required to complete or fail the event.
 - Booking inserts use stable IDs and return the existing row on conflict.
 - PostgreSQL customer upserts acquire identity locks in deterministic order and abort if the supplied identities have multiple owners.
@@ -59,6 +61,17 @@ npm run demo
 ```
 
 The command needs no Kakao account or API key and prints a redacted result. It uses fake external adapters and is not a production connectivity test.
+
+Run the versioned parser baseline and receive a machine-readable report:
+
+```bash
+npm run --silent evaluate:parser
+```
+
+The checked-in v1 set contains ten synthetic Korean cases. A perfect result
+shows regression stability on those cases only; it is not a general accuracy
+claim. See the [evaluation guide](evaluation/README.md) for metrics, privacy
+rules, and custom fixture usage.
 
 To run every local quality gate and start the development HTTP server:
 
@@ -114,6 +127,7 @@ The PostgreSQL-backed runtime stores webhook idempotency and customer identity s
 - [Roadmap](docs/roadmap.md)
 - [Maintainer guide](docs/maintainer-guide.md)
 - [PostgreSQL verification](docs/postgresql-verification.md)
+- [Reservation evaluation baseline](evaluation/README.md)
 - [Adoption evidence policy](ADOPTERS.md)
 - [Community launch kit](docs/community-launch-kit.md)
 - [Cloud deployment guardrails](cloud/README.md)
@@ -132,11 +146,18 @@ Issues, discussions, and focused pull requests are welcome. Start with [CONTRIBU
 
 The project uses a primary-maintainer model described in [GOVERNANCE.md](GOVERNANCE.md). Support expectations are in [SUPPORT.md](SUPPORT.md).
 
+Maintainers should follow the [review and release checklist](docs/maintainer-guide.md).
+Version tags are published only after the release workflow validates the tag,
+package version, changelog section, full quality gate, and main-branch ancestry.
+
 ## Codex and OpenAI transparency
 
 Codex has been used for code review and maintenance on this repository. Maintainers reproduce findings and require tests before accepting them; model output is not treated as evidence.
 
-If OpenAI API credits are awarded, they will be used for maintainer workflows and evaluations over synthetic or de-identified fixtures. Real customer messages, credentials, and access tokens must not be sent to models.
+If OpenAI API credits are awarded, they will extend the checked-in synthetic
+baseline through the offline typed evaluation interface and support maintainer
+workflows. No runtime model path exists. Real customer messages, credentials,
+and access tokens must not be sent to models.
 
 The draft application and evidence checklist are maintained in [docs/codex-for-oss-application.md](docs/codex-for-oss-application.md).
 
