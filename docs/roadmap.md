@@ -54,6 +54,27 @@ Evidence:
 The exact run and claim boundaries are collected in the
 [public evidence snapshot](public-evidence.md).
 
+## 0.1.3 — Frozen challenge and review-hardening gate
+
+Current state: met on 2026-08-01.
+
+Evidence:
+
+- [pull request #25](https://github.com/cstion-ai/cstion/pull/25) added the
+  frozen challenge and privacy boundary, then fixed a reproduced Windows line
+  ending finding before merging as
+  [`95616a4`](https://github.com/cstion-ai/cstion/commit/95616a4f63576ef1ef4958aafbe869632a6d98a1);
+- [main CI](https://github.com/cstion-ai/cstion/actions/runs/30668586589), its
+  [PostgreSQL 16 job](https://github.com/cstion-ai/cstion/actions/runs/30668586589/job/91281208082),
+  and [CodeQL](https://github.com/cstion-ai/cstion/actions/runs/30668586661)
+  passed on that exact merge commit;
+- the [release workflow](https://github.com/cstion-ai/cstion/actions/runs/30668702897)
+  repeated the full gate and PostgreSQL suite before publishing
+  [`v0.1.3`](https://github.com/cstion-ai/cstion/releases/tag/v0.1.3);
+- the v2 challenge reports 30/48 exact cases, 167/192 exact fields, 31/48
+  correct routes, 18 known failures, and zero invalid outputs or extractor
+  errors. These are synthetic regression measurements, not general accuracy.
+
 ## Production adapter gate
 
 Current state: blocked. CRM and Google Sheets adapters are fakes; production
@@ -147,9 +168,9 @@ Exit evidence:
 
 ## Community evidence
 
-Baseline as of 2026-07-31:
+Baseline as of 2026-08-01:
 
-- tagged releases: 3 (`v0.1.0`, `v0.1.1`, and `v0.1.2`);
+- tagged releases: 4 (`v0.1.0`, `v0.1.1`, `v0.1.2`, and `v0.1.3`);
 - GitHub stars and forks: 0 and 0;
 - verified external deployments or adopters: 0;
 
