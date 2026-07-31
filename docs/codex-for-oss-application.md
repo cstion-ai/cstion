@@ -6,21 +6,23 @@ This draft targets the **Codex for Open Source** maintainer program. Its public 
 
 Verified on 2026-07-31:
 
-- Pull requests #4 and #12 are merged into public `main`; current public `main`
-  is `33a4de2e3d521f23fde0fb6ce95eb743ad9f65d4`.
+- Pull requests #4, #12, and #20 are merged into public `main`; the fund
+  readiness merge commit is `bd5fe69674bf0ab0905c72ad7f1997359e848135`.
 - Releases `v0.1.0` and `v0.1.1` are published; the latest tag resolves to
   `b280574d064f9702eef05798f7832998aaeec5f4`.
-- CI and CodeQL pass on current public `main`. CI enforces coverage thresholds
-  and includes the real PostgreSQL 16 integration job.
+- CI and CodeQL pass on the fund-readiness merge commit. CI enforces coverage
+  thresholds, the synthetic evaluation, and the real PostgreSQL 16 integration
+  job.
 - All five review threads from pull request #4 and the one review thread from
-  pull request #12 are resolved.
+  pull request #12 are resolved; pull request #20 has no review threads.
+- The tag-triggered release workflow is merged but has not yet run for a new
+  release.
 - Dependabot alerts and automated security updates are enabled; the alert API reports zero open alerts.
 - At this snapshot, the repository has 0 stars, 0 forks, 0 watchers, one
   contributor, and no documented adopters or download data.
 - The maintainer profile `cstion-ai` is public.
 
 Refresh these facts immediately before using any draft answer.
-Unmerged working-tree changes are not public evidence.
 
 ## Submission gate
 
@@ -32,8 +34,8 @@ Do not submit until all checked facts are visible on the public repository:
 - [x] All review threads on the hardened pull request are resolved.
 - [x] At least one tagged release exists.
 - [x] A real PostgreSQL integration scenario is documented and passing.
-- [ ] The versioned evaluation baseline and release workflow are merged into
-  public `main`, and their public checks pass.
+- [x] The versioned evaluation baseline and release workflow are merged into
+  public `main`; main CI and CodeQL pass.
 - [ ] Any claimed adopter, pilot, star, fork, or usage number has public or permissioned evidence.
 - [x] The applicant's GitHub profile is public.
 
@@ -100,14 +102,15 @@ Do not store the OpenAI Organization ID, account email, or other private applica
 - Public repository: `https://github.com/cstion-ai/cstion`
 - Hardened pull request: `https://github.com/cstion-ai/cstion/pull/4`
 - Maintenance pull request: `https://github.com/cstion-ai/cstion/pull/12`
-- Current public main: `https://github.com/cstion-ai/cstion/commit/33a4de2e3d521f23fde0fb6ce95eb743ad9f65d4`
+- Fund-readiness pull request: `https://github.com/cstion-ai/cstion/pull/20`
+- Fund-readiness merge commit: `https://github.com/cstion-ai/cstion/commit/bd5fe69674bf0ab0905c72ad7f1997359e848135`
 - `v0.1.1` reviewed merge commit: `https://github.com/cstion-ai/cstion/commit/b280574d064f9702eef05798f7832998aaeec5f4`
 - First release: `https://github.com/cstion-ai/cstion/releases/tag/v0.1.0`
 - Current release: `https://github.com/cstion-ai/cstion/releases/tag/v0.1.1`
-- Main CI: `https://github.com/cstion-ai/cstion/actions/runs/30329238353`
-- Main CodeQL: `https://github.com/cstion-ai/cstion/actions/runs/30329238354`
-- PostgreSQL 16 integration job: `https://github.com/cstion-ai/cstion/actions/runs/30329238353/job/90180775369`
-- Merged pull-request dependency review: `https://github.com/cstion-ai/cstion/actions/runs/30223952858`
+- Main CI: `https://github.com/cstion-ai/cstion/actions/runs/30592682870`
+- Main CodeQL: `https://github.com/cstion-ai/cstion/actions/runs/30592682838`
+- PostgreSQL 16 integration job: `https://github.com/cstion-ai/cstion/actions/runs/30592682870/job/91038185723`
+- Merged pull-request dependency review: `https://github.com/cstion-ai/cstion/actions/runs/30592576122`
 - Public maintenance notes or adopter evidence: add when real
 
 ## Official program sources
