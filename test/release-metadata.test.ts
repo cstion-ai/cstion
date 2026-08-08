@@ -29,6 +29,17 @@ test("Given the c8 12 toolchain, when project requirements are read, then the de
   assert.match(packageMetadata, /"c8": "\^12\.0\.0"/);
 });
 
+test("Given the declared Node minimum, when CI is inspected, then the exact boundary runs the full gate", async () => {
+  const workflow = await readFile(
+    join(PROJECT_ROOT, ".github/workflows/ci.yml"),
+    "utf8"
+  );
+
+  assert.match(workflow, /name: Node 22\.12 minimum compatibility/);
+  assert.match(workflow, /node-version: 22\.12\.0/);
+  assert.match(workflow, /run: npm run check:all/);
+});
+
 test("Given a cross-platform checkout, when evaluation JSON is materialized, then exact-byte identity keeps LF endings", async () => {
   const attributes = await readFile(join(PROJECT_ROOT, ".gitattributes"), "utf8");
 
