@@ -1,11 +1,13 @@
 # Public Evidence Snapshot
 
-Verified on 2026-08-01 against the public repository. This page separates
+Verified on 2026-08-08 against the public repository. This page separates
 reproducible project evidence from ecosystem context and from adoption claims.
 
 ## Snapshot identity
 
 - Public repository: [`cstion-ai/cstion`](https://github.com/cstion-ai/cstion)
+- Security maintenance merge: [`ed5e0a9`](https://github.com/cstion-ai/cstion/commit/ed5e0a99f14a9d3930b8abee37af9f14f7d2cb86)
+  from [pull request #28](https://github.com/cstion-ai/cstion/pull/28)
 - `v0.1.3` release merge: [`95616a4`](https://github.com/cstion-ai/cstion/commit/95616a4f63576ef1ef4958aafbe869632a6d98a1)
   from [pull request #25](https://github.com/cstion-ai/cstion/pull/25)
 - Current release: [`v0.1.3`](https://github.com/cstion-ai/cstion/releases/tag/v0.1.3),
@@ -15,26 +17,26 @@ reproducible project evidence from ecosystem context and from adoption claims.
 
 ## Automated gates
 
-- [Main CI](https://github.com/cstion-ai/cstion/actions/runs/30668586589)
+- [Main CI](https://github.com/cstion-ai/cstion/actions/runs/31252509297)
   passed on the exact merge commit. Its
-  [Node.js 22 job](https://github.com/cstion-ai/cstion/actions/runs/30668586589/job/91281208101)
+  [Node.js 22 job](https://github.com/cstion-ai/cstion/actions/runs/31252509297/job/93090926943)
   enforced tests, coverage, both deterministic evaluations, type checks,
   build, exact source/build report parity, metadata checks, and dependency
   audit.
 - The separate
-  [PostgreSQL 16 job](https://github.com/cstion-ai/cstion/actions/runs/30668586589/job/91281208082)
+  [PostgreSQL 16 job](https://github.com/cstion-ai/cstion/actions/runs/31252509297/job/93090926926)
   passed against a disposable real database on the same commit.
-- [CodeQL](https://github.com/cstion-ai/cstion/actions/runs/30668586661)
+- [CodeQL](https://github.com/cstion-ai/cstion/actions/runs/31252509310)
   passed on the same commit, and
-  [dependency review](https://github.com/cstion-ai/cstion/actions/runs/30668331186/job/91280414382)
-  passed on the final head of pull request #25.
+  [dependency review](https://github.com/cstion-ai/cstion/actions/runs/31252257301/job/93090306622)
+  passed on the final head of pull request #28.
 - The
   [tag-triggered release run](https://github.com/cstion-ai/cstion/actions/runs/30668702897)
   rechecked main ancestry, tag/package/changelog alignment, the full quality
   gate, and PostgreSQL 16 before creating the GitHub release. Its combined
   [verification job](https://github.com/cstion-ai/cstion/actions/runs/30668702897/job/91281567187)
   passed every step.
-- [GitHub Pages deployment](https://github.com/cstion-ai/cstion/actions/runs/30668585934)
+- [GitHub Pages deployment](https://github.com/cstion-ai/cstion/actions/runs/31252508929)
   passed for the merge commit.
 
 ## Runnable evaluation evidence
@@ -69,20 +71,28 @@ driver. The scenarios and local reproduction command are documented in the
 - Review history is public on pull requests
   [#4](https://github.com/cstion-ai/cstion/pull/4),
   [#12](https://github.com/cstion-ai/cstion/pull/12),
-  [#20](https://github.com/cstion-ai/cstion/pull/20), and
+  [#20](https://github.com/cstion-ai/cstion/pull/20),
   [#22](https://github.com/cstion-ai/cstion/pull/22),
-  [#23](https://github.com/cstion-ai/cstion/pull/23), and
-  [#25](https://github.com/cstion-ai/cstion/pull/25). On #25, Codex identified
+  [#23](https://github.com/cstion-ai/cstion/pull/23),
+  [#25](https://github.com/cstion-ai/cstion/pull/25), and
+  [#28](https://github.com/cstion-ai/cstion/pull/28). On #25, Codex identified
   a Windows line-ending risk; the maintainer reproduced it, added an LF policy
   and regression test, resolved the thread, and received a
   [clean re-review](https://github.com/cstion-ai/cstion/pull/25#issuecomment-5147836357)
   on the final head.
+- On #28, a fresh audit reproduced
+  [GHSA-rgw5-rvv9-x895](https://github.com/advisories/GHSA-rgw5-rvv9-x895)
+  after the original bot checks had passed. The lock was refreshed to the
+  patched dependency, the Node minimum was aligned with `c8` 12, and Codex
+  returned a [clean review](https://github.com/cstion-ai/cstion/pull/28#issuecomment-5225674656).
 - Release notes preserve compatibility changes, known limitations, and rollback
   guidance. Releases are created only after the checked-in release gate passes.
 - The evaluation privacy decision and alternatives are recorded in
   [issue #24](https://github.com/cstion-ai/cstion/issues/24). Private
   vulnerability reporting and automated security updates are enabled. The
-  GitHub alert API reported zero open Dependabot alerts at this snapshot.
+  GitHub alert API reported zero open Dependabot and CodeQL alerts, while the
+  latest main CI independently completed `npm audit --audit-level=high` with
+  zero vulnerabilities.
 
 ## Ecosystem context is not adoption
 

@@ -8,25 +8,29 @@ context, not an adoption claim.
 
 ## Verified public state
 
-Verified on 2026-08-01:
+Verified on 2026-08-08:
 
-- Pull requests #4, #12, #20, #22, #23, and #25 are merged into public `main`;
-  the `v0.1.3` release merge commit is
+- Pull requests #4, #12, #20, #22, #23, #25, and #28 are merged into public
+  `main`; the latest code-maintenance merge is
+  `ed5e0a99f14a9d3930b8abee37af9f14f7d2cb86`, and the `v0.1.3` release merge is
   `95616a4f63576ef1ef4958aafbe869632a6d98a1`.
 - Releases `v0.1.0`, `v0.1.1`, `v0.1.2`, and `v0.1.3` are published; the
   annotated latest tag resolves to that exact merge commit.
-- Main CI and CodeQL pass on the merge commit. CI enforces coverage thresholds,
-  both synthetic evaluations, exact source/build report parity, and a real
-  PostgreSQL 16 job.
+- Main CI and CodeQL pass on that maintenance commit. CI enforces
+  coverage thresholds, both synthetic evaluations, exact source/build report
+  parity, dependency audit, and a real PostgreSQL 16 job.
 - The `v0.1.3` tag-triggered release workflow succeeded after rechecking main
   ancestry, release metadata, the full quality gate, and PostgreSQL 16.
 - The public install-free sandbox runs the real deterministic parser locally in
   the browser without an account, API key, server, or network request.
 - Codex found a Windows line-ending risk on #25. It was reproduced, fixed with
   a regression test, resolved publicly, and cleanly re-reviewed on the final
-  head; all #25 review threads are resolved.
+  head. On #28, a fresh audit reproduced a newly published high-severity
+  transitive dependency advisory after the bot checks had passed; the lock and
+  Node compatibility boundary were fixed and cleanly reviewed.
 - Private vulnerability reporting, Dependabot, and automated security updates
-  are enabled; the alert API reports zero open alerts.
+  are enabled; the alert API reports zero open alerts and current main CI
+  reports zero npm audit vulnerabilities.
 - At this snapshot, the repository has 0 stars, 0 forks, 0 watchers, one
   contributor, and no documented adopters or download data.
 - The maintainer profile `cstion-ai` is public.
@@ -54,7 +58,7 @@ Do not submit until all checked facts are visible on the public repository:
 - [x] Adoption, star, fork, and usage claims remain zero unless public or
   permissioned evidence exists.
 - [x] The applicant's GitHub profile is public.
-- [x] Draft form answers are within 500 characters (462, 470, and 370 at this
+- [x] Draft form answers are within 500 characters (462, 470, and 373 at this
   snapshot).
 
 No wording change can substitute for missing public usage or adoption evidence.
@@ -79,7 +83,7 @@ Over 90 days, credits would expand the 48-case synthetic Korean challenge to abo
 ### Anything else we should know? — draft
 
 Codex review/fix history is public and includes event-lease, webhook HMAC,
-identity-locking, OAuth-state, and browser-race hardening. Main passes Node 22,
+identity-locking, OAuth-state, and browser-race hardening. Main passes Node 22.12,
 PostgreSQL 16, CodeQL, dependency review, and tag release gates. The 48-case
 challenge publishes known failures instead of claiming perfect quality.
 Production remains closed while CRM and Sheets adapters are fakes.
@@ -133,16 +137,19 @@ Do not store the OpenAI Organization ID, account email, or other private applica
 - Browser-sandbox and release pull request: `https://github.com/cstion-ai/cstion/pull/22`
 - Browser-race evidence pull request: `https://github.com/cstion-ai/cstion/pull/23`
 - Frozen-challenge and v0.1.3 pull request: `https://github.com/cstion-ai/cstion/pull/25`
+- Coverage-tool security pull request: `https://github.com/cstion-ai/cstion/pull/28`
 - Evaluation privacy decision: `https://github.com/cstion-ai/cstion/issues/24`
+- Security maintenance merge: `https://github.com/cstion-ai/cstion/commit/ed5e0a99f14a9d3930b8abee37af9f14f7d2cb86`
 - `v0.1.3` release merge commit: `https://github.com/cstion-ai/cstion/commit/95616a4f63576ef1ef4958aafbe869632a6d98a1`
 - First release: `https://github.com/cstion-ai/cstion/releases/tag/v0.1.0`
 - Current release: `https://github.com/cstion-ai/cstion/releases/tag/v0.1.3`
-- Main CI: `https://github.com/cstion-ai/cstion/actions/runs/30668586589`
-- Main CodeQL: `https://github.com/cstion-ai/cstion/actions/runs/30668586661`
-- PostgreSQL 16 integration job: `https://github.com/cstion-ai/cstion/actions/runs/30668586589/job/91281208082`
+- Main CI: `https://github.com/cstion-ai/cstion/actions/runs/31252509297`
+- Main CodeQL: `https://github.com/cstion-ai/cstion/actions/runs/31252509310`
+- PostgreSQL 16 integration job: `https://github.com/cstion-ai/cstion/actions/runs/31252509297/job/93090926926`
 - Release workflow and PostgreSQL recheck: `https://github.com/cstion-ai/cstion/actions/runs/30668702897`
-- Merged pull-request dependency review: `https://github.com/cstion-ai/cstion/actions/runs/30668331186/job/91280414382`
-- Final Codex re-review: `https://github.com/cstion-ai/cstion/pull/25#issuecomment-5147836357`
+- Merged pull-request dependency review: `https://github.com/cstion-ai/cstion/actions/runs/31252257301/job/93090306622`
+- Final Codex security re-review: `https://github.com/cstion-ai/cstion/pull/28#issuecomment-5225674656`
+- Dependency advisory: `https://github.com/advisories/GHSA-rgw5-rvv9-x895`
 - Kakao ecosystem source: `https://www.kakaocorp.com/page/detail/11725?lang=ENG`
 - Public maintenance notes or adopter evidence: add when real
 
