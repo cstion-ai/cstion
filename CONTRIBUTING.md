@@ -8,7 +8,7 @@
 
 ## Development
 
-Use Node.js 22. Install dependencies and run the repository checks with:
+Use Node.js 22.12 or newer. Install dependencies and run the repository checks with:
 
 ```bash
 npm ci

@@ -19,6 +19,16 @@ test("Given the container build stage, when build assets are copied, then the fr
   assert.match(dockerfile, /^RUN npm run build$/m);
 });
 
+test("Given the c8 12 toolchain, when project requirements are read, then the declared Node version is compatible", async () => {
+  const packageMetadata = await readFile(
+    join(PROJECT_ROOT, "package.json"),
+    "utf8"
+  );
+
+  assert.match(packageMetadata, /"node": ">=22\.12\.0"/);
+  assert.match(packageMetadata, /"c8": "\^12\.0\.0"/);
+});
+
 test("Given a cross-platform checkout, when evaluation JSON is materialized, then exact-byte identity keeps LF endings", async () => {
   const attributes = await readFile(join(PROJECT_ROOT, ".gitattributes"), "utf8");
 
