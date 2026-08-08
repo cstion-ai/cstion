@@ -25,8 +25,8 @@ reproducible project evidence from ecosystem context and from adoption claims.
   audit.
 - The dedicated
   [Node.js 22.12 minimum-compatibility job](https://github.com/cstion-ai/cstion/actions/runs/31281987301/job/93164701292)
-  passed the same full gate at the exact minimum version declared by the
-  package.
+  passed `npm run check:all` at the exact minimum version declared by the
+  package. Open-source metadata checks run separately in the Node.js 22 job.
 - The separate
   [PostgreSQL 16 job](https://github.com/cstion-ai/cstion/actions/runs/31281987301/job/93164701268)
   passed against a disposable real database on the same commit.
