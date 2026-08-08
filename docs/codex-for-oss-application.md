@@ -83,7 +83,7 @@ Over 90 days, credits would expand the 48-case synthetic Korean challenge to abo
 ### Anything else we should know? — draft
 
 Codex review/fix history is public and includes event-lease, webhook HMAC,
-identity-locking, OAuth-state, and browser-race hardening. Main passes Node 22.12,
+identity-locking, OAuth-state, and browser-race hardening. Main passes Node 22,
 PostgreSQL 16, CodeQL, dependency review, and tag release gates. The 48-case
 challenge publishes known failures instead of claiming perfect quality.
 Production remains closed while CRM and Sheets adapters are fakes.
