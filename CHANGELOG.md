@@ -6,6 +6,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Changed
+
+- Refreshed PostgreSQL, PostgreSQL type definitions, `esbuild`, and `tsx` to
+  their current compatible releases.
+- Added a separate CI job that runs the complete quality gate on the exact
+  Node.js 22.12 minimum while retaining the current Node.js 22 and PostgreSQL
+  16 jobs.
+
 ### Security
 
 - Upgraded the `c8` development coverage tool to 12.0.0 and refreshed its

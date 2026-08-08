@@ -46,7 +46,10 @@ the [public evidence snapshot](docs/public-evidence.md).
 - Kakao OAuth stores only an HMAC-derived check in the HttpOnly state cookie; the random state value itself is not stored in the browser cookie.
 - The shared logging helper masks email addresses, phone numbers, and values stored under credential, token, secret, and password keys.
 - The migration runner records applied migrations and runs them in a transaction under an advisory lock.
-- CI includes unimported executable TypeScript source in the coverage denominator and enforces minimums of 90% lines, 80% branches, and 85% functions.
+- CI runs the complete gate on both the exact Node.js 22.12 minimum and the
+  current Node.js 22 release. Coverage includes unimported executable
+  TypeScript source and enforces minimums of 90% lines, 80% branches, and 85%
+  functions.
 - Production configuration requires HTTPS endpoints and the documented secrets. The runtime refuses production startup while the CRM and Sheets adapters are fake.
 
 See the [threat model](docs/threat-model.md) for trust boundaries and remaining risks.
