@@ -58,7 +58,7 @@ Do not submit until all checked facts are visible on the public repository:
 - [x] Adoption, star, fork, and usage claims remain zero unless public or
   permissioned evidence exists.
 - [x] The applicant's GitHub profile is public.
-- [x] Draft form answers are within 500 characters (462, 470, and 373 at this
+- [x] Draft form answers are within 500 characters (462, 470, and 370 at this
   snapshot).
 
 No wording change can substitute for missing public usage or adoption evidence.
