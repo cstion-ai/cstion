@@ -57,7 +57,7 @@ Try the deterministic parser in the [browser sandbox](https://cstion-ai.github.i
 
 Requirements:
 
-- Node.js 22
+- Node.js 22.12 or newer
 
 Run one synthetic inquiry through the in-memory reference pipeline:
 

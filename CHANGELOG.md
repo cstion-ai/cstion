@@ -6,6 +6,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Security
+
+- Upgraded the `c8` development coverage tool to 12.0.0 and refreshed its
+  dependency lock to `brace-expansion` 5.0.9, which fixes
+  `GHSA-rgw5-rvv9-x895`. The documented development minimum is now Node.js
+  22.12 to match the updated toolchain.
+
 ## [0.1.3] - 2026-08-01
 
 ### Added
