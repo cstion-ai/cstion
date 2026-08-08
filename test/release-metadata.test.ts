@@ -34,10 +34,13 @@ test("Given the declared Node minimum, when CI is inspected, then the exact boun
     join(PROJECT_ROOT, ".github/workflows/ci.yml"),
     "utf8"
   );
+  const nodeMinimumJob = /^  node-minimum:\n(?<body>(?:(?: {4,}.*)?\n)*)/m
+    .exec(workflow)?.groups?.["body"];
 
-  assert.match(workflow, /name: Node 22\.12 minimum compatibility/);
-  assert.match(workflow, /node-version: 22\.12\.0/);
-  assert.match(workflow, /run: npm run check:all/);
+  assert.ok(nodeMinimumJob);
+  assert.match(nodeMinimumJob, /name: Node 22\.12 minimum compatibility/);
+  assert.match(nodeMinimumJob, /node-version: 22\.12\.0/);
+  assert.match(nodeMinimumJob, /run: npm run check:all/);
 });
 
 test("Given a cross-platform checkout, when evaluation JSON is materialized, then exact-byte identity keeps LF endings", async () => {
