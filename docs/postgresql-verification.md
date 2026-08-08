@@ -19,6 +19,11 @@ The CI job and its PostgreSQL image digest are defined in [`.github/workflows/ci
 
 ## Public evidence
 
+The security maintenance commit
+`ed5e0a99f14a9d3930b8abee37af9f14f7d2cb86` passed the public
+[`PostgreSQL 16 integration` job](https://github.com/cstion-ai/cstion/actions/runs/31252509297/job/93090926926)
+on 2026-08-08 after a development-dependency security refresh.
+
 The `v0.1.3` release commit `95616a4f63576ef1ef4958aafbe869632a6d98a1`
 passed the public main
 [`PostgreSQL 16 integration` job](https://github.com/cstion-ai/cstion/actions/runs/30668586589/job/91281208082).

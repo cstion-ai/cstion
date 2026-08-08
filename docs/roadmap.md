@@ -168,7 +168,7 @@ Exit evidence:
 
 ## Community evidence
 
-Baseline as of 2026-08-01:
+Baseline as of 2026-08-08:
 
 - tagged releases: 4 (`v0.1.0`, `v0.1.1`, `v0.1.2`, and `v0.1.3`);
 - GitHub stars and forks: 0 and 0;
