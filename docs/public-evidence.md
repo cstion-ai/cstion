@@ -1,13 +1,13 @@
 # Public Evidence Snapshot
 
-Verified on 2026-08-08 against the public repository. This page separates
+Verified on 2026-08-09 against the public repository. This page separates
 reproducible project evidence from ecosystem context and from adoption claims.
 
 ## Snapshot identity
 
 - Public repository: [`cstion-ai/cstion`](https://github.com/cstion-ai/cstion)
-- Security maintenance merge: [`ed5e0a9`](https://github.com/cstion-ai/cstion/commit/ed5e0a99f14a9d3930b8abee37af9f14f7d2cb86)
-  from [pull request #28](https://github.com/cstion-ai/cstion/pull/28)
+- Compatibility maintenance merge: [`138b7be`](https://github.com/cstion-ai/cstion/commit/138b7be138bbca67c90ba15781895ea0186cc7ad)
+  from [pull request #32](https://github.com/cstion-ai/cstion/pull/32)
 - `v0.1.3` release merge: [`95616a4`](https://github.com/cstion-ai/cstion/commit/95616a4f63576ef1ef4958aafbe869632a6d98a1)
   from [pull request #25](https://github.com/cstion-ai/cstion/pull/25)
 - Current release: [`v0.1.3`](https://github.com/cstion-ai/cstion/releases/tag/v0.1.3),
@@ -17,26 +17,30 @@ reproducible project evidence from ecosystem context and from adoption claims.
 
 ## Automated gates
 
-- [Main CI](https://github.com/cstion-ai/cstion/actions/runs/31252509297)
+- [Main CI](https://github.com/cstion-ai/cstion/actions/runs/31281987301)
   passed on the exact merge commit. Its
-  [Node.js 22 job](https://github.com/cstion-ai/cstion/actions/runs/31252509297/job/93090926943)
+  [Node.js 22 job](https://github.com/cstion-ai/cstion/actions/runs/31281987301/job/93164701298)
   enforced tests, coverage, both deterministic evaluations, type checks,
   build, exact source/build report parity, metadata checks, and dependency
   audit.
+- The dedicated
+  [Node.js 22.12 minimum-compatibility job](https://github.com/cstion-ai/cstion/actions/runs/31281987301/job/93164701292)
+  passed the same full gate at the exact minimum version declared by the
+  package.
 - The separate
-  [PostgreSQL 16 job](https://github.com/cstion-ai/cstion/actions/runs/31252509297/job/93090926926)
+  [PostgreSQL 16 job](https://github.com/cstion-ai/cstion/actions/runs/31281987301/job/93164701268)
   passed against a disposable real database on the same commit.
-- [CodeQL](https://github.com/cstion-ai/cstion/actions/runs/31252509310)
+- [CodeQL](https://github.com/cstion-ai/cstion/actions/runs/31281987308)
   passed on the same commit, and
-  [dependency review](https://github.com/cstion-ai/cstion/actions/runs/31252257301/job/93090306622)
-  passed on the final head of pull request #28.
+  [dependency review](https://github.com/cstion-ai/cstion/actions/runs/31281804560/job/93164252621)
+  passed on the final head of pull request #32.
 - The
   [tag-triggered release run](https://github.com/cstion-ai/cstion/actions/runs/30668702897)
   rechecked main ancestry, tag/package/changelog alignment, the full quality
   gate, and PostgreSQL 16 before creating the GitHub release. Its combined
   [verification job](https://github.com/cstion-ai/cstion/actions/runs/30668702897/job/91281567187)
   passed every step.
-- [GitHub Pages deployment](https://github.com/cstion-ai/cstion/actions/runs/31252508929)
+- [GitHub Pages deployment](https://github.com/cstion-ai/cstion/actions/runs/31281986968)
   passed for the merge commit.
 
 ## Runnable evaluation evidence
@@ -74,8 +78,9 @@ driver. The scenarios and local reproduction command are documented in the
   [#20](https://github.com/cstion-ai/cstion/pull/20),
   [#22](https://github.com/cstion-ai/cstion/pull/22),
   [#23](https://github.com/cstion-ai/cstion/pull/23),
-  [#25](https://github.com/cstion-ai/cstion/pull/25), and
-  [#28](https://github.com/cstion-ai/cstion/pull/28). On #25, Codex identified
+  [#25](https://github.com/cstion-ai/cstion/pull/25),
+  [#28](https://github.com/cstion-ai/cstion/pull/28), and
+  [#32](https://github.com/cstion-ai/cstion/pull/32). On #25, Codex identified
   a Windows line-ending risk; the maintainer reproduced it, added an LF policy
   and regression test, resolved the thread, and received a
   [clean re-review](https://github.com/cstion-ai/cstion/pull/25#issuecomment-5147836357)
@@ -85,6 +90,12 @@ driver. The scenarios and local reproduction command are documented in the
   after the original bot checks had passed. The lock was refreshed to the
   patched dependency, the Node minimum was aligned with `c8` 12, and Codex
   returned a [clean review](https://github.com/cstion-ai/cstion/pull/28#issuecomment-5225674656).
+- On #32, stale bot update branches were replaced with current dependency
+  versions and an exact Node.js 22.12 gate. Codex found that the first metadata
+  regression test could pass if workflow versions were swapped; the maintainer
+  reproduced the false pass, scoped the assertion to the minimum-version job,
+  and received a
+  [clean re-review](https://github.com/cstion-ai/cstion/pull/32#issuecomment-5228510005).
 - Release notes preserve compatibility changes, known limitations, and rollback
   guidance. Releases are created only after the checked-in release gate passes.
 - The evaluation privacy decision and alternatives are recorded in

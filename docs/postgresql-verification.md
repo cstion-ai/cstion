@@ -19,6 +19,13 @@ The CI job and its PostgreSQL image digest are defined in [`.github/workflows/ci
 
 ## Public evidence
 
+The compatibility maintenance commit
+`138b7be138bbca67c90ba15781895ea0186cc7ad` passed the public
+[`PostgreSQL 16 integration` job](https://github.com/cstion-ai/cstion/actions/runs/31281987301/job/93164701268)
+on 2026-08-09 after the production `pg` driver and development toolchain were
+refreshed. The same workflow also checked both the declared minimum Node.js
+version and the current Node.js 22 release.
+
 The security maintenance commit
 `ed5e0a99f14a9d3930b8abee37af9f14f7d2cb86` passed the public
 [`PostgreSQL 16 integration` job](https://github.com/cstion-ai/cstion/actions/runs/31252509297/job/93090926926)
