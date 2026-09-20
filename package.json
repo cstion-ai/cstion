@@ -71,14 +71,14 @@
   },
   "dependencies": {
     "pg": "^8.23.0",
-    "zod": "^4.4.3"
+    "zod": "^4.6.5"
   },
   "devDependencies": {
-    "@types/node": "^22.20.1",
-    "@types/pg": "^8.21.0",
+    "@types/node": "^22.20.3",
+    "@types/pg": "^8.23.1",
     "c8": "^12.0.0",
     "esbuild": "^0.28.2",
-    "tsx": "^4.23.11",
+    "tsx": "^4.23.13",
     "typescript": "^7.0.2"
   }
 }
