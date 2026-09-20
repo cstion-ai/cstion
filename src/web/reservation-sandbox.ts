@@ -1,4 +1,4 @@
-import { z } from "zod";
+import * as z from "zod";
 import { findMissingFields } from "../booking/reservation-service.js";
 import { parseKakaoReservation } from "../kakao/reservation-parser.js";
 

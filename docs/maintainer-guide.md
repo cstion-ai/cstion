@@ -8,6 +8,27 @@
 4. Check CI, CodeQL, dependency review, and open security advisories.
 5. Close duplicates with a link to the canonical issue.
 
+## Dependency updates
+
+Keep CodeQL `init` and `analyze` pinned to the same commit. Dependabot groups
+`github/codeql-action/*` so both steps update in one pull request; the CI
+configuration tests reject mismatched pins or a missing group.
+
+Updates to browser dependencies such as Zod can change the generated sandbox
+even when its TypeScript source is unchanged. After updating the lockfile:
+
+```bash
+npm ci
+npm run build:web -- --outfile=docs/assets/reservation-sandbox.js
+npm run check:all
+```
+
+Commit the generated asset with the dependency update. Keep the bundle-size,
+network-client and source/build parity checks enabled, and exercise the public
+sandbox before merging. The browser-facing modules use `import * as z from "zod"`
+so esbuild can remove unused exports. A size regression should be
+investigated before changing the size budget.
+
 ## Pull request review
 
 Review in this order:

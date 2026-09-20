@@ -1,4 +1,4 @@
-import { z } from "zod";
+import * as z from "zod";
 
 const ProviderIdentifierSchema = z.string().min(1).max(255);
 
